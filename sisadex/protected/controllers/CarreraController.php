@@ -9,7 +9,7 @@ class CarreraController extends Controller
     {
         return array(
             'accessControl' // perform access control for CRUD operations
-            );
+        );
     }
 
     /**
@@ -30,18 +30,18 @@ class CarreraController extends Controller
                     'delete',
                     'index',
                     'deleteAll'
-                    ),
+                ),
                 'users' => array(
                     'admin'
-                    )
-                ),
+                )
+            ),
             array(
                 'deny', // deny all users
                 'users' => array(
                     '*'
-                    )
                 )
-            );
+            )
+        );
     }
 
     /**
@@ -80,19 +80,18 @@ class CarreraController extends Controller
             $model = $this->loadModel($id);
             // Uncomment the following line if AJAX validation is needed
             $this->performAjaxValidation($model, "carrera-update-form");
-           if (isset($_POST['Carrera'])) {
+            if (isset($_POST['Carrera'])) {
                 $transaction = $model->dbConnection->beginTransaction();
                 try {
-                    if (Carrera::model()->existsInDatabase($_POST['Carrera']['nombreCarrera'])){
+                    if (Carrera::model()->existsInDatabase($_POST['Carrera']['nombreCarrera'])) {
                         echo "exists";
                         return;
-                    }        
-                $model->attributes = $_POST['Carrera'];
+                    }
+                    $model->attributes = $_POST['Carrera'];
                     if ($model->save()) {
                         $transaction->commit();
                         echo "true";
-                    } 
-                    else {
+                    } else {
                         echo "false";
                     }
                     return;
@@ -100,13 +99,12 @@ class CarreraController extends Controller
                     $transaction->rollBack();
                     throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
                 }
-            } 
+            }
             $this->renderPartial('_ajax_update_form', array(
                 'model' => $model
-                ));
+            ));
             return;
-        } 
-        else {
+        } else {
             throw new CHttpException(404, 'La página solicitada no existe.');
         }
     }
@@ -127,7 +125,7 @@ class CarreraController extends Controller
             if (!isset(Yii::app()->request->isAjaxRequest))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
                     'index'
-                    ));
+                ));
             else
                 echo "true";
         } else {
@@ -155,7 +153,7 @@ class CarreraController extends Controller
         $session['Carrera_records'] = Carrera::model()->findAll($criteria);
         $this->render('index', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -174,6 +172,7 @@ class CarreraController extends Controller
     /**
      * Performs the AJAX validation.
      * @param CModel the model to be validated
+     * @param $form_id
      */
     protected function performAjaxValidation($model, $form_id)
     {
@@ -190,10 +189,10 @@ class CarreraController extends Controller
         if (isset($session['Carrera_records'])) {
             $model = $session['Carrera_records'];
         } else
-        $model = Carrera::model()->findAll();
+            $model = Carrera::model()->findAll();
         Yii::app()->request->sendFile(date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
             'model' => $model
-            ), true));
+        ), true));
     }
 
     public function actionGeneratePdf()
@@ -206,10 +205,10 @@ class CarreraController extends Controller
         if (isset($session['Carrera_records'])) {
             $model = $session['Carrera_records'];
         } else
-        $model = Carrera::model()->findAll();
+            $model = Carrera::model()->findAll();
         $html = $this->renderPartial('expenseGridtoReport', array(
             'model' => $model
-            ), true);
+        ), true);
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(Yii::app()->name);
@@ -221,12 +220,12 @@ class CarreraController extends Controller
             'helvetica',
             '',
             8
-            ));
+        ));
         $pdf->setFooterFont(Array(
             'helvetica',
             '',
             6
-            ));
+        ));
         $pdf->SetMargins(15, 18, 15);
         $pdf->SetHeaderMargin(5);
         $pdf->SetFooterMargin(10);
@@ -251,7 +250,7 @@ class CarreraController extends Controller
                 $model->deleteAll();
                 echo "true";
             } else
-            echo "false";
+                echo "false";
             // we only allow deletion via POST request
         } else {
             throw new CHttpException(400, 'Solicitud de página inválida.');

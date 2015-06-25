@@ -9,7 +9,7 @@ class TipoexamenController extends Controller
     {
         return array(
             'accessControl' // perform access control for CRUD operations
-            );
+        );
     }
 
     /**
@@ -25,11 +25,11 @@ class TipoexamenController extends Controller
                 'actions' => array(
                     'deleteAll',
                     'deleteAllGlobals'
-                    ),
+                ),
                 'users' => array(
                     'admin'
-                    )
-                ),
+                )
+            ),
             array(
                 'allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array(
@@ -38,18 +38,18 @@ class TipoexamenController extends Controller
                     'index',
                     'delete',
                     'DeleteAllMyRecords'
-                    ),
+                ),
                 'users' => array(
                     '@'
-                    )
-                ),
+                )
+            ),
             array(
                 'deny', // deny all users
                 'users' => array(
                     '*'
-                    )
                 )
-            );
+            )
+        );
     }
 
     /**
@@ -76,7 +76,7 @@ class TipoexamenController extends Controller
                     $criteria->params = array(
                         ':nombreTipoExamen' => strtolower($_POST['Tipoexamen']['nombreTipoExamen']),
                         ':Materia_id' => $model->Materia_id
-                        );
+                    );
                     $records = Tipoexamen::model()->find($criteria);
                     if (count($records) > 0) {
                         echo "false";
@@ -119,17 +119,16 @@ class TipoexamenController extends Controller
                         $Materia_id = -1;
                     else
                         $Materia_id = Yii::app()->user->name;
-          
-                    if (Tipoexamen::model()->existsInDatabase($_POST['Tipoexamen']['nombreTipoExamen'],$Materia_id,$id)) {
+
+                    if (Tipoexamen::model()->existsInDatabase($_POST['Tipoexamen']['nombreTipoExamen'], $Materia_id, $id)) {
                         echo "exists";
                         return;
-                    } 
+                    }
                     $model->attributes = $_POST['Tipoexamen'];
                     if ($model->save()) {
                         $transaction->commit();
                         echo "true";
-                    } 
-                    else {
+                    } else {
                         echo "false";
                     }
                     return;
@@ -137,13 +136,12 @@ class TipoexamenController extends Controller
                     $transaction->rollBack();
                     throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
                 }
-            } 
+            }
             $this->renderPartial('_ajax_update_form', array(
                 'model' => $model
-                ));
+            ));
             return;
-        } 
-        else {
+        } else {
             throw new CHttpException(404, 'La página solicitada no existe.');
         }
     }
@@ -168,11 +166,10 @@ class TipoexamenController extends Controller
             if (!isset(Yii::app()->request->isAjaxRequest))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
                     'index'
-                    ));
+                ));
             else
                 echo "true";
-        } 
-        else {
+        } else {
             throw new CHttpException(404, 'La página solicitada no existe.');
         }
     }
@@ -195,11 +192,11 @@ class TipoexamenController extends Controller
                 $criteria->addCondition('Materia_id = "' . $model->Materia_id . '"');
             if (!empty($model->id))
                 $criteria->addCondition('id = "' . $model->id . '"');
-        } 
+        }
         $session['Tipoexamen_records'] = Tipoexamen::model()->findAll($criteria);
         $this->render('index', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -224,7 +221,7 @@ class TipoexamenController extends Controller
         if (isset($_POST['ajax']) && $_POST['ajax'] === $form_id) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
-        } 
+        }
     }
 
     public function actionDeleteAll()
@@ -236,12 +233,10 @@ class TipoexamenController extends Controller
             if ($passModel->isPasswordCorrect($pass)) {
                 $model->deleteAll();
                 echo "true";
-            } 
-            else
+            } else
                 echo "false";
             // we only allow deletion via POST request
-        } 
-        else {
+        } else {
             throw new CHttpException(400, 'Solicitud de página inválida.');
         }
     }
@@ -258,12 +253,10 @@ class TipoexamenController extends Controller
             if ($passModel->isPasswordCorrect($pass)) {
                 $model->deleteAll("materia_id == -1");
                 echo "true";
-            } 
-            else
+            } else
                 echo "false";
             // we only allow deletion via POST request
-        } 
-        else {
+        } else {
             throw new CHttpException(400, 'Solicitud de página inválida.');
         }
     }
@@ -280,12 +273,10 @@ class TipoexamenController extends Controller
             if ($pass == $materia) {
                 $model->deleteAll("materia_id == " . $materia);
                 echo "true";
-            } 
-            else
+            } else
                 echo "false";
             // we only allow deletion via POST request
-        } 
-        else {
+        } else {
             throw new CHttpException(400, 'Solicitud de página inválida.');
         }
     }

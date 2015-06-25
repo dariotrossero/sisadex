@@ -16,7 +16,7 @@ class ExamenController extends Controller
     {
         return array(
             'accessControl' // perform access control for CRUD operations
-            );
+        );
     }
 
     public function accessRules()
@@ -36,29 +36,29 @@ class ExamenController extends Controller
                     'view',
                     'DeleteAllMyRecords',
                     'CountRecords'
-                    ),
+                ),
                 'users' => array(
                     '@'
-                    )
-                ),
+                )
+            ),
             array(
                 'allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array(
                     'deleteSelected',
                     'deleteAll'
-                    ),
+                ),
                 'users' => array(
                     'admin'
-                    )
-                ),
+                )
+            ),
             array(
                 'deny', // deny all users
                 'users' => array(
                     '*'
-                    )
                 )
-            );
-}
+            )
+        );
+    }
 
     /**
      * Displays a particular model.
@@ -70,11 +70,7 @@ class ExamenController extends Controller
             $id = $_REQUEST["id"];
             $this->renderPartial('ajax_view', array(
                 'model' => $this->loadModel($id)
-                ));
-        } else {
-            $this->render('view', array(
-                'model' => $this->loadModel($id)
-                ));
+            ));
         }
     }
 
@@ -130,7 +126,7 @@ class ExamenController extends Controller
                     $modelos[$i]->tipoexamen_id = $id_tipo;
                 }
                 if (!Yii::app()->user->isAdmin()) //si no es administrador se setea el id de la materia desde user->name
-                $modelos[$i]->materia_id = Yii::app()->user->name;
+                    $modelos[$i]->materia_id = Yii::app()->user->name;
             }
             for ($i = 1; $i <= $this->cantExamenes; $i++)
                 $valid = $modelos[$i]->validate() && $valid;
@@ -139,13 +135,13 @@ class ExamenController extends Controller
                     $modelos[$i]->save();
                 $this->redirect(array(
                     'index'
-                    ));
+                ));
             }
         }
         $this->render('create', array(
             'model' => $model,
             'modelos' => $modelos
-            ));
+        ));
     }
 
     /**
@@ -165,37 +161,37 @@ class ExamenController extends Controller
             //Si se selecciona un tipo de examen para que no falle la validacion se setea algo al atributo
             if ($_POST['Examen']['tipoexamen_id'] != -1)
                 $_POST['Examen']['TipoExamenPersonalizado'] = "no_vacio :)";
-$transaction = $model->dbConnection->beginTransaction();
-try {
+            $transaction = $model->dbConnection->beginTransaction();
+            try {
                 //Si soy administrador obtendo el materia_id desde el form sino desde el usuario
-    $mat_id = (Yii::app()->user->isadmin()) ? $_POST['Examen']['materia_id'] : Yii::app()->user->name;
-    $model->attributes = $_POST['Examen'];
+                $mat_id = (Yii::app()->user->isadmin()) ? $_POST['Examen']['materia_id'] : Yii::app()->user->name;
+                $model->attributes = $_POST['Examen'];
                 //$model->fechaExamen=$this->dateToYMD($_POST['Examen']['fechaExamen']);
-    if ($_POST['Examen']['tipoexamen_id'] == -1) {
+                if ($_POST['Examen']['tipoexamen_id'] == -1) {
                     //Se eligio un tipo nuevo, se inserta en la base de datos y luego se obtiene el id para
                     //insertarlo en examen
-        $tipoexamen = new Tipoexamen;
-        $tipoexamen->nombreTipoExamen = $_POST['Examen']['TipoExamenPersonalizado'];
-        $tipoexamen->Materia_id = $mat_id;
-        $tipoexamen->save();
-        $lastInsert = Yii::app()->db->getLastInsertID();
-        $model->tipoexamen_id = $lastInsert;
+                    $tipoexamen = new Tipoexamen;
+                    $tipoexamen->nombreTipoExamen = $_POST['Examen']['TipoExamenPersonalizado'];
+                    $tipoexamen->Materia_id = $mat_id;
+                    $tipoexamen->save();
+                    $lastInsert = Yii::app()->db->getLastInsertID();
+                    $model->tipoexamen_id = $lastInsert;
+                }
+                if ($model->save()) {
+                    $transaction->commit();
+                    $this->redirect(array(
+                        'index'
+                    ));
+                }
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
+            }
+        }
+        $this->render('update', array(
+            'model' => $model
+        ));
     }
-    if ($model->save()) {
-        $transaction->commit();
-        $this->redirect(array(
-            'index'
-            ));
-    }
-} catch (Exception $e) {
-    $transaction->rollBack();
-    throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
-}
-}
-$this->render('update', array(
-    'model' => $model
-    ));
-}
 
     /**
      * Deletes a particular model.
@@ -212,7 +208,7 @@ $this->render('update', array(
             if (!isset(Yii::app()->request->isAjaxRequest))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
                     'index'
-                    ));
+                ));
             else
                 echo "true";
         } else {
@@ -230,7 +226,7 @@ $this->render('update', array(
                 $model->deleteAll();
                 echo "true";
             } else
-            echo "false";
+                echo "false";
             // we only allow deletion via POST request
         } else {
             throw new CHttpException(400, 'Solicitud de página inválida.');
@@ -263,7 +259,7 @@ $this->render('update', array(
         $session['Examen_records'] = Examen::model()->findAll($criteria);
         $this->render('index', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -276,10 +272,10 @@ $this->render('update', array(
         if (isset($session['Examen_records'])) {
             $model = $session['Examen_records'];
         } else
-        $model = Examen::model()->findAll();
+            $model = Examen::model()->findAll();
         Yii::app()->request->sendFile(date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
             'model' => $model
-            ), true));
+        ), true));
     }
 
     /**
@@ -295,10 +291,10 @@ $this->render('update', array(
         if (isset($session['Examen_records'])) {
             $model = $session['Examen_records'];
         } else
-        $model = Examen::model()->findAll();
+            $model = Examen::model()->findAll();
         $html = $this->renderPartial('expenseGridtoReport', array(
             'model' => $model
-            ), true);
+        ), true);
         //die($html);
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
@@ -312,12 +308,12 @@ $this->render('update', array(
             'helvetica',
             '',
             8
-            ));
+        ));
         $pdf->setFooterFont(Array(
             'helvetica',
             '',
             6
-            ));
+        ));
         $pdf->SetMargins(15, 18, 15);
         $pdf->SetHeaderMargin(5);
         $pdf->SetFooterMargin(10);
@@ -349,14 +345,14 @@ $this->render('update', array(
         and materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
           (select plan_id as subPlanId ,anio as subAnio, cuatrimestre as subCuat  from materia_has_plan where materia_id=:materia_id)
           on materia.id=materia_id and anio=subAnio and cuatrimestre= subCuat and plan_id=subPlanId and materia_id!=:materia_id)';
-$command = Yii::app()->db->createCommand($sql);
-$command->bindValue('materia_id', $materia_id);
-$command->bindValue('fechaExamen', $fechaExamen);
-$lista = $command->queryScalar();
-$resp = ($lista > 0) ? "true" : "false";
-header("Content-type: application/json");
-echo CJSON::encode($resp);
-}
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue('materia_id', $materia_id);
+        $command->bindValue('fechaExamen', $fechaExamen);
+        $lista = $command->queryScalar();
+        $resp = ($lista > 0) ? "true" : "false";
+        header("Content-type: application/json");
+        echo CJSON::encode($resp);
+    }
 
     /**
      * Elimina todos los registros de examen pertenecientes a una materia
@@ -371,7 +367,7 @@ echo CJSON::encode($resp);
                 $model->deleteAll("materia_id == " . $materia);
                 echo "true";
             } else
-            echo "false";
+                echo "false";
             // we only allow deletion via POST request
         } else {
             throw new CHttpException(400, 'Solicitud de página inválida.');

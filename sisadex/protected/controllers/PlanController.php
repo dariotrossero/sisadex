@@ -11,7 +11,7 @@ class PlanController extends Controller
     {
         return array(
             'accessControl' // perform access control for CRUD operations
-            );
+        );
     }
 
     /**
@@ -34,11 +34,11 @@ class PlanController extends Controller
                     'delete',
                     'TestExistsPlan',
                     'deleteAll'
-                    ),
+                ),
                 'users' => array(
                     'admin'
-                    )
-                ),
+                )
+            ),
             array(
                 'allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array(
@@ -46,19 +46,19 @@ class PlanController extends Controller
                     'GenerateExcel',
                     'index',
                     'view'
-                    ),
+                ),
                 'users' => array(
                     '@'
-                    )
-                ),
+                )
+            ),
             array(
                 'deny', // deny all users
                 'users' => array(
                     '*'
-                    )
                 )
-            );
-}
+            )
+        );
+    }
 
     /**
      * Displays a particular model.
@@ -71,11 +71,11 @@ class PlanController extends Controller
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderPartial('ajax_view', array(
                 'model' => $this->loadModel($id)
-                ));
+            ));
         } else {
             $this->render('view', array(
                 'model' => $this->loadModel($id)
-                ));
+            ));
         }
     }
 
@@ -96,12 +96,12 @@ class PlanController extends Controller
                 $this->redirect(array(
                     'view',
                     'id' => $model->id
-                    ));
+                ));
             }
         }
         $this->render('create', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -119,7 +119,7 @@ class PlanController extends Controller
             if (!isset(Yii::app()->request->isAjaxRequest))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
                     'index'
-                    ));
+                ));
             else
                 echo "true";
         } else {
@@ -152,7 +152,7 @@ class PlanController extends Controller
         $session['Plan_records'] = Plan::model()->findAll($criteria);
         $this->render('index', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -187,10 +187,10 @@ class PlanController extends Controller
         if (isset($session['Plan_records'])) {
             $model = $session['Plan_records'];
         } else
-        $model = Plan::model()->findAll();
+            $model = Plan::model()->findAll();
         Yii::app()->request->sendFile(date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
             'model' => $model
-            ), true));
+        ), true));
     }
 
     public function actionGeneratePdf()
@@ -203,13 +203,13 @@ class PlanController extends Controller
         if (isset($session['Plan_records'])) {
             $model = $session['Plan_records'];
         } else
-        $model = Plan::model()->findAll();
+            $model = Plan::model()->findAll();
         $criteria = new CDbCriteria();
         $criteria->order = 'anioPlan';
         $model = Plan::model()->findAll($criteria);
         $html = $this->renderPartial('expenseGridtoReport', array(
             'model' => $model
-            ), true);
+        ), true);
         //die($html);
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
@@ -223,12 +223,12 @@ class PlanController extends Controller
             'helvetica',
             '',
             8
-            ));
+        ));
         $pdf->setFooterFont(Array(
             'helvetica',
             '',
             6
-            ));
+        ));
         $pdf->SetMargins(15, 18, 15);
         $pdf->SetHeaderMargin(5);
         $pdf->SetFooterMargin(10);
@@ -280,7 +280,7 @@ class PlanController extends Controller
     {
         $post = MateriaPlan::model()->findAll('Plan_id=:id', array(
             ':id' => $planID
-            ));
+        ));
         echo "\n";
         echo "<ul>";
         foreach ($post as $p) {
@@ -333,11 +333,11 @@ class PlanController extends Controller
             $this->redirect(array(
                 'view',
                 'id' => $model->id
-                ));
+            ));
         }
         $this->render('update', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -351,8 +351,8 @@ class PlanController extends Controller
             'params' => array(
                 ':anioPlan' => $anioPlan,
                 ':Carrera_id' => $Carrera_id
-                )
-            ));
+            )
+        ));
         $resp = ($record === null) ? "false" : "true";
         header("Content-type: application/json");
         echo CJSON::encode($resp);
@@ -371,7 +371,7 @@ class PlanController extends Controller
                 $model->deleteAll();
                 echo "true";
             } else
-            echo "false";
+                echo "false";
             // we only allow deletion via POST request
         } else {
             throw new CHttpException(400, 'Solicitud de página inválida.');

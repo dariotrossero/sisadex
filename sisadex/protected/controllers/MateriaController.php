@@ -108,17 +108,15 @@ class MateriaController extends Controller
             if (isset($_POST['Materia'])) {
                 $transaction = $model->dbConnection->beginTransaction();
                 try {
-
-                     if (Materia::model()->existsInDatabase($_POST['Materia']['nombreMateria'])){
+                    if (Materia::model()->existsInDatabase($_POST['Materia']['nombreMateria'])) {
                         echo "exists";
                         return;
-                    }        
-                $model->attributes = $_POST['Materia'];
+                    }
+                    $model->attributes = $_POST['Materia'];
                     if ($model->save()) {
                         $transaction->commit();
                         echo "true";
-                    } 
-                    else {
+                    } else {
                         echo "false";
                     }
                     return;
@@ -126,13 +124,12 @@ class MateriaController extends Controller
                     $transaction->rollBack();
                     throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
                 }
-            } 
+            }
             $this->renderPartial('_ajax_update_form', array(
                 'model' => $model
-                ));
+            ));
             return;
-        } 
-        else {
+        } else {
             throw new CHttpException(404, 'La página solicitada no existe.');
         }
     }

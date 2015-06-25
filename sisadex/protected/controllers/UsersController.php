@@ -15,7 +15,7 @@ class UsersController extends Controller
     {
         return array(
             'accessControl' // perform access control for CRUD operations
-            );
+        );
     }
 
     /**
@@ -38,23 +38,25 @@ class UsersController extends Controller
                     'delete',
                     'ChangePassword',
                     'DeleteAll'
-                    ),
+                ),
                 'users' => array(
                     'admin'
-                    )
-                ),
+                )
+            ),
             array(
                 'deny', // deny all users
                 'users' => array(
                     '*'
-                    )
                 )
-            );
+            )
+        );
     }
 
     /**
      * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
+     * @throws CException
+     * @throws CHttpException
+     * @internal param int $id the ID of the model to be displayed
      * Unused
      */
     public function actionView()
@@ -63,11 +65,11 @@ class UsersController extends Controller
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderPartial('ajax_view', array(
                 'model' => $this->loadModel($id)
-                ));
+            ));
         } else {
             $this->render('view', array(
                 'model' => $this->loadModel($id)
-                ));
+            ));
         }
     }
 
@@ -103,11 +105,11 @@ class UsersController extends Controller
                     $this->redirect(array(
                         'view',
                         'id' => $model->id
-                        ));
+                    ));
             }
             $this->render('create', array(
                 'model' => $model
-                ));
+            ));
         }
     }
 
@@ -134,7 +136,7 @@ class UsersController extends Controller
             }
             $this->renderPartial('_ajax_update_form', array(
                 'model' => $model
-                ));
+            ));
             return;
         }
         if (isset($_POST['Users'])) {
@@ -143,11 +145,11 @@ class UsersController extends Controller
                 $this->redirect(array(
                     'view',
                     'id' => $model->id
-                    ));
+                ));
         }
         $this->render('update', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -165,7 +167,7 @@ class UsersController extends Controller
             if (!isset(Yii::app()->request->isAjaxRequest))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
                     'index'
-                    ));
+                ));
             else
                 echo "true";
         } else {
@@ -198,7 +200,7 @@ class UsersController extends Controller
         $session['Users_records'] = Users::model()->findAll($criteria);
         $this->render('index', array(
             'model' => $model
-            ));
+        ));
     }
 
 
@@ -237,10 +239,10 @@ class UsersController extends Controller
         if (isset($session['Users_records'])) {
             $model = $session['Users_records'];
         } else
-        $model = Users::model()->findAll();
+            $model = Users::model()->findAll();
         Yii::app()->request->sendFile(date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
             'model' => $model
-            ), true));
+        ), true));
     }
 
     /**
@@ -256,10 +258,10 @@ class UsersController extends Controller
         if (isset($session['Users_records'])) {
             $model = $session['Users_records'];
         } else
-        $model = Users::model()->findAll();
+            $model = Users::model()->findAll();
         $html = $this->renderPartial('expenseGridtoReport', array(
             'model' => $model
-            ), true);
+        ), true);
         //die($html);
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
@@ -273,12 +275,12 @@ class UsersController extends Controller
             'helvetica',
             '',
             8
-            ));
+        ));
         $pdf->setFooterFont(Array(
             'helvetica',
             '',
             6
-            ));
+        ));
         $pdf->SetMargins(15, 18, 15);
         $pdf->SetHeaderMargin(5);
         $pdf->SetFooterMargin(10);
@@ -289,7 +291,7 @@ class UsersController extends Controller
         $pdf->LastPage();
         $pdf->Output("Users_002.pdf", "I");
     }
-    
+
     /**
      * Cambia la contraseña del administrador
      */
@@ -308,13 +310,13 @@ class UsersController extends Controller
                 Yii::app()->user->setFlash('success', '<strong>Éxito!</strong> Su contraseña fue cambiada.');
                 $this->redirect(array(
                     'index'
-                    ));
+                ));
             }
         }
         // Mostrar formulario de cambio de contraseña.
         $this->render('changePassword', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -330,7 +332,7 @@ class UsersController extends Controller
                 $model->deleteAll("id != 'admin'");
                 echo "true";
             } else
-            echo "false";
+                echo "false";
             // we only allow deletion via POST request
         } else {
             throw new CHttpException(400, 'Solicitud de página inválida.');

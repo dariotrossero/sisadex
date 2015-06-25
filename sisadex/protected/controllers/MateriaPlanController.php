@@ -9,7 +9,7 @@ class MateriaPlanController extends Controller
     {
         return array(
             'accessControl' // perform access control for CRUD operations
-            );
+        );
     }
 
     /**
@@ -29,18 +29,18 @@ class MateriaPlanController extends Controller
                     'delete',
                     'GeneratePdf',
                     'GenerateExcel'
-                    ),
+                ),
                 'users' => array(
                     'admin'
-                    )
-                ),
+                )
+            ),
             array(
                 'deny', // deny all users
                 'users' => array(
                     '*'
-                    )
                 )
-            );
+            )
+        );
     }
 
     /**
@@ -53,11 +53,11 @@ class MateriaPlanController extends Controller
         if (Yii::app()->request->isAjaxRequest) {
             $this->renderPartial('ajax_view', array(
                 'model' => $this->loadModel($id)
-                ));
+            ));
         } else {
             $this->render('view', array(
                 'model' => $this->loadModel($id)
-                ));
+            ));
         }
     }
 
@@ -87,11 +87,11 @@ class MateriaPlanController extends Controller
                     $this->redirect(array(
                         'view',
                         'id' => $model->Materia_id
-                        ));
+                    ));
             }
             $this->render('create', array(
                 'model' => $model
-                ));
+            ));
         }
     }
 
@@ -118,7 +118,7 @@ class MateriaPlanController extends Controller
             }
             $this->renderPartial('_ajax_update_form', array(
                 'model' => $model
-                ));
+            ));
             return;
         }
         if (isset($_POST['MateriaPlan'])) {
@@ -127,11 +127,11 @@ class MateriaPlanController extends Controller
                 $this->redirect(array(
                     'view',
                     'id' => $model->Materia_id
-                    ));
+                ));
         }
         $this->render('update', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -149,7 +149,7 @@ class MateriaPlanController extends Controller
             if (!isset(Yii::app()->request->isAjaxRequest))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
                     'index'
-                    ));
+                ));
             else
                 echo "true";
         } else {
@@ -184,7 +184,7 @@ class MateriaPlanController extends Controller
         $session['MateriaPlan_records'] = MateriaPlan::model()->findAll($criteria);
         $this->render('index', array(
             'model' => $model
-            ));
+        ));
     }
 
     /**
@@ -219,10 +219,10 @@ class MateriaPlanController extends Controller
         if (isset($session['MateriaPlan_records'])) {
             $model = $session['MateriaPlan_records'];
         } else
-        $model = MateriaPlan::model()->findAll();
+            $model = MateriaPlan::model()->findAll();
         Yii::app()->request->sendFile(date('YmdHis') . '.xls', $this->renderPartial('excelReport', array(
             'model' => $model
-            ), true));
+        ), true));
     }
 
     public function actionGeneratePdf()
@@ -235,10 +235,10 @@ class MateriaPlanController extends Controller
         if (isset($session['MateriaPlan_records'])) {
             $model = $session['MateriaPlan_records'];
         } else
-        $model = MateriaPlan::model()->findAll();
+            $model = MateriaPlan::model()->findAll();
         $html = $this->renderPartial('expenseGridtoReport', array(
             'model' => $model
-            ), true);
+        ), true);
         //die($html);
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
@@ -252,12 +252,12 @@ class MateriaPlanController extends Controller
             'helvetica',
             '',
             8
-            ));
+        ));
         $pdf->setFooterFont(Array(
             'helvetica',
             '',
             6
-            ));
+        ));
         $pdf->SetMargins(15, 18, 15);
         $pdf->SetHeaderMargin(5);
         $pdf->SetFooterMargin(10);
