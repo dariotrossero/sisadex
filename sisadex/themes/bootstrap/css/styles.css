@@ -1,0 +1,272 @@
+@font-face {
+  font-family: 'Alegreya Sans SC';
+  src: url('fonts/AlegreyaSansSC-Regular.ttf');
+}
+
+
+h1,h2,h3,h4 {
+  font-family: 'Alegreya Sans SC', 'Arial', serif; 
+}
+#page {
+	padding-top: 60px;
+	width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+
+
+}
+
+
+
+
+#loginBox {
+
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+
+div.alert {
+	width: 100%;
+}
+#materia-create-form_es_ , #tipoexamen-create-form_es_ , #carrera-create-form_es_ , #users-create-form_es_ {
+	width: 400px;
+
+}
+#msjError {
+	display: none;
+	width: 40%;
+	float: none;
+}
+
+#content {
+	margin: 0;
+	width: 100%;
+
+}
+#materias {
+	width: 39%;
+	border-radius:8px;
+	height: auto;
+	padding: 1px;
+	float:left;
+	overflow-y: scroll;
+	height: 600px;
+}
+
+
+#tabla {
+	width: 60%;
+	display: inline-block;
+	float: right;
+}
+
+.lista  {
+
+margin: 0px;
+}
+
+#container_Mat_Tabla {
+	float: left;
+	clear: none; 
+	padding-bottom: 100px;
+}
+
+.control-group {
+	height: 60px;
+}
+
+
+#tipoPersonalizado	{
+	display:	none
+}
+
+div .alert {
+	width: 40%;
+	float:none;
+	
+}
+
+.ActionButtons {
+	padding-top: 20px;
+
+}
+.row {
+	padding-left: 30px;
+	padding-bottom: 6px;
+
+}
+
+#Examen_materia_id {
+	width: 100%;
+}
+
+
+
+
+#footer {
+	height: 80px;
+background-image: url(http://cs.uns.edu.ar/home/templates/ja_purity_ii/images/logo.png);
+background-repeat:no-repeat;
+background-color: #475e86;
+
+   clear: both;
+
+   width:100%;
+-webkit-box-shadow: 0px -5px 15px 0px rgba(1, 1, 1, 1);
+box-shadow: 0px -5px 15px 0px rgba(1, 1, 1, 1);
+}
+
+#contenido {
+	min-height: 738px;
+}
+
+
+
+
+
+
+.placeholder {
+  list-style-type: none;
+  text-align: center;
+  font-style: italic;
+  border: 1px dashed #ddd !important;
+  background-color: #fff !important;
+  color: #aaa !important;
+}
+
+#buttons {
+
+	margin-right: auto;
+	margin-left: auto;
+	
+	margin-bottom: 10px;
+
+}
+button {
+	font-weight: bold;
+}
+a.boxclose{
+    float:right;
+    margin-top:-25px;
+    margin-right:-15px;
+    cursor:pointer;
+    display: inline-block;
+    line-height: 0px;
+    padding: 11px 3px;       
+}
+
+#simplemodal-data hr {
+  border: 1px dashed #ddd !important;
+}
+
+#materias-metricas {
+  margin-top: 5px;
+   overflow-y: scroll;
+  float: right;
+  width: 160px;
+  height: 600px;
+  
+  
+}
+#planes-metricas {
+  display:inline-block;
+  margin-top: 5px;
+  width: 150px;
+  height: 600px;
+  
+  float:left;
+
+    
+}
+  
+  
+::-webkit-scrollbar {
+    width: 8px;
+    height: 2em
+}
+::-webkit-scrollbar-thumb {
+    background: #eee
+}
+.cal-heatmap-container {
+	border: 1px dashed #ddd !important;
+	padding-top: 14px;
+	width: 835px;
+	
+	display: inline-block;
+	 margin-left: auto;
+ margin-right: auto;
+}
+
+
+#target {
+ display:inline-block;
+ margin-left: auto;
+ margin-right: auto;
+text-align: center;
+  width: 870px;
+  font-style: italic;
+background-color: #fff !important;
+color: #aaa !important;
+   
+}
+
+#buttons {
+	padding: 5px;
+
+text-align: center;
+font-style: italic;
+background-color: #fff !important;
+color: #aaa !important;
+}
+
+ .plan   {
+  cursor: pointer;
+  font-size:12px;
+  font-family:Arial;
+  font-weight:normal;
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+  border-radius:4px;
+  border:1px solid #3d94f6;
+  padding:5px 9px;
+  margin:3px;
+  text-decoration:none;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #3d94f6), color-stop(100%, #1e62d0) );
+  background:-moz-linear-gradient( center top, #3d94f6 5%, #1e62d0 100% );
+  background:-ms-linear-gradient( top, #3d94f6 5%, #1e62d0 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0');
+  background-color:#3d94f6;
+  color:#ffffff;
+  display:inline-block;
+
+}
+
+  .materia{
+    cursor: pointer;
+  font-size:12px;
+  font-family:Arial;
+  font-weight:normal;
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+  border-radius:4px;
+  border:1px solid #83c41a;
+  padding:5px 9px;
+  margin:3px;
+  text-decoration:none;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #9dce2c), color-stop(100%, #8cb82b) );
+  background:-moz-linear-gradient( center top, #9dce2c 5%, #8cb82b 100% );
+  background:-ms-linear-gradient( top, #9dce2c 5%, #8cb82b 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#9dce2c', endColorstr='#8cb82b');
+  background-color:#9dce2c;
+  color:#ffffff;
+  display:inline-block;
+
+}
+
+
+h1,h2,h3,h4 {
+  font: 400 36px/0.8 'Alegreya Sans SC', Helvetica, sans-serif;
+}
