@@ -207,6 +207,7 @@ class MateriaController extends Controller
     /**
      * Performs the AJAX validation.
      * @param CModel the model to be validated
+     * @param $form_id
      */
     protected function performAjaxValidation($model, $form_id)
     {

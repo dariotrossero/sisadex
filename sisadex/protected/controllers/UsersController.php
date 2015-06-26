@@ -57,20 +57,20 @@ class UsersController extends Controller
      * @throws CException
      * @throws CHttpException
      * @internal param int $id the ID of the model to be displayed
-     * Unused
+     * Actualmente no se utiliza, en futuras actualizaciones podria utilizarse
      */
     public function actionView()
     {
-        $id = $_REQUEST["id"];
+
         if (Yii::app()->request->isAjaxRequest) {
+            $id = $_REQUEST["id"];
             $this->renderPartial('ajax_view', array(
                 'model' => $this->loadModel($id)
             ));
-        } else {
-            $this->render('view', array(
-                'model' => $this->loadModel($id)
-            ));
         }
+        else
+            throw new CHttpException(400, 'Solicitud de página inválida.');
+
     }
 
     /**

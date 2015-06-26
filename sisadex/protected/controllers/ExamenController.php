@@ -72,6 +72,8 @@ class ExamenController extends Controller
                 'model' => $this->loadModel($id)
             ));
         }
+        else
+            throw new CHttpException(400, 'Solicitud de página inválida.');
     }
 
     /**

@@ -28,7 +28,6 @@ if (1 <= currentMonth && currentMonth <= 7)
 else startingMonth = 7;
 var data2display = {};
 var infoExams = {};
-var temp = {};
 var subjects = new Array();
 var plans = new Array();
 var cal = new CalHeatMap();
@@ -58,7 +57,7 @@ cal.init({
             moment.lang("es");
             return moment(date).format("MMMM YYYY").toUpperCase();
         },
-        legend: null,
+        legend: null
     },
     animationDuration: 500,
     range: 5, legend: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
@@ -78,7 +77,7 @@ cal.init({
     domainLabelFormat: function (date) {
         moment.lang("es");
         return moment(date).format("MMMM YYYY").toUpperCase();
-    },
+    }
 });
 
 function go2FirstCuat() {
@@ -177,14 +176,9 @@ function getInfoFromServer() {
         url: 'index.php?r=metrica/GetExams',
         data: {materias: jsonStringsubjects, planes: jsonStringPlans},
         cache: false,
-
         success: function (respuesta) {
-
             infoExams = respuesta.result2;
-
             data2display = respuesta.result1;
-            temp = respuesta.result3;
-
             cal.update(data2display);
         }
     });
