@@ -66,8 +66,16 @@ class ExamenController extends Controller
      */
     public function actionView()
     {
-        throw new CHttpException(404, 'La página solicitada no existe.');
-
+        if (Yii::app()->request->isAjaxRequest) {
+            $id = $_REQUEST["id"];
+            $this->renderPartial('ajax_view', array(
+                'model' => $this->loadModel($id)
+            ));
+        } else {
+            $this->render('view', array(
+                'model' => $this->loadModel($id)
+            ));
+        }
     }
 
     /**
