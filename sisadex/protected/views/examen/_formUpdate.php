@@ -1,6 +1,3 @@
-<?php
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/formPlan.css');
-?>
 <div class="form">
     <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
     <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay un examen en esa fecha de otra materia
