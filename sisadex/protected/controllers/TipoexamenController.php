@@ -119,7 +119,6 @@ class TipoexamenController extends Controller
                         $Materia_id = -1;
                     else
                         $Materia_id = Yii::app()->user->name;
-          
                     if (Tipoexamen::model()->existsInDatabase($_POST['Tipoexamen']['nombreTipoExamen'],$Materia_id,$id)) {
                         echo "exists";
                         return;

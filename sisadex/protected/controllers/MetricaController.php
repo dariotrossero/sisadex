@@ -66,7 +66,7 @@ class MetricaController extends Controller
         $datos = array();
         $datosNormalDate = $this->fechas;
         //Informacion que se devuelve  a la vista:
-        // fecha del examen, dias de preparacion y peso de cada dia
+        //fecha del examen, dias de preparacion y peso de cada dia
         foreach ($examenes as $arr) {
             $fecha = $arr->fechaExamen;
             $dias = $arr->diasPreparacion;
@@ -75,7 +75,7 @@ class MetricaController extends Controller
         }
         header("Content-type: application/json");
         //Envio la informacion en formato jSON
-        //2 arreglos, result1 con los complejidads en cada dia y result2 con info de cada examen (fecha, materia y tipo de examen)
+        //2 arreglos, result1 con los complejidades en cada dia y result2 con info de cada examen (fecha, materia y tipo de examen)
         $details = $this->actionGetExamsDetails($materias, $planes);
         echo CJSON::encode(array(
             'result1' => $datos,
@@ -134,7 +134,7 @@ class MetricaController extends Controller
         $planes = json_decode(stripslashes($_POST['planes']));
         header("Content-type: application/json");
         //Envio la informacion en formato jSON
-        //2 arreglos, result1 con los complejidads en cada dia y result2 con info de cada examen (fecha, materia y tipo de examen)
+        //2 arreglos, result1 con los complejidades en cada dia y result2 con info de cada examen (fecha, materia y tipo de examen)
         $details = $this->actionGetExamsDetailsTimeline($materias, $planes);
         echo CJSON::encode(array(
             'result' => $details
@@ -172,7 +172,6 @@ class MetricaController extends Controller
                     'dia' => $date->format("d"),
                     'mes' => $date->format("m"),
                     'anio' => $date->format("Y"),
-                    //'tipo' => $row->tipoexamen->nombreTipoExamen,
                     'content' => $row->materia->nombreMateria,
                     'classname' => $this->getColorClass($row->tipoexamen->complejidad)
                     )
@@ -271,22 +270,14 @@ class MetricaController extends Controller
 
      public function actionRefreshExamsEvolution()
     {
-
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
         $cuats = array_values(json_decode(stripslashes($_POST['cuatrimestres'])));
-        
-        
-        
         $cuats_unique = array_unique($cuats);
-        
-        
-        
         $this->createDaysArray();
         $utils = new Utils();
         $planes = Plan::model()->findAll(array(
             'order' => 'anioPlan'
             ));
-
         $resultados = array();
         foreach ($planes as $key) {
             //Por cada id de plan se obtienen todas las materias del mismo
@@ -297,20 +288,16 @@ class MetricaController extends Controller
             if (count($cuats_unique)==1)
                   $criteriaPlanes->addCondition("t.cuatrimestre==".$cuats_unique[0]);
             $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
-            
             $materias = array();
             $matPlan = array();
-
             foreach ($materiasPlan as $value) {
                 array_push($matPlan, $value->Materia_id);
             }
-            
             foreach ($matPlan as $value) {
                 if (!in_array($value, $materias, true)) {
                     array_push($materias, $value);
                 }
             }
-            
             //Obtengo los examenes de las materias dadas
             $criteriaMaterias = new CDbCriteria;
             $criteriaMaterias->select = 't.*';
@@ -323,7 +310,6 @@ class MetricaController extends Controller
             $datosNormalDate = $this->fechas;
             //Informacion que se devuelve  a la vista:
             // fecha del examen, dias de preparacion y peso de cada dia
-
             foreach ($examenes as $arr) {
                 $fecha = $arr->fechaExamen;
                 $dias = $arr->diasPreparacion;
@@ -331,11 +317,9 @@ class MetricaController extends Controller
                 $utils->CalculateWeight($datos, $datosNormalDate, $fecha, $dias, $complejidad);
             }
             $resultados[$key->id] = $datosNormalDate;
-
         }
         header("Content-type: application/json");
         //Envio la informacion en formato jSON
-
         echo CJSON::encode(array(
             'result' => $resultados
             ));

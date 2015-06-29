@@ -116,11 +116,7 @@ class ExamenController extends Controller
             for ($i = 1; $i <= $this->cantExamenes; $i++) {
                 //Si se selecciona un tipo de examen para que no falle la validacion se setea algo al atributo
                 if ($datos[$i]["tipoexamen_id"] != -1)
-                    // $datos[$i]['TipoExamenPersonalizado'] = "Ingrese tipo de examen";
-
                     //Si soy administrador obtendo el materia_id desde el form sino desde el usuario
-
-                    //     $mat_id            = (Yii::app()->user->isadmin()) ? $datos[1]['materia_id'] : Yii::app()->user->name;
                     $datos[$i]['materia_id'] = $materia_id;
                 $modelos[$i]->attributes = $datos[$i];
                 if ($datos[$i]['tipoexamen_id'] == -1) {

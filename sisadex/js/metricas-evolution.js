@@ -22,10 +22,7 @@ function parseDate(dateString) {
 
 function generateChartData() {
     chartData = [];
-    for (key in infoExams) {
-        k = key;
-        break;
-    }
+    for (var k in infoExams) break;
     fechas = infoExams[k];
     for (fecha in fechas) {
         obj = {};
