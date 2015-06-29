@@ -51,6 +51,10 @@ class Users extends CActiveRecord
                 'length',
                 'max' => 128
                 ),
+             array(
+                'id',
+                'unique'
+                ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
@@ -124,4 +128,6 @@ class Users extends CActiveRecord
         $this->password = md5($this->password);
         return true;
     }
+
+       
 }

@@ -17,8 +17,8 @@ $('.search-form form').submit(function(){
 ");
 ?>
 <div class="titulo"><h1>
-<?php if (Yii::app()->user->isAdmin()) echo "Tipos de examenes globales";
- else echo "Mis tipos de examenes";
+<?php if (Yii::app()->user->isAdmin()) echo "Tipos de exámenes globales";
+ else echo "Mis tipos de exámenes";
 ?>
 </h1>
 </div>
@@ -119,7 +119,7 @@ function delete_record(id)
   var id;
   this.id=id;
   
- bootbox.confirm("<img src='images/warning.png'/>  ¿Está seguro de eliminar este tipo de examen?<br/><br/> <p class='text-warning'>Se eliminarán todos los examenes asociados a él.</p>", function(result) {
+ bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/>  ¿Está seguro de eliminar este tipo de examen?<br/><br/> <p class='text-warning'>Se eliminarán todos los exámenes asociados a él.</p>", function(result) {
            
  if (!result) return;
     
@@ -156,7 +156,7 @@ success:function(data){
 }
 function delete_all_global_records() {
  bootbox.dialog({
-  message: "<img src='images/warning.png'/>  Se eliminarán todos los tipos de examen globales y los examenes relacionados a ellos.<br/> <br/>Por seguridad debe ingresar la contraseña de administrador<br/><br/><input type='password' id ='pass' class='span4' ></input>",
+  message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos los tipos de examen globales y los exámenes relacionados a ellos.<br/> <br/>Por seguridad debe ingresar la contraseña de administrador<br/><br/><input type='password' id ='pass' class='span4' ></input>",
   title: "Confirmar eliminación",
  buttons: {
         cancelar: {
@@ -199,7 +199,7 @@ function delete_all_global_records() {
 }
 function delete_all_records() {
  bootbox.dialog({
-  message: "<img src='images/warning.png'/>  Se eliminarán <strong>TODOS</strong> los tipos de examen y los examenes relacionados a ellos.<br/> <br/>Por seguridad debe ingresar la contraseña de administrador<br/><br/><input type='password' id ='pass' class='span4' ></input>",
+  message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán <strong>TODOS</strong> los tipos de examen y los exámenes relacionados a ellos.<br/> <br/>Por seguridad debe ingresar la contraseña de administrador<br/><br/><input type='password' id ='pass' class='span4' ></input>",
   title: "Confirmar eliminación",
  buttons: {
         cancelar: {
@@ -246,7 +246,7 @@ function delete_all_records() {
 }
 function delete_all_my_records(materia) {
  bootbox.dialog({
-  message: "<img src='images/warning.png'/>  Se eliminarán todos los tipos de examen y los examenes relacionados a ellos.<br/> <br/>Por seguridad debe ingresar su contraseña<br/><br/><input type='password' id ='pass' class='span4' ></input>",
+  message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos los tipos de examen y los exámenes relacionados a ellos.<br/> <br/>Por seguridad debe ingresar su contraseña<br/><br/><input type='password' id ='pass' class='span4' ></input>",
   title: "Confirmar eliminación",
  
  buttons: {

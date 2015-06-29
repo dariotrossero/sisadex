@@ -61,10 +61,10 @@ $this->widget('bootstrap.widgets.TbMenu', array(
         array(
             'type' => 'raw',
             'value' => 'Yii::app()->user->isAdmin() ?
-          "<a href=\'index.php?r=plan/view&id=$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a>
-         <a href=\'index.php?r=plan/update&id=$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-pencil\'></i></a>
+          "<a href=\'view/$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a>
+         <a href=\'update/$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-pencil\'></i></a>
           <a href=\'javascript:void(0);\' onclick=\'delete_record(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-trash\'></i></a>
-         ": "<a href=\'index.php?r=plan/view&id=$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a>"',
+         ": "<a href=\'view/$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a>"',
             'htmlOptions' => array('style' => 'width:120px; text-align: center')
         ),
     ),
@@ -74,7 +74,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     function delete_record(id) {
         var id;
         this.id = id;
-        bootbox.confirm("<img src='images/warning.png'/>  ¿Está seguro de eliminar este plan de estudios?<br/><br/> ", function (result) {
+        bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/>  ¿Está seguro de eliminar este plan de estudios?<br/><br/> ", function (result) {
                 if (!result) return;
                 var data = "id=" + id;
                 jQuery.ajax({
@@ -83,7 +83,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
                 data: data,
                 success: function (data) {
                     if (data == "true") {
-                        $.fn.yiiGridView.update('examen-grid', {
+                        $.fn.yiiGridView.update('plan-grid', {
                         });
                     }
                     else
@@ -100,7 +100,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     }
     function delete_all_records() {
         bootbox.dialog({
-            message: "<img src='images/warning.png'/>  Se eliminarán todos los planes.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
+            message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos los planes.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {

@@ -50,7 +50,7 @@ class Carrera extends CActiveRecord
                 'message' => '{attribute} no puede ser vacío.'
                 ),
             array(
-                'id',
+               'id, nombreCarrera',
                 'unique'
                 ),
             array(
@@ -71,6 +71,7 @@ class Carrera extends CActiveRecord
                 'safe',
                 'on' => 'search'
                 )
+     
             );
     }
 

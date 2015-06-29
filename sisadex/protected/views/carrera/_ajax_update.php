@@ -53,7 +53,7 @@ function renderUpdateForm(id)
  var data="id="+id;
 
   jQuery.ajax({
-   type: 'POST',
+   type: 'GET',
     url: '<?php echo Yii::app()->createAbsoluteUrl("carrera/update"); ?>',
    data:data,
 success:function(data){

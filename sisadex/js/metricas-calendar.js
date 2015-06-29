@@ -85,7 +85,7 @@ cal.init({
     for (x in infoExams[fecha]) 
     {
 
-     string=string+"<b>" +infoExams[fecha][x]['materia']+ "</b><br/>"+"<img src='images/down_right_arrow_small.png'/> "+infoExams[fecha][x]['tipo']+"<br/><hr/>";
+     string=string+"<b>" +infoExams[fecha][x]['materia']+ "</b><br/>"+"<img src='"+baseUrl+"/images/down_right_arrow_small.png'/> "+infoExams[fecha][x]['tipo']+"<br/><hr/>";
 
    }
    
@@ -199,7 +199,7 @@ function dropElement(target, event) {
 else 
   a.setAttribute("name","materia");
 
-a.innerHTML='<img src="images/close-icon.gif"/>';
+a.innerHTML='<img src="'+baseUrl+'/images/close-icon.gif"/>';
 elemento=document.getElementById(materia).cloneNode(true);
 elemento.appendChild(a);
 
@@ -224,7 +224,7 @@ function getInfoFromServer() {
  var jsonStringPlans = JSON.stringify(plans);
  $.ajax({
   type: "POST",
-  url: 'index.php?r=metrica/GetExams',
+  url: 'GetExams',
   data: {materias:jsonStringsubjects, planes:jsonStringPlans}, 
   cache: false,
 

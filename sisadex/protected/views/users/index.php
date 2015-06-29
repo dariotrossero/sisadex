@@ -81,7 +81,7 @@ $this->renderPartial("_ajax_create_form", array("model" => $model));
     function delete_record(id) {
         var id;
         this.id = id;
-        bootbox.confirm("<img src='images/warning.png'/> ¿Está seguro de eliminar el usuario?", function (result) {
+        bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/> ¿Está seguro de eliminar el usuario?", function (result) {
             if (!result) return;
             //  $('#ajaxtest-view-modal').modal('hide');
             var data = "id=" + id;
@@ -108,7 +108,7 @@ $this->renderPartial("_ajax_create_form", array("model" => $model));
     }
     function delete_all_records() {
         bootbox.dialog({
-            message: "<img src='images/warning.png'/>  Se eliminarán todos los usuarios.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
+            message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos los usuarios.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {

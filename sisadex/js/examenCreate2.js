@@ -1,4 +1,4 @@
-test=function (elemento){
+fillTipoPersonalizado=function (elemento){
 
                 var opcionSeleccionada = $(elemento);                        // el <option> seleccionado
                 

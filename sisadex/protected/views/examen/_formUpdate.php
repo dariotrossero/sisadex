@@ -30,7 +30,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/formPlan.c
                         'theme' => 'bootstrap', //try 'bee' also to see the changes
                         'flat' => true,
                         'options' => array(
-                            'onSelect' => 'js: test',
+                            'onSelect' => 'js: CheckExamenOnSameDay',
                             'dateFormat' => 'dd-mm-yy', // format of "2012-12-25"
                             'showOtherMonths' => true, // show dates in other months
                             'selectOtherMonths' => true, // can seelect dates in other months
@@ -98,25 +98,29 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/formPlan.c
             return;
         }
     });
-    test = function () {
+    CheckExamenOnSameDay = function () {
         $('div.alert').slideUp('fast');
         var fechaExamen = $('#Examen_fechaExamen').val();  // el "value" de ese <option> seleccionado
         <?php if (Yii::app()->user->isAdmin())  
         echo "var materia_id= $('#Examen_materia_id').val();" ;
         else  echo "var materia_id= ".Yii::app()->user->name.";";?>
-        var action = 'index.php?r=examen/CheckExamenOnSameDay&fechaExamen=' + fechaExamen + '&materia_id=' + materia_id;
+        var action = 'CheckExamenOnSameDay/fechaExamen/' + fechaExamen + '/materia_id/' + materia_id;
         $('#reportarerror').html("");
-        $.getJSON(action,function (respuesta) {
-            console.log(respuesta);
-            if (respuesta == "true") {
+         
+          $.ajax({
+       type: "GET",      
+       data: "fechaExamen="+fechaExamen+"&materia_id="+materia_id,
+       url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
+       success: function (respuesta){
+        console.log(respuesta);
+       if (respuesta == "true") {
                 $('#msjError').slideDown('fast');
             }
             else {
                 $('#msjError').slideUp('fast');
-            }
-        }).error(function (e) {
-            $('#reportarerror').html(e.responseText);
-        });
+            }  }   
+    });  
+     
     };
-    $('#Examen_materia_id').change(test);
+    $('#Examen_materia_id').change(CheckExamenOnSameDay);
 </script>
