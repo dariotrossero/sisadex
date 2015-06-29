@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the model class for table "Plan".
  *
@@ -16,6 +17,7 @@ class Plan extends CActiveRecord
     {
         return 'Plan';
     }
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -27,34 +29,35 @@ class Plan extends CActiveRecord
             array(
                 'anioPlan, Carrera_id',
                 'required'
-                ),
+            ),
             array(
                 'Carrera_id',
                 'numerical',
                 'message' => 'Seleccione una carrera.',
                 'integerOnly' => true
-                ),
+            ),
             array(
                 'anioPlan',
                 'numerical',
                 'message' => 'Seleccione una fecha.',
                 'integerOnly' => true
-                ),
+            ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
                 'anioPlan, Carrera_id, id',
                 'safe',
                 'on' => 'search'
-                ),
+            ),
             array(
                 'anioPlan',
                 'ext.UniqueAttributesValidator',
                 'with' => 'Carrera_id',
                 'message' => 'Ya existe un plan de la carrera en el año ingresado.'
-                )
-            );
-}
+            )
+        );
+    }
+
     /**
      * @return array relational rules.
      */
@@ -67,14 +70,15 @@ class Plan extends CActiveRecord
                 self::MANY_MANY,
                 'Materia',
                 'Materia_has_Plan(Plan_id, Materia_id)'
-                ),
+            ),
             'carrera' => array(
                 self::BELONGS_TO,
                 'Carrera',
                 'Carrera_id'
-                )
-            );
+            )
+        );
     }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -84,8 +88,9 @@ class Plan extends CActiveRecord
             'anioPlan' => 'Año',
             'Carrera_id' => 'Carrera',
             'id' => 'ID'
-            );
+        );
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -110,9 +115,10 @@ class Plan extends CActiveRecord
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'anioPlan ASC'
-                )
-            ));
+            )
+        ));
     }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!

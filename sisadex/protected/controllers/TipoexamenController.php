@@ -148,6 +148,12 @@ class TipoexamenController extends Controller
         }
     }
 
+    public function actionView()
+    {
+        throw new CHttpException(404, 'La página solicitada no existe.');
+
+    }
+
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.

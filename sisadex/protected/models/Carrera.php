@@ -43,36 +43,36 @@ class Carrera extends CActiveRecord
                 'id',
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
-                ),
+            ),
             array(
                 'nombreCarrera',
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
-                ),
+            ),
             array(
-               'id, nombreCarrera',
+                'id, nombreCarrera',
                 'unique'
-                ),
+            ),
             array(
                 'id',
                 'numerical',
                 'integerOnly' => true,
                 'message' => '{attribute} debe ser un numero.'
-                ),
+            ),
             array(
                 'nombreCarrera',
                 'length',
                 'max' => 70
-                ),
+            ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
                 'id, nombreCarrera',
                 'safe',
                 'on' => 'search'
-                )
-     
-            );
+            )
+
+        );
     }
 
     /**
@@ -87,8 +87,8 @@ class Carrera extends CActiveRecord
                 self::HAS_MANY,
                 'Plan',
                 'Carrera_codigoCarrera'
-                )
-            );
+            )
+        );
     }
 
     /**
@@ -99,7 +99,7 @@ class Carrera extends CActiveRecord
         return array(
             'id' => 'Código',
             'nombreCarrera' => 'Carrera'
-            );
+        );
     }
 
     /**
@@ -124,19 +124,20 @@ class Carrera extends CActiveRecord
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'id ASC'
-                )
-            ));
+            )
+        ));
     }
 
 
-    public function existsInDatabase($nombreCarrera) {
-            $criteria = new CDbCriteria();
-            $criteria->select = 'nombreCarrera';
-            $criteria->condition = 'LOWER(nombreCarrera)=:nombreCarrera';
-            $criteria->params = array(
+    public function existsInDatabase($nombreCarrera)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 'nombreCarrera';
+        $criteria->condition = 'LOWER(nombreCarrera)=:nombreCarrera';
+        $criteria->params = array(
             ':nombreCarrera' => strtolower($nombreCarrera),
-             );
-            $records = Carrera::model()->find($criteria);
-            return (count($records) > 0);
+        );
+        $records = Carrera::model()->find($criteria);
+        return (count($records) > 0);
     }
 }

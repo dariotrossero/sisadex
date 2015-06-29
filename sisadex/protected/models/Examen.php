@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the model class for table "Examen".
  *
@@ -16,6 +17,7 @@
 class Examen extends CActiveRecord
 {
     public $TipoExamenPersonalizado = "";
+
     /**
      * @return string the associated database table name
      */
@@ -23,6 +25,7 @@ class Examen extends CActiveRecord
     {
         return 'Examen';
     }
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -34,37 +37,37 @@ class Examen extends CActiveRecord
             array(
                 'TipoExamenPersonalizado',
                 'checkEndDate'
-                ),
+            ),
             array(
                 'fechaExamen',
                 'required',
                 'message' => 'Seleccione una fecha'
-                ),
+            ),
             array(
                 'materia_id',
                 'required',
                 'message' => 'Seleccione una materia'
-                ),
+            ),
             array(
                 'diasPreparacion',
                 'required'
-                ),
+            ),
             array(
                 'tipoexamen_id',
                 'required',
                 'message' => 'Seleccione un tipo de examen'
-                ),
+            ),
             array(
                 'materia_id',
                 'numerical',
                 'integerOnly' => true,
                 'min' => 0,
                 'message' => 'Seleccione una materia'
-                ),
+            ),
             array(
                 'tipoexamen_id',
                 'numerical'
-                ),
+            ),
             array(
                 'diasPreparacion',
                 'numerical',
@@ -72,28 +75,29 @@ class Examen extends CActiveRecord
                 'min' => 1,
                 'message' => '{attribute} debe ser un número',
                 'tooSmall' => '{attribute} debe ser un número mayor que 1'
-                ),
+            ),
             array(
                 'descripcionExamen',
                 'length',
                 'max' => 160
-                ),
+            ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
                 'id, fechaExamen, tipoexamen_id, materia_id, descripcionExamen',
                 'safe',
                 'on' => 'search'
-                ),
+            ),
             array(
                 'fechaExamen',
                 'type',
                 'type' => 'date',
                 'message' => '{attribute}: no es una fecha valida!',
                 'dateFormat' => 'dd-mm-yyyy'
-                )
-            );
-}
+            )
+        );
+    }
+
     /**
      * @return array relational rules.
      */
@@ -106,14 +110,15 @@ class Examen extends CActiveRecord
                 self::BELONGS_TO,
                 'Tipoexamen',
                 'tipoexamen_id'
-                ),
+            ),
             'materia' => array(
                 self::BELONGS_TO,
                 'Materia',
                 'materia_id'
-                )
-            );
+            )
+        );
     }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -127,8 +132,9 @@ class Examen extends CActiveRecord
             'descripcionExamen' => 'Descripción',
             'TipoExamenPersonalizado' => 'Tipo de examen personalizado',
             'diasPreparacion' => 'Días de preparación estimados'
-            );
+        );
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -154,12 +160,13 @@ class Examen extends CActiveRecord
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'fechaExamen ASC'
-                ),
+            ),
             'pagination' => array(
                 'pageSize' => 15
-                )
-            ));
+            )
+        ));
     }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -170,16 +177,19 @@ class Examen extends CActiveRecord
     {
         return parent::model($className);
     }
+
     protected function beforeSave()
     {
         // convert to storage format
         $this->fechaExamen = date('Y-m-d', strtotime($this->fechaExamen));
         return parent::beforeSave();
     }
+
     public function getFormattedDate()
     {
         return date('d-M-Y', strtotime($this->fechaExamen));
     }
+
     public function getCountExamsByPlan()
     {
         $sql = 'SELECT ex.id,nombreCarrera,anioPlan, anioPlan || " - " || nombreCarrera as plan   ,count(ex.id) as cant  FROM carrera c inner join examen ex inner join Materia_has_plan mp inner join Plan p 
@@ -195,17 +205,17 @@ class Examen extends CActiveRecord
      */
     public function getAllNextExams()
     {
-        $currentYear     = date("Y");
-        $criteria        = new CDbCriteria;
+        $currentYear = date("Y");
+        $criteria = new CDbCriteria;
         $criteria->limit = 15;
         $criteria->addBetweenCondition('fechaExamen', date("Y-m-d", strtotime("+1 day", strtotime($this->fechaExamen))), $currentYear . '-12-31');
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'fechaExamen ASC'
-                ),
+            ),
             'pagination' => false
-            ));
+        ));
     }
 
     /**
@@ -214,44 +224,48 @@ class Examen extends CActiveRecord
      */
     public function getNextExams()
     {
-        $currentYear         = date("Y");
-        $criteria            = new CDbCriteria;
+        $currentYear = date("Y");
+        $criteria = new CDbCriteria;
         $criteria->condition = 'materia_id=:materia_id';
-        $criteria->params    = array(
+        $criteria->params = array(
             ':materia_id' => $this->materia_id
-            );
-        $criteria->limit     = 5;
+        );
+        $criteria->limit = 5;
         $criteria->addBetweenCondition('fechaExamen', date("Y-m-d", strtotime("+1 day", strtotime($this->fechaExamen))), $currentYear . '-12-31');
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'fechaExamen ASC'
-                ),
+            ),
             'pagination' => false
-            ));
+        ));
     }
+
     public function checkEndDate($attributes, $params)
     {
         if ($this->tipoexamen_id == -1)
             if ($this->TipoExamenPersonalizado = "")
                 $this->addError('TipoExamenPersonalizado', 'Error Message');
-        }
-        public function getExamsFromAndTo($fromDate, $untilDate)
-        {
-            $criteria = new CDbCriteria;
-            $criteria->addBetweenCondition('fechaExamen', $fromDate, $untilDate);
-            $count = Examen::model()->count($criteria);
-            return $count;
-        }
-    //Future use???
-        public function getExamsFirstCuat()
-        {
-            $currentYear = date("Y");
-            return $this->getExamsFromAndTo($currentYear . '-03-01', $currentYear . '-07-31');
-        }
-        public function getExamsSecondCuat()
-        {
-            $currentYear = date("Y");
-            return $this->getExamsFromAndTo($currentYear . '-08-01', $currentYear . '-12-31');
-        }
     }
+
+    public function getExamsFromAndTo($fromDate, $untilDate)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->addBetweenCondition('fechaExamen', $fromDate, $untilDate);
+        $count = Examen::model()->count($criteria);
+        return $count;
+    }
+
+    //Future use???
+    public function getExamsFirstCuat()
+    {
+        $currentYear = date("Y");
+        return $this->getExamsFromAndTo($currentYear . '-03-01', $currentYear . '-07-31');
+    }
+
+    public function getExamsSecondCuat()
+    {
+        $currentYear = date("Y");
+        return $this->getExamsFromAndTo($currentYear . '-08-01', $currentYear . '-12-31');
+    }
+}

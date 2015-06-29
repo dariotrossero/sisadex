@@ -162,7 +162,7 @@ $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 		</div>
 
 		<div id="logo">
-				<div id="systemName"><b>SIS</b>tema de <b>AD</b>ministración de <b>EX</b>ámenes | v1.1</div>
+				<div id="systemName"><b>SIS</b>tema de <b>AD</b>ministración de <b>EX</b>ámenes | v1.1.1</div>
 		</div>
 
 	</div>

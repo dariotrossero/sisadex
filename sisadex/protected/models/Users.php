@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the model class for table "Users".
  *
@@ -11,6 +12,7 @@ class Users extends CActiveRecord
 {
     const ROLE_PROFESOR = 0;
     const ROLE_ADMIN = 1;
+
     /**
      * @return string the associated database table name
      */
@@ -18,6 +20,7 @@ class Users extends CActiveRecord
     {
         return 'Users';
     }
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -30,40 +33,47 @@ class Users extends CActiveRecord
                 'id',
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
-                ),
+            ),
+            array(
+                'id',
+                'numerical',
+                'integerOnly' => true,
+                'message' => '{attribute} debe ser un numero entero.'
+            ),
             array(
                 'password',
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
-                ),
+            ),
             array(
                 'role',
                 'numerical',
                 'integerOnly' => true
-                ),
+            ),
             array(
                 'id',
                 'length',
                 'max' => 10
-                ),
+            ),
             array(
                 'password',
                 'length',
                 'max' => 128
-                ),
-             array(
+            ),
+            array(
                 'id',
                 'unique'
-                ),
+            ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
                 'id, password, role',
                 'safe',
                 'on' => 'search'
-                )
-            );
+            )
+        );
     }
+
     /**
      * @return array relational rules.
      */
@@ -73,6 +83,7 @@ class Users extends CActiveRecord
         // class name for the relations automatically generated below.
         return array();
     }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -82,8 +93,9 @@ class Users extends CActiveRecord
             'id' => 'Usuario',
             'password' => 'Contraseña',
             'role' => 'Rol'
-            );
+        );
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -100,19 +112,20 @@ class Users extends CActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
         //Muestra los usuarios del sistema sin mostrar el usuario admin
-        $criteria            = new CDbCriteria;
+        $criteria = new CDbCriteria;
         $criteria->condition = 'id!=:arg1';
-        $criteria->params    = array(
+        $criteria->params = array(
             ':arg1' => 'admin'
-            );
+        );
         $criteria->compare('id', $this->id, true);
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'id ASC'
-                )
-            ));
+            )
+        ));
     }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -123,11 +136,12 @@ class Users extends CActiveRecord
     {
         return parent::model($className);
     }
+
     public function beforeSave()
     {
         $this->password = md5($this->password);
         return true;
     }
 
-       
+
 }

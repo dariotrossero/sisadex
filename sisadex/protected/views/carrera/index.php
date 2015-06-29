@@ -69,7 +69,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
 ?>
 <script type="text/javascript">
     function delete_record(id) {
-        bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/>  ¿Está seguro de eliminar esta carrera?<br/><br/> <p class='text-warning'>Se eliminarán todos los exámenes asociados a ella.</p>", function (result) {
+        bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/>  ¿Está seguro de eliminar esta carrera?<br/><br/> <p class='text-warning'>Se eliminarán todos los planes asociados a ella.</p>", function (result) {
             if (!result) return;
             var data = "id=" + id;
             jQuery.ajax({

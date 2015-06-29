@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the model class for table "Materia_has_Plan".
  *
@@ -17,6 +18,7 @@ class MateriaPlan extends CActiveRecord
     {
         return 'Materia_has_Plan';
     }
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -28,21 +30,22 @@ class MateriaPlan extends CActiveRecord
             array(
                 'Plan_id',
                 'required'
-                ),
+            ),
             array(
                 'Plan_id, anio, cuatrimestre',
                 'numerical',
                 'integerOnly' => true
-                ),
+            ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
                 'Materia_id, Plan_id, anio, cuatrimestre',
                 'safe',
                 'on' => 'search'
-                )
-            );
+            )
+        );
     }
+
     /**
      * @return array relational rules.
      */
@@ -52,6 +55,7 @@ class MateriaPlan extends CActiveRecord
         // class name for the relations automatically generated below.
         return array();
     }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -62,8 +66,9 @@ class MateriaPlan extends CActiveRecord
             'Plan_id' => 'Plan',
             'anio' => 'Anio',
             'cuatrimestre' => 'Cuatrimestre'
-            );
+        );
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -86,8 +91,9 @@ class MateriaPlan extends CActiveRecord
         $criteria->compare('cuatrimestre', $this->cuatrimestre);
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria
-            ));
+        ));
     }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -98,6 +104,7 @@ class MateriaPlan extends CActiveRecord
     {
         return parent::model($className);
     }
+
     function refreshRecords($materia, $plan, $anio, $cuat)
     {
         /*
@@ -114,11 +121,11 @@ class MateriaPlan extends CActiveRecord
         $key = array_search($userRole->id_roles, $roles));
         unset($roles[$key]);
     }*/
-    $model               = new MateriaPlan();
-    $model->Materia_id   = $materia;
-    $model->Plan_id      = $plan;
-    $model->anio         = $anio;
-    $model->cuatrimestre = $cuat;
-    $model->save(false);
-}
+        $model = new MateriaPlan();
+        $model->Materia_id = $materia;
+        $model->Plan_id = $plan;
+        $model->anio = $anio;
+        $model->cuatrimestre = $cuat;
+        $model->save(false);
+    }
 }

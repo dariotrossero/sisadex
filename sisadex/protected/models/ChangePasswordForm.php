@@ -13,19 +13,19 @@ class ChangePasswordForm extends CFormModel
             array(
                 'currentPassword',
                 'compareCurrentPassword'
-                ),
+            ),
             array(
                 'currentPassword, newPassword, newPassword_repeat',
                 'required',
                 'message' => 'Introduzca su {attribute}.'
-                ),
+            ),
             array(
                 'newPassword_repeat',
                 'compare',
                 'compareAttribute' => 'newPassword',
                 'message' => 'Las contraseñas no coinciden.'
-                )
-            );
+            )
+        );
     }
 
     public function compareCurrentPassword($attribute, $params)
@@ -47,7 +47,7 @@ class ChangePasswordForm extends CFormModel
     {
         $this->_user = Users::model()->findByAttributes(array(
             'id' => Yii::app()->User->name
-            ));
+        ));
     }
 
     public function attributeLabels()
@@ -56,7 +56,7 @@ class ChangePasswordForm extends CFormModel
             'currentPassword' => 'Contraseña actual',
             'newPassword' => 'Nueva contraseña',
             'newPassword_repeat' => 'Nueva contraseña (Repetir)'
-            );
+        );
     }
 
     public function changePassword()
