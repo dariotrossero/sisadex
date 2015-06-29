@@ -26,7 +26,11 @@ function parseDate(dateString) {
 function generateChartData() {
         chartData = [];
 
-        fechas=infoExams[0];
+        for(key in infoExams) {
+          k=key;    
+        }
+
+        fechas=infoExams[k];
 
           for (fecha in fechas) {
              obj={};
@@ -52,7 +56,7 @@ function getInfoFromServer() {
  
  $.ajax({
   type: "POST",
-  url: 'index.php?r=metrica/GetExamsEvolution',
+  url: 'GetExamsEvolution',
   data: {materias:jsonStringSubjects, planes:jsonStringPlans}, 
   cache: false,
 
@@ -77,7 +81,7 @@ function refreshInfoFromServer() {
 
  $.ajax({
   type: "POST",
-  url: 'index.php?r=metrica/RefreshExamsEvolution',
+  url: 'RefreshExamsEvolution',
   data: {materias:jsonStringSubjects, planes:jsonStringPlans, anios:jsonStringYears, cuatrimestres:jsonStringCuats}, 
   cache: false,
 

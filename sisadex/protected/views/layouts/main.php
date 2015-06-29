@@ -44,7 +44,7 @@
                 array('label' => 'Carreras', 'url' => array('/carrera/index')),
                 array('label' => 'Planes', 'url' => array('/plan/index'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Tipos de ex. predet', 'url' => array('/tipoExamen/index'), 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Examenes', 'url' => array('/examen/admin')),
+                array('label' => 'Exámenes', 'url' => array('/examen/admin')),
                 array('label' => 'Usuarios', 'url' => array('/users/admin'), 'visible' => Yii::app()->user->isAdmin()),
             ),
         )); ?>

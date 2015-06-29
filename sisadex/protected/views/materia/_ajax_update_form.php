@@ -12,17 +12,29 @@
     
     
     <div class="form">
-<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+<?php 
+$b = new EWebBrowser();
+if ($b->browser=="Firefox") {
+$options = array(
+                               'onsubmit'=>"return false;",/* Disable normal form submit */
+                               'onkeypress'=>" if(event.keyCode == 13){ update(); } " /* Do ajax call when user presses enter */
+);
+}
+else {
+	$options = array(
+                               'onsubmit'=>"return false;",/* Disable normal form submit */
+                            );
+}
+
+
+$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'materia-update-form',
 	'enableAjaxValidation'=>true,
         'enableClientValidation'=>true,
         'method'=>'post',
         'action'=>array("materia/update"),
 	'type'=>'horizontal',
-	'htmlOptions'=>array(
-                               'onsubmit'=>"return false;",/* Disable normal form submit */
-                               'onkeypress'=>" if(event.keyCode == 13){ update(); } " /* Do ajax call when user presses enter key */
-                            ),               
+	'htmlOptions'=> $options,               
 	
 )); ?>
      	<fieldset>

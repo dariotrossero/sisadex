@@ -32,7 +32,7 @@
 			),
 		));
 	        
-	  echo "<hr /><h4>Próximos 5 examenes de ".$model->materia->nombreMateria."</h4>";
+	  echo "<hr /><h4>Próximos 5 exámenes de ".$model->materia->nombreMateria."</h4>";
 
     $this->widget('bootstrap.widgets.TbGridView', array(
       'id' => 'examen-grid',

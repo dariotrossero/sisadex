@@ -110,8 +110,7 @@ function create()
 
   jQuery.ajax({
    type: 'POST',
-    url: '<?php
- echo Yii::app()->createAbsoluteUrl("materia/create"); ?>',
+    url: '<?php echo Yii::app()->createAbsoluteUrl("materia/create"); ?>',
    data:data,
 success:function(data){
                 //alert("succes:"+data); 
@@ -127,7 +126,7 @@ success:function(data){
                  
               },
    error: function(data) { // if error occured
-        //    alert(JSON.stringify(data)); 
+            alert(JSON.stringify(data)); 
                   $('#materia-create-modal').modal('hide');
       bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
        

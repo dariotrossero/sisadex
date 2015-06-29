@@ -27,7 +27,7 @@
     'items' => array(
         array('label' => 'Calendario', 'url' => '#', 'active' => true),
         array('label' => 'Linea de tiempo', 'url' => array('/metrica/timeline')),
-        array('label' => 'Evolucion', 'url' => array('/metrica/evolution')),
+        array('label' => 'Evolución', 'url' => array('/metrica/evolution')),
 
     ),
 )); ?>

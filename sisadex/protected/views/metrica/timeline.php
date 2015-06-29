@@ -30,7 +30,7 @@
     'items'=>array(
       array('label'=>'Calendario', 'url'=>array('/metrica/calendar')),
       array('label'=>'Linea de tiempo', 'url'=>'#', 'active'=>true),
-      array('label'=>'Evolucion', 'url'=>array('/metrica/evolution')),
+      array('label'=>'Evolución', 'url'=>array('/metrica/evolution')),
 
       ),
       )); ?>

@@ -29,7 +29,7 @@ $utils= new Utils;
                 // SERIAL CHART
                 chart = new AmCharts.AmSerialChart();
 
-                chart.pathToImages = "js/amcharts/amcharts/images/";
+                chart.pathToImages = baseUrl+"/js/amcharts/amcharts/images/";
                 chart.dataProvider = chartData;
                 chart.categoryField = "date";
                   chart.startDuration = 0.5;

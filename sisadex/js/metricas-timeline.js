@@ -1,4 +1,6 @@
 
+
+
   
   timeline = new links.Timeline(document.getElementById('target'));
   var options = {
@@ -101,7 +103,7 @@
             else 
               a.setAttribute("name","materia");
 
-            a.innerHTML='<img src="images/close-icon.gif"/>';
+            a.innerHTML='<img src="'+baseUrl+'/images/close-icon.gif"/>';
             elemento=document.getElementById(materia).cloneNode(true);
             elemento.appendChild(a);
 
@@ -127,7 +129,7 @@
            var jsonStringPlans = JSON.stringify(plans);
            $.ajax({
             type: "POST",
-            url: 'index.php?r=metrica/GetExamsTimeline',
+            url: 'GetExamsTimeline',
             data: {materias:jsonStringsubjects, planes:jsonStringPlans}, 
             cache: false,
 

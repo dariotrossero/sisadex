@@ -97,9 +97,12 @@ class Tipoexamen extends CActiveRecord
         $criteria->compare('nombreTipoExamen', $this->nombreTipoExamen, true);
         $criteria->compare('Materia_id', $this->Materia_id);
         $criteria->compare('id', $this->id);
-        $criteria->order = 'nombreTipoExamen';
+        
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria
+            'criteria' => $criteria,
+            'sort' => array(
+                'defaultOrder' => 'nombreTipoExamen ASC'
+                ),
             ));
     }
     /**
@@ -116,13 +119,16 @@ class Tipoexamen extends CActiveRecord
     {
         $criteria            = new CDbCriteria;
         $criteria->condition = 'Materia_id=:arg1';
-        $criteria->order     = 'nombreTipoExamen';
+        
         $criteria->params    = array(
             ':arg1' => -1
             );
         $criteria->compare('nombreTipoExamen', $this->nombreTipoExamen, true);
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria
+            'criteria' => $criteria,
+            'sort' => array(
+                'defaultOrder' => 'nombreTipoExamen ASC'
+                ),
             ));
     }
     public function searchPorMaterias($id)

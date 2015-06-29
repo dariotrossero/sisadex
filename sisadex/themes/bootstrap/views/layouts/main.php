@@ -29,10 +29,12 @@ body {
 	background-color: #354C75;
 }
 </style>
+<script>
+var baseUrl="<?php print Yii::app()->request->baseUrl;?>";
+</script>
 <body>
 
 <?php
-
 $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 		'items' => array (
 				array (
@@ -48,17 +50,17 @@ $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 								),
 								
 								array (
-										'label' => 'Metricas',
+										'label' => 'Métricas',
 										'icon' => 'icon-signal',
 										'url' => array (
-												'/metrica/calendar' 
+												'metrica/calendar' 
 										) 
 								),
 								array (
 										'label' => 'Materias',
 										'icon' => 'icon-book',
 										'url' => array (
-												'/materia/index' 
+												'materia/index' 
 										),
 										'visible' => Yii::app ()->user->isadmin () 
 								),
@@ -79,7 +81,7 @@ $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 										'visible' => ! Yii::app ()->user->isGuest 
 								),
 								array (
-										'label' => 'Tipos de examenes',
+										'label' => 'Tipos de exámenes',
 										'icon' => 'icon-tags',
 										'url' => array (
 												'/tipoexamen/index' 
@@ -87,7 +89,7 @@ $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 										'visible' => ! Yii::app ()->user->isGuest 
 								),
 								array (
-										'label' => 'Examenes',
+										'label' => 'Exámenes',
 										'icon' => 'icon-pencil',
 										'url' => array (
 												'/examen/index' 
@@ -152,13 +154,17 @@ $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 		<div id="browsers">
 			Recomendamos <a href="https://www.google.com/chrome"
 				style="margin-right: 5px" target="_blank"> <img
-				src="images/googleChrome.png">
+				src="<?php echo Yii::app()->baseUrl.'/images/googleChrome.png'?>">
 			</a> <a href="http://www.mozilla.org/firefox/" target="_blank"> <img
-				src="images/mozillaFirefox.png">
+				src="<?php echo Yii::app()->baseUrl.'/images/mozillaFirefox.png'?>">
 			</a>
 
 		</div>
-		<div id="logo"></div>
+
+		<div id="logo">
+				<div id="systemName"><b>SIS</b>tema de <b>AD</b>ministración de <b>EX</b>ámenes | v1.1</div>
+		</div>
+
 	</div>
 
 </body>

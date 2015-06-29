@@ -77,16 +77,17 @@ return array(
 			//
 			
 		// uncomment the following to enable URLs in path-format
-		/*
+		
 		'urlManager'=>array(
 			'urlFormat'=>'path',
+			  
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
-		*/
+		
 		'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/examenes.db',
 			 'initSQLs'=>array(
@@ -107,22 +108,22 @@ return array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
 		),
-		// 'log'=>array(
-		// 	'class'=>'CLogRouter',
-		// 	'routes'=>array(
-		// 		array(
-		// 			'class'=>'CFileLogRoute',
-		// 			'levels'=>'error, warning',
+		'log'=>array(
+			'class'=>'CLogRouter',
+			'routes'=>array(
+				array(
+					'class'=>'CFileLogRoute',
+					'levels'=>'error, warning',
 					
-		// 		),
-		// 		// uncomment the following to show log messages on web pages
+				),
+				// uncomment the following to show log messages on web pages
 				
-		// 		array(
-		// 			'class'=>'CWebLogRoute',
-		// 		),
+				array(
+					'class'=>'CWebLogRoute',
+				),
 				
-		// 	),
-		// ),
+			),
+		),
 	),
 
 	// application-level parameters that can be accessed

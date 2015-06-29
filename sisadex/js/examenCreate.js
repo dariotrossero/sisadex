@@ -13,7 +13,7 @@ getTipos=function(){
                         return;
                 }
                 
-                var action = 'index.php?r=examen/GetTipos&id='+codigoMateria;
+                var action = 'GetTipos/id/'+codigoMateria;
 
 
                 // se pide al action la lista de productos de la categoria seleccionada

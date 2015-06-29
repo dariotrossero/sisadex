@@ -69,7 +69,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
                             <?php echo CHtml::activeDropDownList($modelos[$i], "[$i]tipoexamen_id",
                                 CHtml::listData(Tipoexamen::model()->getTiposExamenes(Yii::app()->user->name),
                                     'id', 'nombreTipoExamen') + array(-1 => 'otro'),
-                                array('onChange' => 'javascript:test(this)'),
+                                array('onChange' => 'javascript:fillTipoPersonalizado(this)'),
                                 array('options' => array(
                                     $modelos[$i]->tipoexamen_id => array('selected' => true)), 'empty' => '-Por favor seleccione-')); ?>
                         </div>
@@ -134,19 +134,21 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
         <?php if (Yii::app()->user->isAdmin())
         echo "var materia_id= $('#Examen_1_materia_id').val();" ;
         else  echo "var materia_id= ".Yii::app()->user->name.";";?>
-        var action = 'index.php?r=examen/CheckExamenOnSameDay&fechaExamen=' + fechaExamen + '&materia_id=' + materia_id;
+        var action = 'CheckExamenOnSameDay/fechaExamen/' + fechaExamen + '/materia_id/' + materia_id;
         $('#reportarerror').html("");
-        $.getJSON(action,function (respuesta) {
-            console.log(respuesta);
-            if (respuesta == "true") {
+        $.ajax({
+       type: "GET",      
+       data: "fechaExamen="+fechaExamen+"&materia_id="+materia_id,
+       url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
+       success: function (respuesta){
+        console.log(respuesta);
+       if (respuesta == "true") {
                 $('#msjError').slideDown('fast');
             }
             else {
                 $('#msjError').slideUp('fast');
-            }
-        }).error(function (e) {
-            $('#reportarerror').html(e.responseText);
-        });
+            }  }   
+    });  
     };
     $('#Examen_materia_id').change(CheckExamenOnSameDay);
     $('#newExam').click(function () {
