@@ -54,7 +54,7 @@ class Materia extends CActiveRecord
             array(
                 'nombreMateria',
                 'length',
-                'max' => 70
+                'max' => 60
             ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
