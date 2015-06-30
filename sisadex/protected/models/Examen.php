@@ -73,6 +73,7 @@ class Examen extends CActiveRecord
                 'numerical',
                 'integerOnly' => true,
                 'min' => 1,
+				'max' => 99,
                 'message' => '{attribute} debe ser un número',
                 'tooSmall' => '{attribute} debe ser un número mayor que 1'
             ),

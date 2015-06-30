@@ -34,6 +34,8 @@ class Plan extends CActiveRecord
                 'Carrera_id',
                 'numerical',
                 'message' => 'Seleccione una carrera.',
+				'min'=> 0,
+				'max'=> 999999,
                 'integerOnly' => true
             ),
             array(

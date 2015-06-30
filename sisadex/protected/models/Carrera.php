@@ -57,6 +57,8 @@ class Carrera extends CActiveRecord
                 'id',
                 'numerical',
                 'integerOnly' => true,
+				'min' => 0,
+				'max' => 999999,
                 'message' => '{attribute} debe ser un numero.'
             ),
             array(

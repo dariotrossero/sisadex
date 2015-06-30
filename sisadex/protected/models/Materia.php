@@ -35,6 +35,7 @@ class Materia extends CActiveRecord
                 'numerical',
                 'message' => '{attribute} debe ser un numero.',
                 'min' => 1,
+				'max' => 2147483647,
                 'integerOnly' => true
             ),
             array(

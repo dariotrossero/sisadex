@@ -148,30 +148,18 @@ $arrYears = array_reverse($arrYears, true);
 <script type="text/javascript">
  $('#Plan_anioPlan, #Plan_Carrera_id').change(function(){
   $(".alert-error").slideUp('fast');
-                
-                var anioPlan = $('#Plan_anioPlan').val();  // el "value" de ese <option> seleccionado
-                var Carrera_id= $('#Plan_Carrera_id').val();
-
-              console.log(anioPlan); console.log(Carrera_id);
-                
-                var action = 'index.php?r=plan/TestExistsPlan&anioPlan='+anioPlan+'&Carrera_id='+Carrera_id;
-
-
-                // se pide al action la lista de productos de la categoria seleccionada
-                //
-                $('#reportarerror').html("");
-                $.getJSON(action, function(respuesta) {
-                         if(respuesta=="true") {
-                          $('#msjError').slideDown('fast');
-
-                         }
-                         else {
-                                $('#msjError').slideUp('fast');
-                         }
-                        
-                   
+        var anioPlan = $('#Plan_anioPlan').val();  // el "value" de ese <option> seleccionado
+        var Carrera_id= $('#Plan_Carrera_id').val();
+        console.log(anioPlan); console.log(Carrera_id);
+        var action = 'index?r=plan/TestExistsPlan&anioPlan='+anioPlan+'&Carrera_id='+Carrera_id;
+        $('#reportarerror').html("");
+        $.getJSON(action, function(respuesta) {
+           if(respuesta=="true") {
+               $('#msjError').slideDown('fast');
+           }
+           else {
+               $('#msjError').slideUp('fast');
+          }
                 }).error(function(e){ $('#reportarerror').html(e.responseText); });                
         });
-
-
 </script>

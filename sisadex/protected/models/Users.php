@@ -38,6 +38,8 @@ class Users extends CActiveRecord
                 'id',
                 'numerical',
                 'integerOnly' => true,
+				'min' => 0,
+				'max' => 2147483647,
                 'message' => '{attribute} debe ser un numero entero.'
             ),
             array(
@@ -48,6 +50,8 @@ class Users extends CActiveRecord
             array(
                 'role',
                 'numerical',
+				'min' => 0,
+				'max' => 1,
                 'integerOnly' => true
             ),
             array(

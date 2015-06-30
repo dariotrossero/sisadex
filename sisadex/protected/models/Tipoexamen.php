@@ -31,7 +31,6 @@ class Tipoexamen extends CActiveRecord
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
             ),
-            // array('Materia_id', 'numerical', 'integerOnly'=>true),
             array(
                 'nombreTipoExamen',
                 'length',

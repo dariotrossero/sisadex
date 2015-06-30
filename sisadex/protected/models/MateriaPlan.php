@@ -36,6 +36,20 @@ class MateriaPlan extends CActiveRecord
                 'numerical',
                 'integerOnly' => true
             ),
+			array(
+                'cuatrimestre',
+                'numerical',
+                'integerOnly' => true,
+				'min' => 1,
+				'max' => 2,
+            ),
+			array(
+                'anio',
+                'numerical',
+                'integerOnly' => true,
+				'min' => 1,
+				'max' => 10,
+            ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
