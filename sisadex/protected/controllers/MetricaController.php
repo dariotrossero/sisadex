@@ -36,6 +36,9 @@ class MetricaController extends Controller
      */
     public function actionGetExams()
     {
+
+        $anios = array_values(json_decode(stripslashes($_POST['anios'])));
+
         $utils = new Utils();
         $this->createDaysArray();
         $materias = json_decode(stripslashes($_POST['materias']));
@@ -45,6 +48,7 @@ class MetricaController extends Controller
         $criteriaPlanes->select = 't.materia_id';
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
+                $criteriaPlanes->addInCondition('t.anio', $anios);
         $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
         $matPlan = array();
         foreach ($materiasPlan as $value) {
@@ -143,11 +147,18 @@ class MetricaController extends Controller
 
     public function actionGetExamsDetailsTimeline($materias, $planes)
     {
+        $anios = array_values(json_decode(stripslashes($_POST['anios'])));
+        $cuats = array_values(json_decode(stripslashes($_POST['cuatrimestres'])));
+        $cuats_unique = array_unique($cuats);
+
         $currentYear = date("Y");
         $criteriaPlanes = new CDbCriteria;
         $criteriaPlanes->select = 't.materia_id';
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
+        $criteriaPlanes->addInCondition('t.anio', $anios);
+        if (count($cuats_unique)==1)
+             $criteriaPlanes->addCondition("t.cuatrimestre==".$cuats_unique[0]);
         $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
         $matPlan = array();
         foreach ($materiasPlan as $value) {

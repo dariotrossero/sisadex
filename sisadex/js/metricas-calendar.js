@@ -170,10 +170,15 @@ function dropElement(target, event) {
 function getInfoFromServer() {
     var jsonStringsubjects = JSON.stringify(subjects);
     var jsonStringPlans = JSON.stringify(plans);
+    var jsonStringYears = JSON.stringify(years);
     $.ajax({
         type: "POST",
         url: 'GetExams',
-        data: {materias: jsonStringsubjects, planes: jsonStringPlans},
+        data: {
+            materias: jsonStringsubjects,
+            planes: jsonStringPlans,
+            anios: jsonStringYears,
+         },
         cache: false,
         success: function (respuesta) {
             infoExams = respuesta.result2;
@@ -193,8 +198,20 @@ function allowDrop(event) {
 $(document).ready(function () {
     $(".circle").hide();
     $(".circle1").hide();
+    $( ".anios-calendar" ).hide();
+
 });
 
+
+$( "#showFilters" ).click(function() {
+	$( ".anios-calendar" ).animate({
+    opacity:1,
+    left: "+=50",
+    height: "toggle"
+  }, 300, function() {
+     $("#showFilters").text($("#showFilters").text() == 'Ver filtros' ? 'Ocultar filtros' : 'Ver filtros') ;
+  });
+});
 /**
  * Cuando comienza la peticion ajax muestro la animacion de carga
  */
@@ -210,3 +227,42 @@ $(document).ajaxComplete(function () {
     $(".circle").hide();
     $(".circle1").hide();
 });
+
+
+//esto es nuevo
+
+var years = [1,2,3,4,5];
+var filter_button_clicked = false;
+
+function clickYear(year) {
+    if (!filter_button_clicked) {
+       filter_button_clicked = true;
+	years = [];
+	}
+    if ($('#anio_' + year.toString()).hasClass('active')) {
+        index = years.indexOf(year);
+        if (index > -1) years.splice(index, 1);
+    }
+    else {
+        years.push(year);
+    }
+    refreshData();
+}
+
+function removeYear(year) {
+    $('#anio_' + year.toString()).removeClass('active');
+    index = years.indexOf(year);
+    if (index > -1) years.splice(index, 1);
+}
+
+function addYear(year) {
+    $('#anio_' + year.toString()).addClass('active');
+    index = years.indexOf(year);
+    if (index == -1) years.push(year);
+}
+
+function refreshData() {
+    getInfoFromServer();
+}
+
+

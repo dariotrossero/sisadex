@@ -31,7 +31,51 @@
 
     ),
 )); ?>
+
+<a href="javascript:;" id='showFilters'>Ver filtros</a>
 <div id="buttons">
+
+<div class="anios-calendar">
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'1er año','htmlOptions' => array('id' => 'anio_1','onclick'=>'clickYear(1)')),
+    ),
+)); ?>
+
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'2do año','htmlOptions' => array('id' => 'anio_2','onclick'=>'clickYear(2)')),
+    ),
+)); ?>
+
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'3er año','htmlOptions' => array('id' => 'anio_3','onclick'=>'clickYear(3)')),
+    ),
+)); ?>
+
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'4to año','htmlOptions' => array('id' => 'anio_4','onclick'=>'clickYear(4)')),
+    ),
+)); ?>
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'5to año','htmlOptions' => array('id' => 'anio_5','onclick'=>'clickYear(5)')),
+    ),
+)); ?>
+</div>
+
     <?php $this->widget('bootstrap.widgets.TbButton', array(
         'buttonType' => 'button',
         'type' => 'action',

@@ -467,7 +467,8 @@ a.boxclose {
 }
 
 #wait_animation {
-    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     height: 30px;
 }
 
@@ -670,16 +671,20 @@ input[readonly] {
     margin-right: 10px;
 }
 
+.anios-calendar {
+    float: none;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.anios-calendar a {
+    margin-bottom: 4px;
+}
+
 .anios a {
     margin-bottom: 4px;
 }
 
-#filtro {
-    width: 900px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
 
 #legend {
 
@@ -703,3 +708,12 @@ input[readonly] {
     text-align: right;
     font-style: italic;
 }
+
+#filtro {
+    width: 900px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+}
+
