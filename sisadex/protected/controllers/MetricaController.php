@@ -229,7 +229,6 @@ class MetricaController extends Controller
             $criteriaPlanes = new CDbCriteria;
             $criteriaPlanes->select = 't.materia_id';
             $criteriaPlanes->condition = "plan_id == " . $key->id;
-            //$criteriaPlanes->join   = "INNER JOIN plan ON(t.Plan_id=".$key->id.")";
             $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
             $materias = array();
             $matPlan = array();
