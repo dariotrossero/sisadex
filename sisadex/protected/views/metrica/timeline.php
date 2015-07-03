@@ -1,20 +1,16 @@
 
 
 <head>
-
-
   <?php 
   Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/timeline/timeline.js');
   Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/timeline/timeline-locales.js');
   Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/underscore-min.js');
+  Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/metricas-common.js');
   Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/metricas-timeline.js', CClientScript::POS_END);
-
   Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/timeline/timeline.css'); 
   $browser = new EWebBrowser();
   ?>
-
-
-
+<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
 <body  onload="drawVisualization();">
@@ -35,7 +31,7 @@
       ),
       )); ?>
 
-<a href="javascript:;" id='showFilters'>Ver filtros</a>
+<a href="javascript:;" id='showFilters'>Mostrar filtros</a>
       <div id="data-container">
         <div  id="planes-metricas" class="drop" ondrop="dropElement(this, event)" ondragenter="return false" ondragover="return false" > 
           <?php

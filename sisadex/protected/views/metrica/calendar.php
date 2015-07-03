@@ -7,6 +7,7 @@
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/basic/jquery.simplemodal.js');
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/basic/basic.js');
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/underscore-min.js');
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/metricas-common.js');
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/metricas-calendar.js', CClientScript::POS_END);
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/modal/basic.css');
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/cal-heatmap.css');
@@ -32,7 +33,7 @@
     ),
 )); ?>
 
-<a href="javascript:;" id='showFilters'>Ver filtros</a>
+<a href="javascript:;" id='showFilters'>Mostrar filtros</a>
 <div id="buttons">
 
 <div class="anios-calendar">

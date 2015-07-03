@@ -5,6 +5,7 @@
 Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/amcharts/amcharts/amcharts.js');
 Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/amcharts/amcharts/serial.js');
 Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/amcharts/amcharts/amstock.js');
+Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/metricas-common.js');
 Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/metricas-evolution.js', CClientScript::POS_END);
 Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/underscore-min.js');
 $utils= new Utils;

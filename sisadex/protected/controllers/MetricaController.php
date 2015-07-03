@@ -6,18 +6,23 @@ class MetricaController extends Controller
 
     public function actionCalendar()
     {
+        $this->pageTitle = Yii::app()->name ." | Métricas - Calendario.";
         $this->render('calendar');
     }
 
     public function actionTimeLine()
     {
+        $this->pageTitle = Yii::app()->name ." | Métricas - Linea de tiempo.";
         $this->render('timeline');
     }
 
     public function actionEvolution()
     {
+        $this->pageTitle = Yii::app()->name ." | Métricas - Evolución.";
         $this->render('evolution');
     }
+
+
 
     function createDaysArray()
     {

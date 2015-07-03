@@ -209,30 +209,9 @@ $( "#showFilters" ).click(function() {
     left: "+=50",
     height: "toggle"
   }, 300, function() {
-     $("#showFilters").text($("#showFilters").text() == 'Ver filtros' ? 'Ocultar filtros' : 'Ver filtros') ;
+     $("#showFilters").text($("#showFilters").text() == 'Mostrar filtros' ? 'Ocultar filtros' : 'Mostrar filtros') ;
   });
 });
-/**
- * Cuando comienza la peticion ajax muestro la animacion de carga
- */
-$(document).ajaxStart(function () {
-    $(".circle").show();
-    $(".circle1").show();
-});
-
-/**
- * Cuando termina la peticion ajax oculto la animacion de carga
- */
-$(document).ajaxComplete(function () {
-    $(".circle").hide();
-    $(".circle1").hide();
-});
-
-
-//esto es nuevo
-
-var years = [1,2,3,4,5];
-var filter_button_clicked = false;
 
 function clickYear(year) {
     if (!filter_button_clicked) {
