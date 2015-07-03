@@ -717,3 +717,6 @@ input[readonly] {
     padding-top: 10px;
 }
 
+#showFilters {
+	text-decoration: none;	
+}

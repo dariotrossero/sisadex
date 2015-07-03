@@ -305,7 +305,7 @@ class UsersController extends Controller
             $model->attributes = $_POST['ChangePasswordForm'];
             // Validar input del usuario y cambiar contraseña.
             if ($model->validate() && $model->changePassword()) {
-                Yii::app()->user->setFlash('success', '<strong>Éxito!</strong> Su contraseña fue cambiada.');
+                Yii::app()->user->setFlash('success', '<strong>Éxito!</strong> Su contraseña fue cambiada. Los cambios se efectivizaran en el próximo inicio de sesión');
                 $this->redirect(array(
                     'index'
                     ));
