@@ -166,7 +166,6 @@ class ExamenController extends Controller
                 //Si soy administrador obtendo el materia_id desde el form sino desde el usuario
                 $mat_id = (Yii::app()->user->isadmin()) ? $_POST['Examen']['materia_id'] : Yii::app()->user->name;
                 $model->attributes = $_POST['Examen'];
-                //$model->fechaExamen=$this->dateToYMD($_POST['Examen']['fechaExamen']);
                 if ($_POST['Examen']['tipoexamen_id'] == -1) {
                     //Se eligio un tipo nuevo, se inserta en la base de datos y luego se obtiene el id para
                     //insertarlo en examen
@@ -295,13 +294,11 @@ class ExamenController extends Controller
         $html = $this->renderPartial('expenseGridtoReport', array(
             'model' => $model
         ), true);
-        //die($html);
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(Yii::app()->name);
         $pdf->SetTitle('Examen Report');
         $pdf->SetSubject('Examen Report');
-        //$pdf->SetKeywords('example, text, report');
         $pdf->SetHeaderData('', 0, "Report", '');
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, "Reporte generado por " . Yii::app()->name, "");
         $pdf->setHeaderFont(Array(
