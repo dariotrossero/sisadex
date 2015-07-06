@@ -32,6 +32,7 @@ class ExamenController extends Controller
                     'GenerateExcel',
                     'GetTipos',
                     'CheckExamenOnSameDay',
+                    'GetAgenda',
                     'index',
                     'view',
                     'DeleteAllMyRecords',
@@ -338,20 +339,30 @@ class ExamenController extends Controller
     public function actionCheckExamenOnSameDay($fechaExamen, $materia_id)
     {
         $fechaExamen = Utils::DateToYMD($fechaExamen);
-        $sql = 'select nombreMateria from examen JOIN materia as m where fechaExamen=:fechaExamen and materia_id = m.id
-        and materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
+        $sql = 'select nombreMateria, nombreTipoExamen from examen as EX JOIN materia as m join Tipo_Examen as TE where TE.id = EX.tipoexamen_id AND fechaExamen=:fechaExamen and EX.materia_id = m.id
+        and EX.materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
           (select plan_id as subPlanId ,anio as subAnio, cuatrimestre as subCuat  from materia_has_plan where materia_id=:materia_id)
           on materia.id=materia_id and anio=subAnio and cuatrimestre= subCuat and plan_id=subPlanId and materia_id!=:materia_id)';
         $command = Yii::app()->db->createCommand($sql);
         $command->bindValue('materia_id', $materia_id);
         $command->bindValue('fechaExamen', $fechaExamen);
-        $lista = $command->queryScalar();
-        $resp = (count($lista > 0)) ? "true" : "false";
-        var_dump($resp);die();
+        $lista = $command->query();
         header("Content-type: application/json");
-        echo CJSON::encode($resp);
+        echo CJSON::encode($lista);
     }
 
+    public function actionGetAgenda($materia_id)
+    {
+        $sql = 'select nombreMateria, nombreTipoExamen, fechaExamen from examen as EX JOIN materia as m join Tipo_Examen as TE where TE.id = EX.tipoexamen_id AND EX.materia_id = m.id
+        and fechaExamen between "2015-03-01" and "2015-12-31" and EX.materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
+          (select plan_id as subPlanId ,anio as subAnio, cuatrimestre as subCuat  from materia_has_plan where materia_id=:materia_id)
+          on materia.id=materia_id and anio=subAnio and cuatrimestre= subCuat and plan_id=subPlanId and materia_id!=:materia_id) order by fechaExamen';
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue('materia_id', $materia_id);
+        $lista = $command->query();
+        header("Content-type: application/json");
+        echo CJSON::encode($lista);
+    }
 
     /**
      * Elimina todos los registros de examen pertenecientes a una materia
