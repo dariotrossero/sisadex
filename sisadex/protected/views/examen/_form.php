@@ -9,7 +9,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
     <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
     <?php echo CHtml::hiddenField('cantExamenes', $this->cantExamenes, array('id' => 'cantExamenes')); ?>
     <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay un examen en esa fecha de otra materia
-        del plan.
+        del plan. <a href="" id="showExams">Mostrar examen/es</a>
     </div>
     <p class="note">
         Campos obligatorios <span class="required">*</span>
@@ -141,6 +141,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
             url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
             success: function (respuesta) {
                 console.log(respuesta);
+                exams = respuesta;
                 if (respuesta == "true") {
                     $('#msjError').slideDown('fast');
                 }
@@ -196,4 +197,10 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
         }
         ;
     });
+
+    $( "#showExams" ).click(function() {
+        console
+        $.modal(exams);
+    }
+
 </script>

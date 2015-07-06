@@ -1,3 +1,6 @@
+<head>
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/basic/jquery.simplemodal.js');
+</head>
 <div class="titulo">
     <h2>Nuevo Examen</h2>
 </div>
