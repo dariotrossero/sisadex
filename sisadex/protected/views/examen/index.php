@@ -86,15 +86,6 @@ $grid = $this->widget('bootstrap.widgets.TbGridView', array(
     //       'selectableRows' => '2',
     'filter' => $model,
     'columns' => array(
-        //'codigoExamen',
-        //   array(
-        //            'class'=>'CCheckBoxColumn',
-        //            'visible' => Yii::app()->user->isAdmin(),
-        //           'selectableRows' => null,
-        //          'headerHtmlOptions'=>array(
-        //           'style' => 'width:1px'
-        //  ),
-        //),
         array(
             'header' => 'Fecha',
             // Nombre de la columna en el CGridView
@@ -131,7 +122,6 @@ $grid = $this->widget('bootstrap.widgets.TbGridView', array(
             // Opciones HTML
             'filter' => CHtml::listData(Tipoexamen::model()->findAll(array('order' => 'nombreTipoExamen')), 'id', 'nombreTipoExamen') // Colocamos un combo en el filtro
         ),
-        //array ('name'=>'TipoExamen_codigoTipoExamen','value'=>'$data->tipoExamenCodigoTipoExamen->nombreTipoExamen','type'=>'text',),
         array(
             'type' => 'raw',
             'value' => ' Yii::app()->user->getName()==$data->materia_id || Yii::app()->user->isAdmin() ?  
@@ -150,9 +140,8 @@ $this->renderPartial("_ajax_view");
     function delete_record(id) {
         var id;
         this.id = id;
-        bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/>  ¿Está seguro de eliminar este examen?<br/><br/>", function (result) {
+        bootbox.confirm("<img src='" + baseUrl + "/images/warning.png'/>  ¿Está seguro de eliminar este examen?<br/><br/>", function (result) {
             if (!result) return;
-            //  $('#ajaxtest-view-modal').modal('hide');
             var data = "id=" + id;
             jQuery.ajax({
                 type: 'POST',
@@ -162,16 +151,13 @@ $this->renderPartial("_ajax_view");
                 data: data,
                 success: function (data) {
                     if (data == "true") {
-                        $.fn.yiiGridView.update('examen-grid', {
-                        });
+                        $.fn.yiiGridView.update('examen-grid', {});
                     }
                     else
                         alert("deletion failed");
                 },
                 error: function (data) { // if error occured
-                    //alert(JSON.stringify(data));
-                                bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-                                //  alert(data);
+                    bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
                 },
                 dataType: 'html'
             });
@@ -179,7 +165,7 @@ $this->renderPartial("_ajax_view");
     }
     function delete_all_records() {
         bootbox.dialog({
-            message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos los exámenes<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span4' ></input>",
+            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos los exámenes<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span4' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {
@@ -199,16 +185,13 @@ $this->renderPartial("_ajax_view");
                             success: function (data) {
                                 console.log(data);
                                 if (data == "true") {
-                                    $.fn.yiiGridView.update('examen-grid', {
-                                    });
+                                    $.fn.yiiGridView.update('examen-grid', {});
                                 }
                                 else
                                     bootbox.alert("Contraseña incorrecta.");
                             },
                             error: function (data) { // if error occured
-                                //alert(JSON.stringify(data));
                                 bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-                                //  alert(data);
                             },
                             dataType: 'html'
                         });
@@ -220,7 +203,7 @@ $this->renderPartial("_ajax_view");
     function delete_all_my_records(materia) {
         bootbox.dialog({
             className: "delete_all_my_records",
-            message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos los exámenes.<br/> <br/>Por seguridad debe ingresar su contraseña<br/><br/><input type='password' id ='pass' class='span4' ></input>",
+            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos los exámenes.<br/> <br/>Por seguridad debe ingresar su contraseña<br/><br/><input type='password' id ='pass' class='span4' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {
@@ -238,19 +221,17 @@ $this->renderPartial("_ajax_view");
                             url: '<?php  echo Yii::app()->createAbsoluteUrl("examen/deleteAllMyRecords"); ?>',
                             data: {
                                 mat: materia,
-                                pass: $('#pass').val()},
+                                pass: $('#pass').val()
+                            },
                             success: function (data) {
                                 console.log(data);
                                 if (data == "true") {
-                                    $.fn.yiiGridView.update('examen-grid', {
-                                    });
+                                    $.fn.yiiGridView.update('examen-grid', {});
                                 }
                                 else
                                     bootbox.alert("Contraseña incorrecta.");
                             },
                             error: function (data) { // if error occured
-                                //     alert(JSON.stringify(data)); 
-                                // alert("Error occured.please try again");
                                 bootbox.alert("Se ha producido un error. Contacte al administrador.");
                             },
                             dataType: 'html'

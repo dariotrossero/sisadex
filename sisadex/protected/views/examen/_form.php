@@ -14,6 +14,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
     <p class="note">
         Campos obligatorios <span class="required">*</span>
     </p>
+
     <div class="control-group">
         <div class="span10">
             <div class="row">
@@ -98,7 +99,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
                         'type' => 'action',
                         'icon' => ' icon-plus-sign',
                         'size' => 'small',
-                        // 'label' =>  'Agregar examen',
                         'htmlOptions' => array('id' => 'newExam'),
                     )); ?>
                 <?php $this->widget('bootstrap.widgets.TbButton',
@@ -107,7 +107,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
                         'type' => 'action',
                         'icon' => ' icon-minus-sign',
                         'size' => 'small',
-                        //   'label' =>  'Eliminar examen',
                         'htmlOptions' => array('id' => 'removeExam'),
                     )); ?>
                 <br/>
@@ -137,18 +136,19 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
         var action = 'CheckExamenOnSameDay/fechaExamen/' + fechaExamen + '/materia_id/' + materia_id;
         $('#reportarerror').html("");
         $.ajax({
-       type: "GET",      
-       data: "fechaExamen="+fechaExamen+"&materia_id="+materia_id,
-       url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
-       success: function (respuesta){
-        console.log(respuesta);
-       if (respuesta == "true") {
-                $('#msjError').slideDown('fast');
+            type: "GET",
+            data: "fechaExamen=" + fechaExamen + "&materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
+            success: function (respuesta) {
+                console.log(respuesta);
+                if (respuesta == "true") {
+                    $('#msjError').slideDown('fast');
+                }
+                else {
+                    $('#msjError').slideUp('fast');
+                }
             }
-            else {
-                $('#msjError').slideUp('fast');
-            }  }   
-    });  
+        });
     };
     $('#Examen_materia_id').change(CheckExamenOnSameDay);
     $('#newExam').click(function () {

@@ -103,21 +103,21 @@
         else  echo "var materia_id= ".Yii::app()->user->name.";";?>
         var action = 'CheckExamenOnSameDay/fechaExamen/' + fechaExamen + '/materia_id/' + materia_id;
         $('#reportarerror').html("");
-         
-          $.ajax({
-       type: "GET",      
-       data: "fechaExamen="+fechaExamen+"&materia_id="+materia_id,
-       url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
-       success: function (respuesta){
-        console.log(respuesta);
-       if (respuesta == "true") {
-                $('#msjError').slideDown('fast');
+
+        $.ajax({
+            type: "GET",
+            data: "fechaExamen=" + fechaExamen + "&materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
+            success: function (respuesta) {
+                console.log(respuesta);
+                if (respuesta == "true") {
+                    $('#msjError').slideDown('fast');
+                }
+                else {
+                    $('#msjError').slideUp('fast');
+                }
             }
-            else {
-                $('#msjError').slideUp('fast');
-            }  }   
-    });  
-     
+        });
     };
     $('#Examen_materia_id').change(CheckExamenOnSameDay);
 </script>
