@@ -338,7 +338,7 @@ class ExamenController extends Controller
     public function actionCheckExamenOnSameDay($fechaExamen, $materia_id)
     {
         $fechaExamen = Utils::DateToYMD($fechaExamen);
-        $sql = 'select (1) from examen where fechaExamen=:fechaExamen
+        $sql = 'select nombreMateria from examen JOIN materia as m where fechaExamen=:fechaExamen and materia_id = m.id
         and materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
           (select plan_id as subPlanId ,anio as subAnio, cuatrimestre as subCuat  from materia_has_plan where materia_id=:materia_id)
           on materia.id=materia_id and anio=subAnio and cuatrimestre= subCuat and plan_id=subPlanId and materia_id!=:materia_id)';
@@ -346,10 +346,12 @@ class ExamenController extends Controller
         $command->bindValue('materia_id', $materia_id);
         $command->bindValue('fechaExamen', $fechaExamen);
         $lista = $command->queryScalar();
-        $resp = ($lista > 0) ? "true" : "false";
+        $resp = (count($lista > 0)) ? "true" : "false";
+        var_dump($resp);die();
         header("Content-type: application/json");
         echo CJSON::encode($resp);
     }
+
 
     /**
      * Elimina todos los registros de examen pertenecientes a una materia
