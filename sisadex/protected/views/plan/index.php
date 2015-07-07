@@ -74,25 +74,22 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     function delete_record(id) {
         var id;
         this.id = id;
-        bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/>  ¿Está seguro de eliminar este plan de estudios?<br/><br/> ", function (result) {
-                if (!result) return;
-                var data = "id=" + id;
-                jQuery.ajax({
-                    type: 'POST',
-                    url: '<?php echo Yii::app()->createAbsoluteUrl("plan/delete"); ?>',
+        bootbox.confirm("<img src='" + baseUrl + "/images/warning.png'/>  ¿Está seguro de eliminar este plan de estudios?<br/><br/> ", function (result) {
+            if (!result) return;
+            var data = "id=" + id;
+            jQuery.ajax({
+                type: 'POST',
+                url: '<?php echo Yii::app()->createAbsoluteUrl("plan/delete"); ?>',
                 data: data,
                 success: function (data) {
                     if (data == "true") {
-                        $.fn.yiiGridView.update('plan-grid', {
-                        });
+                        $.fn.yiiGridView.update('plan-grid', {});
                     }
                     else
                         alert("deletion failed");
                 },
                 error: function (data) { // if error occured
-                   //alert(JSON.stringify(data));
-                                bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-                                //  alert(data);
+                    bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
                 },
                 dataType: 'html'
             });
@@ -100,7 +97,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     }
     function delete_all_records() {
         bootbox.dialog({
-            message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos los planes.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
+            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos los planes.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {
@@ -120,16 +117,13 @@ $this->widget('bootstrap.widgets.TbMenu', array(
                             success: function (data) {
                                 console.log(data);
                                 if (data == "true") {
-                                    $.fn.yiiGridView.update('plan-grid', {
-                                    });
+                                    $.fn.yiiGridView.update('plan-grid', {});
                                 }
                                 else
                                     bootbox.alert("Contraseña incorrecta.");
                             },
                             error: function (data) { // if error occured
-                                //alert(JSON.stringify(data));
                                 bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-                                //  alert(data);
                             },
                             dataType: 'html'
                         });

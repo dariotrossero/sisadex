@@ -6,18 +6,23 @@ class MetricaController extends Controller
 
     public function actionCalendar()
     {
+        $this->pageTitle = Yii::app()->name ." | Métricas - Calendario.";
         $this->render('calendar');
     }
 
     public function actionTimeLine()
     {
+        $this->pageTitle = Yii::app()->name ." | Métricas - Linea de tiempo.";
         $this->render('timeline');
     }
 
     public function actionEvolution()
     {
+        $this->pageTitle = Yii::app()->name ." | Métricas - Evolución.";
         $this->render('evolution');
     }
+
+
 
     function createDaysArray()
     {
@@ -36,9 +41,7 @@ class MetricaController extends Controller
      */
     public function actionGetExams()
     {
-
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
-
         $utils = new Utils();
         $this->createDaysArray();
         $materias = json_decode(stripslashes($_POST['materias']));
@@ -48,7 +51,7 @@ class MetricaController extends Controller
         $criteriaPlanes->select = 't.materia_id';
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
-                $criteriaPlanes->addInCondition('t.anio', $anios);
+        $criteriaPlanes->addInCondition('t.anio', $anios);
         $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
         $matPlan = array();
         foreach ($materiasPlan as $value) {
@@ -150,7 +153,6 @@ class MetricaController extends Controller
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
         $cuats = array_values(json_decode(stripslashes($_POST['cuatrimestres'])));
         $cuats_unique = array_unique($cuats);
-
         $currentYear = date("Y");
         $criteriaPlanes = new CDbCriteria;
         $criteriaPlanes->select = 't.materia_id';
@@ -240,7 +242,6 @@ class MetricaController extends Controller
             $criteriaPlanes = new CDbCriteria;
             $criteriaPlanes->select = 't.materia_id';
             $criteriaPlanes->condition = "plan_id == " . $key->id;
-            //$criteriaPlanes->join   = "INNER JOIN plan ON(t.Plan_id=".$key->id.")";
             $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
             $materias = array();
             $matPlan = array();
@@ -253,12 +254,7 @@ class MetricaController extends Controller
                 }
             }
             //Obtengo los examenes de las materias dadas
-            $criteriaMaterias = new CDbCriteria;
-            $criteriaMaterias->select = 't.*';
-            $criteriaMaterias->join = "INNER JOIN Tipo_Examen as tipoexamen ON(tipoexamen.id=t.tipoexamen_id)";
-            $criteriaMaterias->addInCondition('t.materia_id', $materias);
-            $criteriaMaterias->order = 't.fechaExamen ASC';
-            $examenes = Examen::model()->findAll($criteriaMaterias);
+            $examenes = $this->getExams($materias);
             //Arreglo donde se guardaran los datos
             $datos = array();
             $datosNormalDate = $this->fechas;
@@ -277,6 +273,16 @@ class MetricaController extends Controller
         echo CJSON::encode(array(
             'result' => $resultados
             ));
+    }
+
+
+    private function getExams($materias) {
+    		$criteriaMaterias = new CDbCriteria;
+            $criteriaMaterias->select = 't.*';
+            $criteriaMaterias->join = "INNER JOIN Tipo_Examen as tipoexamen ON(tipoexamen.id=t.tipoexamen_id)";
+            $criteriaMaterias->addInCondition('t.materia_id', $materias);
+            $criteriaMaterias->order = 't.fechaExamen ASC';
+            return Examen::model()->findAll($criteriaMaterias);
     }
 
      public function actionRefreshExamsEvolution()
@@ -310,12 +316,7 @@ class MetricaController extends Controller
                 }
             }
             //Obtengo los examenes de las materias dadas
-            $criteriaMaterias = new CDbCriteria;
-            $criteriaMaterias->select = 't.*';
-            $criteriaMaterias->join = "INNER JOIN Tipo_Examen as tipoexamen ON(tipoexamen.id=t.tipoexamen_id)";
-            $criteriaMaterias->addInCondition('t.materia_id', $materias);
-            $criteriaMaterias->order = 't.fechaExamen ASC';
-            $examenes = Examen::model()->findAll($criteriaMaterias);
+            $examenes = $this->getExams($materias);
             //Arreglo donde se guardaran los datos
             $datos = array();
             $datosNormalDate = $this->fechas;

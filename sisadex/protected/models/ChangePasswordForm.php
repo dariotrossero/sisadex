@@ -62,7 +62,7 @@ class ChangePasswordForm extends CFormModel
     public function changePassword()
     {
         $this->_user->password = $this->newPassword;
-        if ($this->_user->save())
+        if ($this->_user->save(false))
             return true;
         return false;
     }

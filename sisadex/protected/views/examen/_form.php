@@ -8,12 +8,14 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
 <div class="form">
     <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
     <?php echo CHtml::hiddenField('cantExamenes', $this->cantExamenes, array('id' => 'cantExamenes')); ?>
-    <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay un examen en esa fecha de otra materia
-        del plan.
+    <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay al menos un examen de otra materia del plan en esa misma fecha.
+    </br><a onclick="showModal()" id="showExams">Mostrar exámenes</a>
     </div>
     <p class="note">
         Campos obligatorios <span class="required">*</span>
+        <a onclick="showAgenda()" id="showAgenda">Mostrar agenda</a>
     </p>
+
     <div class="control-group">
         <div class="span10">
             <div class="row">
@@ -98,7 +100,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
                         'type' => 'action',
                         'icon' => ' icon-plus-sign',
                         'size' => 'small',
-                        // 'label' =>  'Agregar examen',
                         'htmlOptions' => array('id' => 'newExam'),
                     )); ?>
                 <?php $this->widget('bootstrap.widgets.TbButton',
@@ -107,7 +108,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
                         'type' => 'action',
                         'icon' => ' icon-minus-sign',
                         'size' => 'small',
-                        //   'label' =>  'Eliminar examen',
                         'htmlOptions' => array('id' => 'removeExam'),
                     )); ?>
                 <br/>
@@ -128,6 +128,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
 </div>
 <!-- Form -->
 <script>
+exams = {};
     CheckExamenOnSameDay = function () {
         $('div.alert').slideUp('fast');
         var fechaExamen = $(this).val();
@@ -136,20 +137,26 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
         else  echo "var materia_id= ".Yii::app()->user->name.";";?>
         var action = 'CheckExamenOnSameDay/fechaExamen/' + fechaExamen + '/materia_id/' + materia_id;
         $('#reportarerror').html("");
+	console.log(materia_id+":"+fechaExamen);	
         $.ajax({
-       type: "GET",      
-       data: "fechaExamen="+fechaExamen+"&materia_id="+materia_id,
-       url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
-       success: function (respuesta){
-        console.log(respuesta);
-       if (respuesta == "true") {
-                $('#msjError').slideDown('fast');
+            type: "GET",
+            data: "fechaExamen=" + fechaExamen + "&materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
+            success: function (respuesta) {
+                console.log(respuesta);
+                exams = respuesta;
+                if (Object.keys(exams).length === 0) {
+                    $('#msjError').slideUp('fast');
+                }
+                else {
+                    $('#msjError').slideDown('fast');
+                }
             }
-            else {
-                $('#msjError').slideUp('fast');
-            }  }   
-    });  
+        });
     };
+
+    $('#Examen_1_materia_id').change(CheckExamenOnSameDay);
+
     $('#Examen_materia_id').change(CheckExamenOnSameDay);
     $('#newExam').click(function () {
         var examenes = parseInt($('#cantExamenes').val());
@@ -196,4 +203,55 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
         }
         ;
     });
+
+    function showModal() {
+	string = "<h4><ul>";
+	for (var key in exams) {
+	   var obj = exams[key];
+	   string = string + "<li>" + obj.nombreMateria + "</br><h5>"+ obj.nombreTipoExamen +"</h5></li></br>";
+	}
+		string = string + "</ul><h4>";
+	$.modal(string);
+    };
+
+    function convertDate (input) {
+      var datePart = input.match(/\d+/g),
+      year = datePart[0].substring(2),
+      month = datePart[1], day = datePart[2];
+      return day+'/'+month+'/'+year;
+    }
+
+     function showAgenda() {
+        <?php if (Yii::app()->user->isAdmin())
+        echo "var materia_id= $('#Examen_1_materia_id').val();" ;
+        else  echo "var materia_id= ".Yii::app()->user->name.";";?>
+        $.ajax({
+            type: "GET",
+            data: "materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/GetAgenda');?>",
+            success: function (respuesta) {
+                if (materia_id === "")  {
+                    string = "<center><h3>Seleccione una materia primero.</h3></center>"
+                    $.modal(string);
+                }
+                agenda = respuesta;
+                if (Object.keys(agenda).length === 0) {
+                 string = "<center><h3>No se han cargado examenes de otras materias del mismo plan.</h3></center>"
+                    $.modal(string);   
+                }
+                else {
+                    string = "<h4><ul>";
+                    for (var key in agenda) {
+                        var obj = agenda[key];
+                        string = string + "<li>" + obj.nombreMateria + "</br><h5>" + obj.nombreTipoExamen + "</br>" + convertDate(obj.fechaExamen) + "</h5></li></br>";
+                    }
+                    string = string + "</ul><h4>";
+                    $.modal(string);
+                }
+            }
+        });
+
+    };
+
 </script>
+

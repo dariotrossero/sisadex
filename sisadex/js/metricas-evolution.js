@@ -2,8 +2,6 @@ var Subjects = new Array();
 var plans = new Array();
 var infoExams = {};
 var data = [];
-var years = [];
-var cuats = [];
 var chartData = [];
 
 function loadData() {
@@ -82,41 +80,6 @@ $(document).ready(function () {
     getInfoFromServer();
 });
 
-function getComplementButton(n) {
-    switch (n) {
-        case 1:
-            return 2;
-            break;
-        case 2:
-            return 1;
-            break;
-        case 3:
-            return 4;
-            break;
-        case 4:
-            return 3;
-            break;
-        case 5:
-            return 6;
-            break;
-        case 6:
-            return 5;
-            break;
-        case 7:
-            return 8;
-            break;
-        case 8:
-            return 7;
-            break;
-        case 9:
-            return 10;
-            break;
-        case 10:
-            return 9;
-            break;
-
-    }
-}
 
 function go2FirstCuat() {
     chart.zoom(0, 140);
@@ -127,6 +90,11 @@ function go2SecondCuat() {
 }
 
 function clickYear(year) {
+    if (!filter_button_clicked) {
+        filter_button_clicked = true;
+        years = [];
+        cuats = [];
+    }
     firstCuat = (year * 2).toString();
     secondCuat = ((year * 2) - 1).toString();
     if ($('#anio_' + year.toString()).hasClass('active')) {
@@ -170,6 +138,11 @@ function addCuat(cuat) {
 }
 
 function clickCuat(button) {
+    if (! filter_button_clicked) {
+        filter_button_clicked = true;
+        years = [];
+        cuats = [];
+    }   
     btn = '#btn_' + button.toString();
     btn_complement = '#btn_' + getComplementButton(button).toString();
     year = getYear(button);
@@ -188,56 +161,8 @@ function clickCuat(button) {
     refreshData();
 }
 
-function getYear(n) {
-    switch (n) {
-        case 1:
-            return 1;
-            break;
-        case 2:
-            return 1;
-            break;
-        case 3:
-            return 2;
-            break;
-        case 4:
-            return 2;
-            break;
-        case 5:
-            return 3;
-            break;
-        case 6:
-            return 3;
-            break;
-        case 7:
-            return 4;
-            break;
-        case 8:
-            return 4;
-            break;
-        case 9:
-            return 5;
-            break;
-        case 10:
-            return 5;
-            break;
-    }
-}
+
 function refreshData() {
     refreshInfoFromServer();
 }
 
-/**
- * Cuando comienza la peticion ajax muestro la animacion de carga
- */
-$(document).ajaxStart(function () {
-    $(".circle").show();
-    $(".circle1").show();
-});
-
-/**
- * Cuando termina la peticion ajax oculto la animacion de carga
- */
-$(document).ajaxComplete(function () {
-    $(".circle").hide();
-    $(".circle1").hide();
-});

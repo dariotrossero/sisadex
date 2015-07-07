@@ -32,6 +32,7 @@ class ExamenController extends Controller
                     'GenerateExcel',
                     'GetTipos',
                     'CheckExamenOnSameDay',
+                    'GetAgenda',
                     'index',
                     'view',
                     'DeleteAllMyRecords',
@@ -166,7 +167,6 @@ class ExamenController extends Controller
                 //Si soy administrador obtendo el materia_id desde el form sino desde el usuario
                 $mat_id = (Yii::app()->user->isadmin()) ? $_POST['Examen']['materia_id'] : Yii::app()->user->name;
                 $model->attributes = $_POST['Examen'];
-                //$model->fechaExamen=$this->dateToYMD($_POST['Examen']['fechaExamen']);
                 if ($_POST['Examen']['tipoexamen_id'] == -1) {
                     //Se eligio un tipo nuevo, se inserta en la base de datos y luego se obtiene el id para
                     //insertarlo en examen
@@ -295,13 +295,11 @@ class ExamenController extends Controller
         $html = $this->renderPartial('expenseGridtoReport', array(
             'model' => $model
         ), true);
-        //die($html);
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(Yii::app()->name);
         $pdf->SetTitle('Examen Report');
         $pdf->SetSubject('Examen Report');
-        //$pdf->SetKeywords('example, text, report');
         $pdf->SetHeaderData('', 0, "Report", '');
         $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, "Reporte generado por " . Yii::app()->name, "");
         $pdf->setHeaderFont(Array(
@@ -341,17 +339,29 @@ class ExamenController extends Controller
     public function actionCheckExamenOnSameDay($fechaExamen, $materia_id)
     {
         $fechaExamen = Utils::DateToYMD($fechaExamen);
-        $sql = 'select (1) from examen where fechaExamen=:fechaExamen
-        and materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
+        $sql = 'select nombreMateria, nombreTipoExamen from examen as EX JOIN materia as m join Tipo_Examen as TE where TE.id = EX.tipoexamen_id AND fechaExamen=:fechaExamen and EX.materia_id = m.id
+        and EX.materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
           (select plan_id as subPlanId ,anio as subAnio, cuatrimestre as subCuat  from materia_has_plan where materia_id=:materia_id)
           on materia.id=materia_id and anio=subAnio and cuatrimestre= subCuat and plan_id=subPlanId and materia_id!=:materia_id)';
         $command = Yii::app()->db->createCommand($sql);
         $command->bindValue('materia_id', $materia_id);
         $command->bindValue('fechaExamen', $fechaExamen);
-        $lista = $command->queryScalar();
-        $resp = ($lista > 0) ? "true" : "false";
+        $lista = $command->query();
         header("Content-type: application/json");
-        echo CJSON::encode($resp);
+        echo CJSON::encode($lista);
+    }
+
+    public function actionGetAgenda($materia_id)
+    {	$current_year= date("Y"); 
+        $sql = 'select nombreMateria, nombreTipoExamen, fechaExamen from examen as EX JOIN materia as m join Tipo_Examen as TE where TE.id = EX.tipoexamen_id AND EX.materia_id = m.id
+        and fechaExamen between $current_year + "-03-01" and $current_year + "-12-31" and EX.materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
+          (select plan_id as subPlanId ,anio as subAnio, cuatrimestre as subCuat  from materia_has_plan where materia_id=:materia_id)
+          on materia.id=materia_id and anio=subAnio and cuatrimestre= subCuat and plan_id=subPlanId and materia_id!=:materia_id) order by fechaExamen';
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue('materia_id', $materia_id);
+        $lista = $command->query();
+        header("Content-type: application/json");
+        echo CJSON::encode($lista);
     }
 
     /**

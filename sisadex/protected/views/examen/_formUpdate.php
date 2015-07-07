@@ -1,10 +1,11 @@
 <div class="form">
     <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
-    <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay un examen en esa fecha de otra materia
-        del plan.
+    <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay al menos un examen de otra materia del plan en esa misma fecha.
+        del plan. </br><a onclick="showModal()" id="showExams">Mostrar exámenes</a>
     </div>
     <p class="note">
         Campos obligatorios <span class="required">*</span>
+        <a onclick="showAgenda()" id="showAgenda">Mostrar agenda</a>
     </p>
     <?php echo $form->errorSummary($model, '', null, array('class' => 'alert alert-error')); ?>
     <div class="control-group">
@@ -103,21 +104,74 @@
         else  echo "var materia_id= ".Yii::app()->user->name.";";?>
         var action = 'CheckExamenOnSameDay/fechaExamen/' + fechaExamen + '/materia_id/' + materia_id;
         $('#reportarerror').html("");
-         
-          $.ajax({
-       type: "GET",      
-       data: "fechaExamen="+fechaExamen+"&materia_id="+materia_id,
-       url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
-       success: function (respuesta){
-        console.log(respuesta);
-       if (respuesta == "true") {
-                $('#msjError').slideDown('fast');
+        $.ajax({
+            type: "GET",
+            data: "fechaExamen=" + fechaExamen + "&materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
+            success: function (respuesta) {
+                exams = respuesta;
+                if (Object.keys(exams).length === 0) {
+                    $('#msjError').slideUp('fast');
+                }
+                else {
+                    $('#msjError').slideDown('fast');
+                }
             }
-            else {
-                $('#msjError').slideUp('fast');
-            }  }   
-    });  
-     
+        });
     };
     $('#Examen_materia_id').change(CheckExamenOnSameDay);
+
+
+    function showModal() {
+        string = "<h4><ul>";
+        for (var key in exams) {
+            var obj = exams[key];
+            string = string + "<li>" + obj.nombreMateria + "</br><h5>" + obj.nombreTipoExamen + "</h5></li></br>";
+        }
+        string = string + "</ul><h4>";
+        $.modal(string);
+    };
+
+	function convertDate (input) {
+	  var datePart = input.match(/\d+/g),
+	  year = datePart[0].substring(2),
+	  month = datePart[1], day = datePart[2];
+	  return day+'/'+month+'/'+year;
+	}
+
+    function showAgenda() {
+        <?php if (Yii::app()->user->isAdmin())
+        echo "var materia_id= $('#Examen_materia_id').val();" ;
+        else  echo "var materia_id= ".Yii::app()->user->name.";";?>
+        $.ajax({
+            type: "GET",
+            data: "materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/GetAgenda');?>",
+            success: function (respuesta) {
+                if (materia_id === "")  {
+                    string = "<center><h3>Seleccione una materia primero.</h3></center>"
+                    $.modal(string);
+                }
+                agenda = respuesta;
+                if (Object.keys(agenda).length === 0) {
+                 string = "<center><h3>No se han cargado examenes de otras materias del mismo plan.</h3></center>"
+                    $.modal(string);   
+                }
+                else {
+                    string = "<h4><ul>";
+                    for (var key in agenda) {
+                        var obj = agenda[key];
+                        string = string + "<li>" + obj.nombreMateria + "</br><h5>" + obj.nombreTipoExamen + "</br>" + convertDate(obj.fechaExamen) + "</h5></li></br>";
+                    }
+                    string = string + "</ul><h4>";
+                    $.modal(string);
+                }
+            }
+        });
+
+    };
+
+
+
 </script>
+

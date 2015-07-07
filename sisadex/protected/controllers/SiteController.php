@@ -49,6 +49,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->pageTitle = Yii::app()->name ." - Iniciar Sesión.";
         $utils = new Utils();
         if (!$utils->supportedBrowser())
             Yii::app()->user->setFlash('error', 'Su navegador no es totalmente soportado por la aplicación.
