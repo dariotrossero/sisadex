@@ -72,10 +72,6 @@ class ExamenController extends Controller
             $this->renderPartial('ajax_view', array(
                 'model' => $this->loadModel($id)
             ));
-        } else {
-            $this->render('view', array(
-                'model' => $this->loadModel($id)
-            ));
         }
     }
 
@@ -352,9 +348,12 @@ class ExamenController extends Controller
     }
 
     public function actionGetAgenda($materia_id)
-    {	$current_year= date("Y"); 
+    {
+        $currentYear = date("Y");
+        $start_date = $currentYear . "-03-01";
+        $end_date = $currentYear . "-12-31";
         $sql = 'select nombreMateria, nombreTipoExamen, fechaExamen from examen as EX JOIN materia as m join Tipo_Examen as TE where TE.id = EX.tipoexamen_id AND EX.materia_id = m.id
-        and fechaExamen between $current_year + "-03-01" and $current_year + "-12-31" and EX.materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
+        and fechaExamen between \''.$start_date .'\' and \''.$end_date.'\' and EX.materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
           (select plan_id as subPlanId ,anio as subAnio, cuatrimestre as subCuat  from materia_has_plan where materia_id=:materia_id)
           on materia.id=materia_id and anio=subAnio and cuatrimestre= subCuat and plan_id=subPlanId and materia_id!=:materia_id) order by fechaExamen';
         $command = Yii::app()->db->createCommand($sql);

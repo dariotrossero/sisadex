@@ -30,7 +30,7 @@
             )); ?>
             <fieldset>
                 <p class="note">Campos obligatorios <span class="required">*</span></p>
-                <?php echo $form->errorSummary($model, 'Opps!!!', null, array('class' => 'alert alert-error span12')); ?>
+                <?php echo $form->errorSummary($model, '', null, array('class' => 'alert alert-error span12')); ?>
                 <div class="control-group">
                     <div class="span4">
                         <div class="row">

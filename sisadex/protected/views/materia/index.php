@@ -57,8 +57,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
         array(
             'type' => 'raw',
             'value' => '"
-		    <!--  <a href=\'javascript:void(0);\' onclick=\'renderView(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a> --!>
-		      <a href=\'javascript:void(0);\' onclick=\'renderUpdateForm(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-pencil\'></i></a>
+		      <a href=\'javascript:void(0);\' onclick=\'renderUpdateForm(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-edit\'></i></a>
 		      <a href=\'javascript:void(0);\' onclick=\'delete_record(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-trash\'></i></a>
 		     "',
             'htmlOptions' => array('style' => 'width:80px; text-align: center')
@@ -74,7 +73,6 @@ $this->renderPartial("_ajax_create_form", array("model" => $model));
         this.id = id;
         bootbox.confirm("<img src='" + baseUrl + "/images/warning.png'/> ¿Está seguro de eliminar esta materia?<br/><br/><p class='text-warning'> Se eliminará el usuario asociado y todos los exámenes de la misma.</p>", function (result) {
             if (!result) return;
-            //  $('#ajaxtest-view-modal').modal('hide');
             var data = "id=" + id;
             jQuery.ajax({
                 type: 'POST',

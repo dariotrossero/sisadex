@@ -1,7 +1,7 @@
 <div class="form">
     <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
-    <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay al menos un examen de otra materia del plan en esa misma fecha.
-        del plan. </br><a onclick="showModal()" id="showExams">Mostrar exámenes</a>
+    <div class="alert alert-warning" id="msjError" style="">Atención: Hay al menos un exámen de otra materia del plan en esa misma fecha.
+       </br><a onclick="showModal()" id="showExams">Mostrar exámenes</a>
     </div>
     <p class="note">
         Campos obligatorios <span class="required">*</span>
@@ -154,7 +154,7 @@
                 }
                 agenda = respuesta;
                 if (Object.keys(agenda).length === 0) {
-                 string = "<center><h3>No se han cargado examenes de otras materias del mismo plan.</h3></center>"
+                 string = "<center><h3>Aún no se han cargado exámenes de otras materias del mismo plan.</h3></center>"
                     $.modal(string);   
                 }
                 else {

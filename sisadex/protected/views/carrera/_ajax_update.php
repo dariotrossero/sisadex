@@ -21,7 +21,7 @@
                     }
                     if (data == "false") {
                         $('#carrera-update-modal').modal('hide');
-                        bootbox.alert("<div id='error-modal' class='alert alert-error spa6'>Por favor corrija los siguientes errores de ingreso:<ul><li>El campo no puede ser vacio.</li></ul></div>");
+                        bootbox.alert("<div id='error-modal' class='alert alert-error span6'>Por favor corrija los siguientes errores de ingreso:<ul><li>El campo no puede ser vacio.</li></ul></div>");
                     }
                 }
             },

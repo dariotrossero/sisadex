@@ -125,7 +125,7 @@ $grid = $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'type' => 'raw',
             'value' => ' Yii::app()->user->getName()==$data->materia_id || Yii::app()->user->isAdmin() ?  
-               "<a href=\'javascript:void(0);\' onclick=\'renderView(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a><a href=\'update/$data->id\'  class=\'btn btn-small view\'  ><i class=\'icon-pencil\'></i></a>
+               "<a href=\'javascript:void(0);\' onclick=\'renderView(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a><a href=\'update/$data->id\'  class=\'btn btn-small view\'  ><i class=\'icon-edit\'></i></a>
           <a href=\'javascript:void(0);\' onclick=\'delete_record(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-trash\'></i></a>
          ": "<a href=\'javascript:void(0);\' onclick=\'renderView(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a>"',
             'headerHtmlOptions' => array(
