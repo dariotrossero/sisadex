@@ -1,7 +1,7 @@
 <div class="form">
     <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
-    <div class="alert alert-warning" id="msjError" style="">Atención: Hay al menos un exámen de otra materia del plan en esa misma fecha.
-       </br><a onclick="showModal()" id="showExams">Mostrar exámenes</a>
+    <div class="alert alert-warning" id="msjError" style="">Atención: Hay al menos un examen de otra materia del plan en esa misma fecha.
+       </br><a onclick="showModal()" id="showExams">Mostrar examenes</a>
     </div>
     <p class="note">
         Campos obligatorios <span class="required">*</span>
@@ -121,24 +121,6 @@
     };
     $('#Examen_materia_id').change(CheckExamenOnSameDay);
 
-
-    function showModal() {
-        string = "<h4><ul>";
-        for (var key in exams) {
-            var obj = exams[key];
-            string = string + "<li>" + obj.nombreMateria + "</br><h5>" + obj.nombreTipoExamen + "</h5></li></br>";
-        }
-        string = string + "</ul><h4>";
-        $.modal(string);
-    };
-
-	function convertDate (input) {
-	  var datePart = input.match(/\d+/g),
-	  year = datePart[0].substring(2),
-	  month = datePart[1], day = datePart[2];
-	  return day+'/'+month+'/'+year;
-	}
-
     function showAgenda() {
         <?php if (Yii::app()->user->isAdmin())
         echo "var materia_id= $('#Examen_materia_id').val();" ;
@@ -154,7 +136,7 @@
                 }
                 agenda = respuesta;
                 if (Object.keys(agenda).length === 0) {
-                 string = "<center><h3>Aún no se han cargado exámenes de otras materias del mismo plan.</h3></center>"
+                 string = "<center><h3>Aún no se han cargado examenes de otras materias del mismo plan.</h3></center>"
                     $.modal(string);   
                 }
                 else {

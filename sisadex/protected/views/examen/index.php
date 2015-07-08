@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle = Yii::app()->name . ' - Exámenes.';
+$this->pageTitle = Yii::app()->name . ' - Examenes.';
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
   $('.search-form').toggle();
@@ -14,7 +14,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 <div class="titulo">
-    <h1>Exámenes</h1>
+    <h1>Examenes</h1>
 </div>
 <?php
 $this->widget('bootstrap.widgets.TbMenu', array(
@@ -54,7 +54,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
             'itemOptions' => array('id' => 'deleteAll',
                 'onclick' => 'delete_all_records()'
             ),
-            'label' => 'Eliminar todos los exámenes',
+            'label' => 'Eliminar todos los examenes',
             'icon' => 'icon-remove-sign',
             'url' => '#',
             'linkOptions' => array(
@@ -66,7 +66,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
             'itemOptions' => array('id' => 'deleteAll',
                 'onclick' => 'delete_all_my_records(' . Yii::app()->user->name . ')',
             ),
-            'label' => 'Eliminar todos mis exámenes',
+            'label' => 'Eliminar todos mis examenes',
             'icon' => 'icon-remove-sign',
             'url' => '#',
             'linkOptions' => array(
@@ -165,7 +165,7 @@ $this->renderPartial("_ajax_view");
     }
     function delete_all_records() {
         bootbox.dialog({
-            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos los exámenes<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span4' ></input>",
+            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos los examenes<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span4' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {
@@ -203,7 +203,7 @@ $this->renderPartial("_ajax_view");
     function delete_all_my_records(materia) {
         bootbox.dialog({
             className: "delete_all_my_records",
-            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos los exámenes.<br/> <br/>Por seguridad debe ingresar su contraseña<br/><br/><input type='password' id ='pass' class='span4' ></input>",
+            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos los examenes.<br/> <br/>Por seguridad debe ingresar su contraseña<br/><br/><input type='password' id ='pass' class='span4' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {

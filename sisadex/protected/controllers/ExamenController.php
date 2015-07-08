@@ -110,29 +110,38 @@ class ExamenController extends Controller
             else
                 $materia_id = Yii::app()->user->name;
             $this->cantExamenes = $_POST['cantExamenes'];
-            for ($i = 1; $i <= $this->cantExamenes; $i++) {
-                //Si se selecciona un tipo de examen para que no falle la validacion se setea algo al atributo
-                if ($datos[$i]["tipoexamen_id"] != -1)
-                    //Si soy administrador obtendo el materia_id desde el form sino desde el usuario
-                    $datos[$i]['materia_id'] = $materia_id;
-                $modelos[$i]->attributes = $datos[$i];
-                if ($datos[$i]['tipoexamen_id'] == -1) {
-                    //insertarlo en examen
-                    $tipoexamen = new Tipoexamen;
-                    $id_tipo = $tipoexamen->insertWithoutFail($materia_id, $datos[$i]['TipoExamenPersonalizado']);
-                    $modelos[$i]->tipoexamen_id = $id_tipo;
+            $transaction = $model->dbConnection->beginTransaction();
+            try {
+                for ($i = 1; $i <= $this->cantExamenes; $i++) {
+                    if ($datos[$i]["tipoexamen_id"] != -1)
+                        $datos[$i]['materia_id'] = $materia_id;
+                    $modelos[$i]->attributes = $datos[$i];
+                    if ($datos[$i]['tipoexamen_id'] == -1) {
+                        //insertarlo en examen
+                        $tipoexamen = new Tipoexamen;
+                        $id_tipo = $tipoexamen->insertWithoutFail($materia_id, $datos[$i]['TipoExamenPersonalizado']);
+                        $modelos[$i]->tipoexamen_id = $id_tipo;
+                    }
+                    if (!Yii::app()->user->isAdmin()) //si no es administrador se setea el id de la materia desde user->name
+                        $modelos[$i]->materia_id = Yii::app()->user->name;
+                    else
+                        $modelos[$i]->materia_id = $materia_id;
+
                 }
-                if (!Yii::app()->user->isAdmin()) //si no es administrador se setea el id de la materia desde user->name
-                    $modelos[$i]->materia_id = Yii::app()->user->name;
-            }
-            for ($i = 1; $i <= $this->cantExamenes; $i++)
-                $valid = $modelos[$i]->validate() && $valid;
-            if ($valid) {
                 for ($i = 1; $i <= $this->cantExamenes; $i++)
-                    $modelos[$i]->save();
-                $this->redirect(array(
-                    'index'
-                ));
+                    $valid = $modelos[$i]->validate() && $valid;
+                if ($valid) {
+                    for ($i = 1; $i <= $this->cantExamenes; $i++)
+                        $modelos[$i]->save();
+                    $transaction->commit();
+
+                    $this->redirect(array(
+                        'index'
+                    ));
+                }
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
             }
         }
         $this->render('create', array(
@@ -164,8 +173,6 @@ class ExamenController extends Controller
                 $mat_id = (Yii::app()->user->isadmin()) ? $_POST['Examen']['materia_id'] : Yii::app()->user->name;
                 $model->attributes = $_POST['Examen'];
                 if ($_POST['Examen']['tipoexamen_id'] == -1) {
-                    //Se eligio un tipo nuevo, se inserta en la base de datos y luego se obtiene el id para
-                    //insertarlo en examen
                     $tipoexamen = new Tipoexamen;
                     $tipoexamen->nombreTipoExamen = $_POST['Examen']['TipoExamenPersonalizado'];
                     $tipoexamen->Materia_id = $mat_id;
@@ -353,7 +360,7 @@ class ExamenController extends Controller
         $start_date = $currentYear . "-03-01";
         $end_date = $currentYear . "-12-31";
         $sql = 'select nombreMateria, nombreTipoExamen, fechaExamen from examen as EX JOIN materia as m join Tipo_Examen as TE where TE.id = EX.tipoexamen_id AND EX.materia_id = m.id
-        and fechaExamen between \''.$start_date .'\' and \''.$end_date.'\' and EX.materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
+        and fechaExamen between \'' . $start_date . '\' and \'' . $end_date . '\' and EX.materia_id IN (select distinct materia.id from materia INNER JOIN materia_has_plan INNER JOIN
           (select plan_id as subPlanId ,anio as subAnio, cuatrimestre as subCuat  from materia_has_plan where materia_id=:materia_id)
           on materia.id=materia_id and anio=subAnio and cuatrimestre= subCuat and plan_id=subPlanId and materia_id!=:materia_id) order by fechaExamen';
         $command = Yii::app()->db->createCommand($sql);
