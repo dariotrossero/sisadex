@@ -56,7 +56,7 @@
                     'type' => 'primary',
                     'icon' => 'ok white',
                     'label' => 'Clonar',
-                    'htmlOptions' => array('onclick' => 'copy()'),
+                    'htmlOptions' => array('onclick' => 'copy()', 'disabled'=>'true'),
                 )); ?>
             </div>
         </div>
@@ -72,6 +72,7 @@
     var carrera_id;
 
     $('#anioPlan').change(function () {
+	$(":submit").attr("disabled",true);
         $(".alert-error").slideUp('fast');
         var anioPlan = $('#anioPlan').val();  // el "value" de ese <option> seleccionado
         var action = 'index?r=plan/TestExistsPlan&anioPlan=' + anioPlan + '&Carrera_id=' + carrera_id;
@@ -79,11 +80,10 @@
         $.getJSON(action, function (respuesta) {
             if (respuesta == "true") {
                 $('#msjError').slideDown('fast');
-                $(":submit").attr("disabled", true);
             }
             else {
+	        $(":submit").removeAttr("disabled");
                 $('#msjError').slideUp('fast');
-                $(":submit").removeAttr("disabled");
             }
         }).error(function (e) {
             $('#reportarerror').html(e.responseText);
