@@ -2,7 +2,7 @@
 /* @var $this PlanController */
 /* @var $model Plan */
 /* @var $form CActiveForm */
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/formUpdatePlan.js', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/formPlan.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/dragDrop.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/basic/jquery.js');
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/dragDrop.css');

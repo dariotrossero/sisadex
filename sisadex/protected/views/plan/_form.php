@@ -2,12 +2,10 @@
 /* @var $this PlanController */
 /* @var $model Plan */
 /* @var $form CActiveForm */
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/forms.js', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/formPlan.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/dragDrop.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/basic/jquery.js');
-
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/dragDrop.css');
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/formPlan.css');
 ?>
 <?php
 $yearNow = date("Y");
@@ -126,7 +124,3 @@ $arrYears = array_reverse($arrYears, true);
         </table>
     </div>
 </div>
-
-<script type="text/javascript">
-
-</script>

@@ -1,3 +1,5 @@
+var object_changed;
+
 function dragMateria(materia, event) {
     event.dataTransfer.setData('Materia', materia.id);
 }
@@ -9,7 +11,6 @@ function dropMateria(target, event) {
     div_target = target.id;
 }
 
-var object_changed;
     $('#Plan_anioPlan, #Plan_Carrera_id').change(function () {
         object_changed=true;
         $(".alert-error").slideUp('fast');
