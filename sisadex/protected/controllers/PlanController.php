@@ -32,7 +32,7 @@ class PlanController extends Controller
                     'view',
                     'index',
                     'delete',
-                    'clone',
+                    'copy',
                     'TestExistsPlan',
                     'deleteAll'
                 ),
@@ -343,7 +343,7 @@ class PlanController extends Controller
         ));
     }
 
-    public function actionClone()
+    public function actionCopy()
     {
         $id = $_POST['plan_id'];
         $new_year = $_POST['new_year'];
