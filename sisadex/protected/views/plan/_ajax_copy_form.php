@@ -1,8 +1,8 @@
-<div id='plan-clone-modal' class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id='plan-copy-modal' class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3>Clonar plan</h3>
+        <h3>Copiar plan</h3>
     </div>
     <div class="modal-body">
         <?php
@@ -47,7 +47,7 @@
                     'icon' => 'remove',
                     'label' => 'Cerrar',
                     'htmlOptions' => array(
-                        'onclick' => "$('#plan-clone-modal').modal('hide')",
+                        'onclick' => "$('#plan-copy-modal').modal('hide')",
                     )
                 )); ?>
                 <?php
@@ -56,7 +56,7 @@
                     'type' => 'primary',
                     'icon' => 'ok white',
                     'label' => 'Clonar',
-                    'htmlOptions' => array('onclick' => 'clone()'),
+                    'htmlOptions' => array('onclick' => 'copy()'),
                 )); ?>
             </div>
         </div>
@@ -90,40 +90,40 @@
         });
     });
 
-    function clone() {
+    function copy() {
         var data = $("#anioPlan").val();
 
         jQuery.ajax({
             type: 'POST',
-            url: '<?php echo Yii::app()->createAbsoluteUrl("plan/clone"); ?>',
+            url: '<?php echo Yii::app()->createAbsoluteUrl("plan/copy"); ?>',
             data: {
                 plan_id: idPlan,
                 new_year: data
             },
             success: function (data) {
                 if (data != "false") {
-                    $('#plan-clone-modal').modal('hide');
+                    $('#plan-copy-modal').modal('hide');
                     $.fn.yiiGridView.update('plan-grid', {});
                 }
             },
             error: function (data) { // if error occured
-                $('#plan-clone-modal').modal('hide');
+                $('#plan-copy-modal').modal('hide');
                 bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
             },
             dataType: 'html'
         });
     }
 
-    function renderCloneForm(id) {
+    function renderCopyForm(id) {
         idPlan = id.toString();
         carrera_id = idPlan.substring(4)
         $('#anioPlan').prop('selectedIndex',0);
         $('#msjError').hide();
-        $('#plan-clone-form').each(function () {
+        $('#plan-copy-form').each(function () {
             this.reset();
         });
         $('#plan-view-modal').modal('hide');
-        $('#plan-clone-modal').modal({
+        $('#plan-copy-modal').modal({
             show: true
         });
     }

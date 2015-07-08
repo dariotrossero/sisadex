@@ -63,14 +63,14 @@ $this->widget('bootstrap.widgets.TbMenu', array(
             'value' => 'Yii::app()->user->isAdmin() ?
           "<a href=\'view/$data->id\'   title=\'Visualizar plan\' class=\'btn btn-small view\'  ><i class=\'icon-eye-open\' ></i></a>
          <a href=\'update/$data->id\'   title=\'Editar plan\' class=\'btn btn-small view\'  ><i class=\'icon-edit\' ></i></a>
-         <a href=\'javascript:void(0);\' title=\'Clonar plan\' onclick=\'renderCloneForm(".$data->id.")\'  class=\'btn btn-small view\'><i class=\'icon-file\'></i></a>
+         <a href=\'javascript:void(0);\' title=\'Copiar plan\' onclick=\'renderCopyForm(".$data->id.")\'  class=\'btn btn-small view\'><i class=\'icon-file\'></i></a>
           <a href=\'javascript:void(0);\' title=\'Eliminar plan\' onclick=\'delete_record(".$data->id.")\'  class=\'btn btn-small view\'><i class=\'icon-trash\'></i></a>
          ": "<a href=\'view/$data->id\'  title=\'Visualizar plan\' class=\'btn btn-small view\'  ><i class=\'icon-eye-open\' ></i></a>"',
             'htmlOptions' => array('style' => 'width:160px; text-align: center')
         ),
     ),
 ));
-$this->renderPartial("_ajax_clone_form", array("model" => $model));
+$this->renderPartial("_ajax_copy_form", array("model" => $model));
 ?>
 <script type="text/javascript">
     function delete_record(id) {
