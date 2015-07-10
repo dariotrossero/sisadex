@@ -162,26 +162,6 @@ class Tipoexamen extends CActiveRecord
         return $this->findAll($criteria);
     }
 
-    public function insertWithoutFail($materia_id, $nombreTipoExamen)
-    {
-        $criteria = new CDbCriteria();
-        $criteria->select = 'id';
-        $criteria->condition = 'LOWER(nombreTipoExamen)=:nombreTipoExamen AND Materia_id=:Materia_id';
-        $criteria->params = array(
-            ':nombreTipoExamen' => strtolower($nombreTipoExamen),
-            ':Materia_id' => $materia_id
-        );
-        $result = $this->find($criteria);
-        if ($result != null)
-            return $result->id; //ya existe no lo agrego y devuelvo el id
-        else {
-            $tipo = new Tipoexamen;
-            $tipo->nombreTipoExamen = $nombreTipoExamen;
-            $tipo->Materia_id = $materia_id;
-            $tipo->save();
-            return $tipo->id;
-        }
-    }
 
     public function existsInDatabase($nombreTipoExamen, $Materia_id, $id)
     {

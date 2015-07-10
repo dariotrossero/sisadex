@@ -23,7 +23,4 @@ getTipos = function () {
     });
 };
 
-$(document).ready(function () {
-    getTipos.apply();
-});
 $('#Examen_1_materia_id').change(getTipos);

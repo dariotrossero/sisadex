@@ -66,10 +66,15 @@ class TipoexamenController extends Controller
                 $transaction = $model->dbConnection->beginTransaction();
                 try {
                     $model->attributes = $_POST['Tipoexamen'];
-                    if (Yii::app()->user->isAdmin())
-                        $model->Materia_id = -1;
+                    if (!isset($_POST['Tipoexamen']['materia_id']))
+                    {
+                        if (Yii::app()->user->isAdmin())
+                            $model->Materia_id = -1;
+                        else
+                            $model->Materia_id = Yii::app()->user->name;
+                    }
                     else
-                        $model->Materia_id = Yii::app()->user->name;
+                        $model->Materia_id = $_POST['Tipoexamen']['materia_id'];
                     $criteria = new CDbCriteria();
                     $criteria->select = 'nombreTipoExamen, Materia_id';
                     $criteria->condition = 'LOWER(nombreTipoExamen)=:nombreTipoExamen AND Materia_id=:Materia_id';
@@ -84,7 +89,10 @@ class TipoexamenController extends Controller
                     } //count($records) > 0
                     if ($model->save()) {
                         $transaction->commit();
-                    } //$model->save()
+                        header('Content-type: application/json');
+                        echo CJSON::encode(array('value' => $model->id, 'label' => $model->nombreTipoExamen));
+                    }
+
                     else {
                         echo "false";
                     }

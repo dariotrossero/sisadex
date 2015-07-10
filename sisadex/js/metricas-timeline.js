@@ -12,7 +12,7 @@ var options = {
     'max': new Date(new Date().getFullYear(), 12, 31),
     'zoomMin': 864000000,
     'start': new Date(new Date().getFullYear(), 1, 1),
-    'end': new Date(new Date().getFullYear(), 12, 31),
+    'end': new Date(new Date().getFullYear(), 12, 31)
 };
 var fadeTime = 400;
 var timeline;
@@ -28,7 +28,7 @@ function setData() {
             'start': new Date(infoExams[i][0].anio, infoExams[i][0].mes - 1,
                 infoExams[i][0].dia),
             'content': infoExams[i][0].content,
-            'className': infoExams[i][0].classname,
+            'className': infoExams[i][0].classname
         });
     }
     drawVisualization();
@@ -97,7 +97,7 @@ function getInfoFromServer() {
             materias: jsonStringsubjects,
             planes: jsonStringPlans,
             anios: jsonStringYears,
-            cuatrimestres: jsonStringCuats,
+            cuatrimestres: jsonStringCuats
         },
         cache: false,
         success: function (respuesta) {
@@ -154,11 +154,11 @@ function restore() {
     $("#planes-metricas").show(250);
     $("#middle").animate({
         'min-width': "890px",
-        'min-height': "645px",
+        'min-height': "645px"
     }, 250);
     $("#target").animate({
         width: "890px",
-        height: "500px",
+        height: "500px"
     }, 250);
     timeline.setSize(timeLineProperties.width + 'px', '500px');
 }
@@ -170,11 +170,11 @@ function zoom() {
     timeline.options.width = '1200px';
     $("#middle").animate({
         'min-width': "1200px",
-        'min-height': "700px",
+        'min-height': "700px"
     }, 250);
     $("#target").animate({
         width: "1200px",
-        height: "700px",
+        height: "700px"
     }, 250);
 }
 

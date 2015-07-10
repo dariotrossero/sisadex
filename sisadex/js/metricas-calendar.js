@@ -56,7 +56,7 @@ cal.init({
             moment.lang("es");
             return moment(date).format("MMMM YYYY").toUpperCase();
         },
-        legend: null,
+        legend: null
     },
     animationDuration: 500,
     range: 5, legend: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
@@ -76,7 +76,7 @@ cal.init({
     domainLabelFormat: function (date) {
         moment.lang("es");
         return moment(date).format("MMMM YYYY").toUpperCase();
-    },
+    }
 });
 
 function go2FirstCuat() {
@@ -121,28 +121,28 @@ function go2next() {
 };
 
 function dragElement(materia, event, number) {
-    contenedor = materia.id + "|" + number;
-    event.dataTransfer.setData("text", contenedor);
+    container = materia.id + "|" + number;
+    event.dataTransfer.setData("text", container);
 }
 
 function removeElementFromCalendar(id) {
     id = id.toString().trim();
-    elemento = $('#target #' + id);
-    if (elemento.attr("class") == "materia") {
+    element = $('#target #' + id);
+    if (element.attr("class") == "materia") {
         subjects.splice(_.indexOf(subjects, id), 1);
     }
     else
         plans.splice(_.indexOf(plans, id), 1);
     getInfoFromServer();
-    elemento.fadeOut(fadeTime, function () {
-        elemento.remove();
+    element.fadeOut(fadeTime, function () {
+        element.remove();
     });
 }
 
 function dropElement(target, event) {
     event.preventDefault();
-    contenedor = event.dataTransfer.getData("text");
-    arreglo = contenedor.split("|");
+    container = event.dataTransfer.getData("text");
+    arreglo = container.split("|");
     var materia = arreglo[0];
     var source = arreglo[1];
     var a = document.createElement('a');
@@ -154,10 +154,10 @@ function dropElement(target, event) {
     else
         a.setAttribute("name", "materia");
     a.innerHTML = '<img src="' + baseUrl + '/images/close-icon.gif"/>';
-    elemento = document.getElementById(materia).cloneNode(true);
-    elemento.appendChild(a);
+    element = document.getElementById(materia).cloneNode(true);
+    element.appendChild(a);
     if (target.id == "target" && $('#target #' + materia + '').length == 0) {
-        target.appendChild(elemento);
+        target.appendChild(element);
         div_target = target.id;
         if (source == 1)
             subjects.push(materia);
@@ -177,7 +177,7 @@ function getInfoFromServer() {
         data: {
             materias: jsonStringsubjects,
             planes: jsonStringPlans,
-            anios: jsonStringYears,
+            anios: jsonStringYears
          },
         cache: false,
         success: function (respuesta) {
@@ -216,7 +216,7 @@ $( "#showFilters" ).click(function() {
 function clickYear(year) {
     if (!filter_button_clicked) {
        filter_button_clicked = true;
-	years = [];
+	   years = [];
 	}
     if ($('#anio_' + year.toString()).hasClass('active')) {
         index = years.indexOf(year);

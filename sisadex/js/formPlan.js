@@ -4,8 +4,7 @@ function procesarMaterias() {
     for (var i = 1; i < 11; i++) {
         materiasDelCuat = document.getElementById('c' + i).getElementsByClassName("materia");
         //obtengo arreglo de codigos de las materias del cuat
-        a = getMateriasCuat(materiasDelCuat);
-        arr.push(a);
+        arr.push(getMateriasCuat(materiasDelCuat));
     }
     var field = document.getElementById('formularioMaterias');
     field.value = JSON.stringify(arr);

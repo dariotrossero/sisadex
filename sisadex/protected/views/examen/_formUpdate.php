@@ -1,5 +1,7 @@
 <div class="form">
-    <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
+    <?php
+    $this->renderPartial("_ajax_create_form_update");
+    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
     <div class="alert alert-warning" id="msjError" style="">Atención: Hay al menos un examen de otra materia del plan en esa misma fecha.
        </br><a onclick="showModal()" id="showExams">Mostrar examenes</a>
     </div>
@@ -51,11 +53,6 @@
                     <?php echo CHtml::dropDownList('Examen[tipoexamen_id]', $model->tipoexamen_id, CHtml::listData(Tipoexamen::model()->getTiposExamenes($model->materia_id), 'id', 'nombreTipoExamen') + array(-1 => 'Otro...'), array('id' => 'Examen_tipoexamen_id')); ?>
                     <?php echo $form->error($model, 'tipoexamen_id'); ?>
                 </div>
-                <div id="tipoPersonalizado" class="row">
-                    <?php echo $form->labelEx($model, 'TipoExamenPersonalizado'); ?>
-                    <?php echo $form->textField($model, 'TipoExamenPersonalizado', array('size' => 45, 'maxlength' => 60)); ?>
-                    <?php echo $form->error($model, 'TipoExamenPersonalizado'); ?>
-                </div>
                 <div class="row">
                     <?php echo $form->labelEx($model, 'descripcionExamen'); ?>
                     <?php echo $form->textArea($model, 'descripcionExamen', array('class' => 'span3', 'rows' => 5)); ?>
@@ -83,17 +80,24 @@
 </div>
 <!-- Form -->
 <script type="text/javascript">
+    <?php if (Yii::app()->user->isAdmin())
+       echo "var materia_id = $('#Examen_materia_id').val()";
+       else
+       echo "var materia_id= ".Yii::app()->user->name.";";?>
+
     $('#Examen_tipoexamen_id').change(function () {
         $('div.alert').slideUp('fast');
         var opcionSeleccionada = $(this);
         var codigoExamen = opcionSeleccionada.val();        // el "value" de ese <option> seleccionado
         console.log(codigoExamen);
         if (codigoExamen == -1) {
-            $('#tipoPersonalizado').show('fast');
-            return;
-        } else {
-            $('#tipoPersonalizado').hide('fast');
-            return;
+            $('#tipoexamen-create-form').each(function () {
+                this.reset();
+            });
+            $('#tipoexamen-view-modal').modal('hide');
+            $('#tipoexamen-create-modal').modal({
+                show: true
+            });
         }
     });
     CheckExamenOnSameDay = function () {
@@ -122,9 +126,7 @@
     $('#Examen_materia_id').change(CheckExamenOnSameDay);
 
     function showAgenda() {
-        <?php if (Yii::app()->user->isAdmin())
-        echo "var materia_id= $('#Examen_materia_id').val();" ;
-        else  echo "var materia_id= ".Yii::app()->user->name.";";?>
+
         $.ajax({
             type: "GET",
             data: "materia_id=" + materia_id,

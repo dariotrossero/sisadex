@@ -40,7 +40,10 @@ function getInfoFromServer() {
     $.ajax({
         type: "POST",
         url: 'GetExamsEvolution',
-        data: {materias: jsonStringSubjects, planes: jsonStringPlans},
+        data: {
+            materias: jsonStringSubjects,
+            planes: jsonStringPlans
+        },
         cache: false,
         success: function (respuesta) {
             infoExams = respuesta.result;

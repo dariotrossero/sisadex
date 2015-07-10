@@ -113,15 +113,8 @@ class ExamenController extends Controller
             $transaction = $model->dbConnection->beginTransaction();
             try {
                 for ($i = 1; $i <= $this->cantExamenes; $i++) {
-                    if ($datos[$i]["tipoexamen_id"] != -1)
-                        $datos[$i]['materia_id'] = $materia_id;
                     $modelos[$i]->attributes = $datos[$i];
-                    if ($datos[$i]['tipoexamen_id'] == -1) {
-                        //insertarlo en examen
-                        $tipoexamen = new Tipoexamen;
-                        $id_tipo = $tipoexamen->insertWithoutFail($materia_id, $datos[$i]['TipoExamenPersonalizado']);
-                        $modelos[$i]->tipoexamen_id = $id_tipo;
-                    }
+
                     if (!Yii::app()->user->isAdmin()) //si no es administrador se setea el id de la materia desde user->name
                         $modelos[$i]->materia_id = Yii::app()->user->name;
                     else
@@ -165,21 +158,10 @@ class ExamenController extends Controller
         //$this->performAjaxValidation($model,"examen-update-form");
         if (isset($_POST['Examen'])) {
             //Si se selecciona un tipo de examen para que no falle la validacion se setea algo al atributo
-            if ($_POST['Examen']['tipoexamen_id'] != -1)
-                $_POST['Examen']['TipoExamenPersonalizado'] = "no_vacio :)";
             $transaction = $model->dbConnection->beginTransaction();
             try {
                 //Si soy administrador obtendo el materia_id desde el form sino desde el usuario
-                $mat_id = (Yii::app()->user->isadmin()) ? $_POST['Examen']['materia_id'] : Yii::app()->user->name;
                 $model->attributes = $_POST['Examen'];
-                if ($_POST['Examen']['tipoexamen_id'] == -1) {
-                    $tipoexamen = new Tipoexamen;
-                    $tipoexamen->nombreTipoExamen = $_POST['Examen']['TipoExamenPersonalizado'];
-                    $tipoexamen->Materia_id = $mat_id;
-                    $tipoexamen->save();
-                    $lastInsert = Yii::app()->db->getLastInsertID();
-                    $model->tipoexamen_id = $lastInsert;
-                }
                 if ($model->save()) {
                     $transaction->commit();
                     $this->redirect(array(
