@@ -87,19 +87,23 @@ class PlanController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
         if (isset($_POST['Plan'])) {
-            $id = $_POST['Plan']['anioPlan'] . $_POST['Plan']['Carrera_id'];
-            $model->attributes = $_POST['Plan'];
-            $model->id = $id;
-            $resultado = $_POST['result'];
-            $materias = $this->parseString($resultado);
-
-
-            if ($model->save()) {
-                $this->agregarMaterias($materias, $id);
-                $this->redirect(array(
-                    'view',
-                    'id' => $model->id
-                ));
+            $transaction = $model->dbConnection->beginTransaction();
+            try {
+                $id = $_POST['Plan']['anioPlan'] . $_POST['Plan']['Carrera_id'];
+                $model->attributes = $_POST['Plan'];
+                $model->id = $id;
+                $resultado = $_POST['result'];
+                $materias = $this->parseString($resultado);
+                if ($model->save()) {
+                    $this->agregarMaterias($materias, $id);
+                    $this->redirect(array(
+                        'view',
+                        'id' => $model->id
+                    ));
+                }
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
             }
         }
         $this->render('create', array(
@@ -326,17 +330,24 @@ class PlanController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
         if (isset($_POST['Plan'])) {
-            MateriaPlan::model()->deleteAll('Plan_id =' . $id);
-            $id = $_POST['Plan']['anioPlan'] . $_POST['Plan']['Carrera_id'];
-            $model->attributes = $_POST['Plan'];
-            $model->id = $id;
-            $resultado = $_POST['result'];
-            $materias = $this->parseString($resultado);
-            $this->agregarMaterias($materias, $id);
-            $this->redirect(array(
-                'view',
-                'id' => $model->id
-            ));
+            $transaction = $model->dbConnection->beginTransaction();
+            try {
+                MateriaPlan::model()->deleteAll('Plan_id =' . $id);
+                $id = $_POST['Plan']['anioPlan'] . $_POST['Plan']['Carrera_id'];
+                $model->attributes = $_POST['Plan'];
+                $model->id = $id;
+                $resultado = $_POST['result'];
+                $materias = $this->parseString($resultado);
+                $this->agregarMaterias($materias, $id);
+                $this->redirect(array(
+                    'view',
+                    'id' => $model->id
+                ));
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
+            }
+
         }
         $this->render('update', array(
             'model' => $model
@@ -348,7 +359,7 @@ class PlanController extends Controller
         $id = $_POST['plan_id'];
         $new_year = $_POST['new_year'];
         $carrera_id = substr($id, 4);
-        $new_id =  $new_year . $carrera_id;
+        $new_id = $new_year . $carrera_id;
         $transaction = Materia::model()->dbConnection->beginTransaction();
         try {
             $plan = new Plan;
