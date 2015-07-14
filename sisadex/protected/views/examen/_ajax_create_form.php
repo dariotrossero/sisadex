@@ -14,11 +14,22 @@
                 if (data != "false") {
                     //Si se crea un tipo de examen personalizado el codigo de materia no se puede cambiar para evitar inconsistencias.
                     $('#Examen_1_materia_id').attr("disabled", true);
-
                     $('#tipoexamen-create-modal').modal('hide');
+                    //elimino la opcion "Otro..." para ordenar el dropdown y luego agregarlo nuevamente asi queda al final
+                    $("option[value='-1']").remove();
                     for (i = 1; i < 11; i++) {
+                        //almaceno la opcion seleccionada para luego restaurarla
+                        selected_option = $('#Examen_' + i + '_tipoexamen_id').val();
                         $('#Examen_' + i + '_tipoexamen_id').append('<option value="' + data.value + '">' + data.label + '</option>');
+                        //Ordena el dropdown por texto
+                        $('#Examen_' + i + '_tipoexamen_id').html($('#Examen_' + i + '_tipoexamen_id option').sort(function(x, y) {
+                            return $(x).text() < $(y).text() ? -1 : 1;
+                        }))
+                        $('#Examen_' + i + '_tipoexamen_id').append('<option value="-1">Otro....</option>');
+                        //restauro la opcion seleccionada
+                        $('#Examen_' + i + '_tipoexamen_id  option[value=' + selected_option + ']').attr('selected', 'selected');
                     }
+                    //Selecciono la opcion recien ingresada al sistema
                     $('#' + selector_clicked + ' option[value=' + data.value + ']').attr('selected', 'selected');
                 }
                 else {

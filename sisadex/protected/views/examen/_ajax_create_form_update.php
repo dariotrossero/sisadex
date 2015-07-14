@@ -15,7 +15,12 @@ require_once __DIR__ . '/_ajax_create_form_common.php';
             success: function (data) {
                 if (data != "false") {
                     $('#tipoexamen-create-modal').modal('hide');
+                    $("option[value='-1']").remove();
                     $('#Examen_tipoexamen_id').append('<option value="' + data.value + '">' + data.label + '</option>');
+                    $('#Examen_tipoexamen_id').html($('#Examen_tipoexamen_id option').sort(function(x, y) {
+                        return $(x).text() < $(y).text() ? -1 : 1;
+                    }))
+                    $('#Examen_tipoexamen_id').append('<option value="-1">Otro....</option>');
                     $('#Examen_tipoexamen_id option[value='+data.value+']').attr('selected', 'selected');
                 }
                 else {
