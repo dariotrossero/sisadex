@@ -260,13 +260,11 @@ class UsersController extends Controller
         $html = $this->renderPartial('expenseGridtoReport', array(
             'model' => $model
             ), true);
-        //die($html);
         $pdf = new TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(Yii::app()->name);
         $pdf->SetTitle('Users Report');
         $pdf->SetSubject('Users Report');
-        //$pdf->SetKeywords('example, text, report');
         $pdf->SetHeaderData('', 0, "Report", '');
         $pdf->SetHeaderData(PDF_HEADER_LOGO, 10, "Reporte generado por " . Yii::app()->name, "");
         $pdf->setHeaderFont(Array(

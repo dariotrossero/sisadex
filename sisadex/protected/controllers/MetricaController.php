@@ -195,38 +195,7 @@ class MetricaController extends Controller
 
     public function getColorClass($complejidad)
     {
-        switch ($complejidad) {
-            case 1:
-            return "color1";
-            break;
-            case 2:
-            return "color2";
-            break;
-            case 3:
-            return "color3";
-            break;
-            case 4:
-            return "color4";
-            break;
-            case 5:
-            return "color5";
-            break;
-            case 6:
-            return "color6";
-            break;
-            case 7:
-            return "color7";
-            break;
-            case 8:
-            return "color8";
-            break;
-            case 9:
-            return "color9";
-            break;
-            case 10:
-            return "color10";
-            break;
-        }
+        return "color".$complejidad;
     }
 
     public function actionGetExamsEvolution()
