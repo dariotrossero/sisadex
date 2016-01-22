@@ -104,16 +104,24 @@ $utils= new Utils;
     ),
 )); ?>
 
+<?php 
+$yearNow = date("Y");
+$yearFrom = $yearNow - 5;
+$arrYears = array();
+foreach (range($yearFrom, $yearNow) as $number) {
+    $arrYears[$number] = $number;
+}
+$arrYears = array_reverse($arrYears, true);?>
 
 <div id="wait_animation">
   <div class="circle"></div>
   <div class="circle1"></div>
 </div>
-</br>
+
 
 <div id="legend">Seleccione los elementos que desea mostrar</div>
  <div id="filtro">
-     
+     <?php echo CHtml::dropDownList('yearList', $yearNow, $arrYears); ?>
 <div class="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',

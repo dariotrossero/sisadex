@@ -8,7 +8,7 @@ var options = {
     'style': 'box',
     'showCurrentTime': false,
     'showNavigation': true,
-    'min': new Date(new Date().getFullYear(), 1, 1),
+    'min': new Date(new Date().getFullYear()-5, 1, 1),
     'max': new Date(new Date().getFullYear(), 12, 31),
     'zoomMin': 864000000,
     'start': new Date(new Date().getFullYear(), 1, 1),
@@ -20,7 +20,8 @@ var data = [];
 var subjects = new Array();
 var infoExams = [];
 var plans = new Array();
-
+var currentYear = new Date().getFullYear();
+var zoomed = false;
 function setData() {
     data = [];
     for (var i = 0; i < infoExams.length; i++) {
@@ -41,6 +42,26 @@ function drawVisualization() {
     // Draw our timeline with the created data and options
     timeline.draw(data, options);
 }
+
+
+
+/**
+ * Cuando comienza la peticion ajax muestro la animacion de carga
+ */
+$(document).ajaxStart(function () {
+    $(".circle").show();
+    $(".circle1").show();
+});
+
+/**
+ * Cuando termina la peticion ajax oculto la animacion de carga
+ */
+$(document).ajaxComplete(function () {
+    $(".circle").hide();
+    $(".circle1").hide();
+});
+
+
 
 function reset() {
     data = [];
@@ -86,6 +107,7 @@ function dropElement(target, event) {
 }
 
 function getInfoFromServer() {
+    console.log("Getting information from server....");
     var jsonStringsubjects = JSON.stringify(subjects);
     var jsonStringPlans = JSON.stringify(plans);
     var jsonStringYears = JSON.stringify(years);
@@ -97,12 +119,16 @@ function getInfoFromServer() {
             materias: jsonStringsubjects,
             planes: jsonStringPlans,
             anios: jsonStringYears,
-            cuatrimestres: jsonStringCuats
+            cuatrimestres: jsonStringCuats,
+            currentYear:currentYear
         },
         cache: false,
         success: function (respuesta) {
             infoExams = respuesta.result;
             setData();
+            if (zoomed) 
+               zoom();
+            go2year(currentYear);
         }
     });
 }
@@ -161,6 +187,7 @@ function restore() {
         height: "500px"
     }, 250);
     timeline.setSize(timeLineProperties.width + 'px', '500px');
+    zoomed=false;
 }
 
 function zoom() {
@@ -176,6 +203,7 @@ function zoom() {
         width: "1200px",
         height: "700px"
     }, 250);
+    zoomed=true;
 }
 
 function go2FirstCuat() {
@@ -186,6 +214,9 @@ function go2SecondCuat() {
     timeline.setVisibleChartRange(new Date(new Date().getFullYear(), 7, 1), new Date(new Date().getFullYear() + 1, 1, 1));
 }
 
+function go2year(year) {
+    timeline.setVisibleChartRange(new Date(year, 2, 1), new Date(year , 12, 1));
+}
 
 function clickYear(year) {
     if (!filter_button_clicked) {
@@ -263,3 +294,9 @@ function clickCuat(button) {
 function refreshData() {
     getInfoFromServer();
 }
+
+$( "#yearList" ).change(function() {
+  currentYear = $('#yearList').find(":selected").text();
+
+getInfoFromServer();
+  });

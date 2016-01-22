@@ -2,22 +2,6 @@ var years = [1,2,3,4,5];
 var cuats = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
 var filter_button_clicked = false;
 
-/**
- * Cuando comienza la peticion ajax muestro la animacion de carga
- */
-$(document).ajaxStart(function () {
-    $(".circle").show();
-    $(".circle1").show();
-});
-
-/**
- * Cuando termina la peticion ajax oculto la animacion de carga
- */
-$(document).ajaxComplete(function () {
-    $(".circle").hide();
-    $(".circle1").hide();
-});
-
 
 function getYear(n) {
     switch (n) {
