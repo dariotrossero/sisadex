@@ -24,12 +24,13 @@ class MetricaController extends Controller
 
 
 
-    function createDaysArray()
+    function createDaysArray($year)
     {
         // Start date
-        $date = date("Y") . '-03-01';
+        $date = $year . '-03-01';
+        
         // End date
-        $end_date = date("Y") . '-12-31';
+        $end_date = $year  . '-12-31';
         while (strtotime($date) <= strtotime($end_date)) {
             $this->fechas[$date] = 0;
             $date = date("Y-m-d", strtotime("+1 day", strtotime($date)));
@@ -43,7 +44,8 @@ class MetricaController extends Controller
     {
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
         $utils = new Utils();
-        $this->createDaysArray();
+        $currentYear = $_POST['currentYear'];
+        $this->createDaysArray($currentYear);
         $materias = json_decode(stripslashes($_POST['materias']));
         $planes = json_decode(stripslashes($_POST['planes']));
         //Por cada id de plan se obtienen todas las materias del mismo
@@ -68,6 +70,7 @@ class MetricaController extends Controller
         $criteriaMaterias->join = "INNER JOIN Tipo_Examen as tipoexamen ON(tipoexamen.id=t.tipoexamen_id)";
         $criteriaMaterias->addInCondition('t.materia_id', $materias);
         $criteriaMaterias->order = 't.fechaExamen ASC';
+        $criteriaMaterias->addBetweenCondition('t.fechaExamen', $currentYear . '-03-01', $currentYear . '-12-31');
         $examenes = Examen::model()->findAll($criteriaMaterias);
         //Arreglo donde se guardaran los datos
         $datos = array();
@@ -139,21 +142,22 @@ class MetricaController extends Controller
     {
         $materias = json_decode(stripslashes($_POST['materias']));
         $planes = json_decode(stripslashes($_POST['planes']));
+        $currentYear = $_POST['currentYear'];
         header("Content-type: application/json");
         //Envio la informacion en formato jSON
         //2 arreglos, result1 con los complejidades en cada dia y result2 con info de cada examen (fecha, materia y tipo de examen)
-        $details = $this->actionGetExamsDetailsTimeline($materias, $planes);
+        $details = $this->actionGetExamsDetailsTimeline($materias, $planes, $currentYear);
         echo CJSON::encode(array(
             'result' => $details
             ));
     }
 
-    public function actionGetExamsDetailsTimeline($materias, $planes)
+    public function actionGetExamsDetailsTimeline($materias, $planes,$currentYear)
     {
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
         $cuats = array_values(json_decode(stripslashes($_POST['cuatrimestres'])));
         $cuats_unique = array_unique($cuats);
-        $currentYear = date("Y");
+        
         $criteriaPlanes = new CDbCriteria;
         $criteriaPlanes->select = 't.materia_id';
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
@@ -200,7 +204,8 @@ class MetricaController extends Controller
 
     public function actionGetExamsEvolution()
     {
-        $this->createDaysArray();
+        $currentYear = $_POST['currentYear'];
+        $this->createDaysArray($currentYear);
         $utils = new Utils();
         $planes = Plan::model()->findAll(array(
             'order' => 'anioPlan'
@@ -259,7 +264,8 @@ class MetricaController extends Controller
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
         $cuats = array_values(json_decode(stripslashes($_POST['cuatrimestres'])));
         $cuats_unique = array_unique($cuats);
-        $this->createDaysArray();
+        $currentYear = $_POST['currentYear'];
+        $this->createDaysArray($currentYear);
         $utils = new Utils();
         $planes = Plan::model()->findAll(array(
             'order' => 'anioPlan'

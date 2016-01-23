@@ -160,7 +160,7 @@ class Examen extends CActiveRecord
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
-                'defaultOrder' => 'fechaExamen ASC'
+                'defaultOrder' => 'fechaExamen DESC'
             ),
             'pagination' => array(
                 'pageSize' => 15

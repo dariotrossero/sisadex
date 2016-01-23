@@ -3,11 +3,30 @@ var plans = new Array();
 var infoExams = {};
 var data = [];
 var chartData = [];
+var currentYear = new Date().getFullYear();
 
 function loadData() {
     chart.dataProvider = generateChartData();
     chart.validateData();
 }
+
+
+/**
+ * Cuando comienza la peticion ajax muestro la animacion de carga
+ */
+$(document).ajaxStart(function () {
+    $(".circle").show();
+    $(".circle1").show();
+});
+
+/**
+ * Cuando termina la peticion ajax oculto la animacion de carga
+ */
+$(document).ajaxComplete(function () {
+    $(".circle").hide();
+    $(".circle1").hide();
+});
+
 
 function parseDate(dateString) {
     // split the string get each field
@@ -42,7 +61,8 @@ function getInfoFromServer() {
         url: 'GetExamsEvolution',
         data: {
             materias: jsonStringSubjects,
-            planes: jsonStringPlans
+            planes: jsonStringPlans,
+            currentYear:currentYear
         },
         cache: false,
         success: function (respuesta) {
@@ -55,6 +75,7 @@ function getInfoFromServer() {
     });
 }
 function refreshInfoFromServer() {
+    console.log("Getting information from server....");
     var jsonStringSubjects = JSON.stringify(Subjects);
     var jsonStringPlans = JSON.stringify(plans);
     var jsonStringYears = JSON.stringify(years);
@@ -66,7 +87,8 @@ function refreshInfoFromServer() {
             materias: jsonStringSubjects,
             planes: jsonStringPlans,
             anios: jsonStringYears,
-            cuatrimestres: jsonStringCuats
+            cuatrimestres: jsonStringCuats,
+            currentYear:currentYear
         },
         cache: false,
         success: function (respuesta) {
@@ -168,4 +190,9 @@ function clickCuat(button) {
 function refreshData() {
     refreshInfoFromServer();
 }
+
+$( "#yearList" ).change(function() {
+  currentYear = $('#yearList').find(":selected").text();
+    refreshData();
+  });
 

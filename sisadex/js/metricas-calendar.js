@@ -27,13 +27,16 @@ else
     startingMonth = 7;
 var data2display = {};
 var infoExams = {};
+
 var subjects = new Array();
 var plans = new Array();
+
 var cal = new CalHeatMap();
+var subDomain = "x_day";
 cal.init({
     itemSelector: "#target",
     domain: "month",
-    subDomain: "day",
+    subDomain: subDomain,
     cellSize: 28,
     legendVerticalPosition: "top",
     legendOrientation: "horizontal",
@@ -58,12 +61,12 @@ cal.init({
         },
         legend: null
     },
-    animationDuration: 500,
+    animationDuration: 1,
     range: 5, legend: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
     displayLegend: true,
     itemNamespace: "domainDynamicDimension",
     start: new Date(currentYear, startingMonth, 1),
-    minDate: new Date(currentYear, 2),
+    minDate: new Date(currentYear-3, 2),
     maxDate: new Date(currentYear, 12),
     onClick: function (date, nb) {
         var fecha = date.getTime() / 1000;
@@ -89,6 +92,10 @@ function go2SecondCuat() {
     cal.update(data2display);
     cal.options.data = data2display;
     cal.jumpTo(new Date(currentYear, 7), true);
+};
+
+function go2Year(year) {
+    cal.jumpTo(new Date(year, 2 ), true);
 };
 
 function go2Today() {
@@ -168,6 +175,8 @@ function dropElement(target, event) {
 }
 
 function getInfoFromServer() {
+    console.log("Getting information from server....");
+    showSpinner();
     var jsonStringsubjects = JSON.stringify(subjects);
     var jsonStringPlans = JSON.stringify(plans);
     var jsonStringYears = JSON.stringify(years);
@@ -177,15 +186,19 @@ function getInfoFromServer() {
         data: {
             materias: jsonStringsubjects,
             planes: jsonStringPlans,
-            anios: jsonStringYears
+            anios: jsonStringYears,
+            currentYear:currentYear
          },
         cache: false,
         success: function (respuesta) {
+            hideSpinner();
             infoExams = respuesta.result2;
             data2display = respuesta.result1;
             cal.update(data2display);
+           
         }
     });
+
 }
 
 /**
@@ -241,7 +254,26 @@ function addYear(year) {
 }
 
 function refreshData() {
-    getInfoFromServer();
+    if (subjects.length > 0 || plans.length > 0) {
+        getInfoFromServer(); 
 }
+}
+
+function showSpinner() {
+    $(".circle").show();
+    $(".circle1").show();
+}
+
+function hideSpinner() {
+   $(".circle").hide();
+   $(".circle1").hide();
+}
+
+$( "#yearList" ).change(function() {
+    currentYear = $('#yearList').find(":selected").text();
+    refreshData();
+    go2Year(currentYear);
+  });
+
 
 

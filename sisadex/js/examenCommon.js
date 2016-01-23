@@ -10,8 +10,13 @@ function showModal() {
 };
 
 function convertDate (input) {
-    var datePart = input.match(/\d+/g),
-        year = datePart[0].substring(2),
-        month = datePart[1], day = datePart[2];
-    return day+'/'+month+'/'+year;
+    var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+    var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+    var datePart = input.match(/\d+/g);
+    
+    year = datePart[0],
+    month = datePart[1], day = datePart[2];
+     f=new Date(year+"-"+month+"-"+day);
+     console.log(f);
+    return diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
 }
