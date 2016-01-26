@@ -79,7 +79,6 @@ function refreshInfoFromServer() {
     var jsonStringSubjects = JSON.stringify(Subjects);
     var jsonStringPlans = JSON.stringify(plans);
     var jsonStringYears = JSON.stringify(years);
-    var jsonStringCuats = JSON.stringify(cuats);
     $.ajax({
         type: "POST",
         url: 'RefreshExamsEvolution',
@@ -87,7 +86,6 @@ function refreshInfoFromServer() {
             materias: jsonStringSubjects,
             planes: jsonStringPlans,
             anios: jsonStringYears,
-            cuatrimestres: jsonStringCuats,
             currentYear:currentYear
         },
         cache: false,
@@ -118,22 +116,14 @@ function clickYear(year) {
     if (!filter_button_clicked) {
         filter_button_clicked = true;
         years = [];
-        cuats = [];
     }
-    firstCuat = (year * 2).toString();
-    secondCuat = ((year * 2) - 1).toString();
     if ($('#anio_' + year.toString()).hasClass('active')) {
         index = years.indexOf(year);
-        if (index > -1) years.splice(index, 1);
-        removeCuat(year * 2, true);
-        removeCuat((year * 2) - 1, true);
+        if (index > -1) 
+            years.splice(index, 1);
     }
     else {
         years.push(year);
-        addCuat(1);
-        addCuat(2);
-        $('#btn_' + firstCuat).addClass('active');
-        $('#btn_' + secondCuat).addClass('active');
     }
     refreshData();
 }
@@ -149,42 +139,7 @@ function addYear(year) {
     index = years.indexOf(year);
     if (index == -1) years.push(year);
 }
-function removeCuat(cuat, fromYear) {
-    if (fromYear) $('#btn_' + cuat.toString()).removeClass('active');
-    if (cuat % 2 == 0)
-        index = cuats.indexOf(2);
-    else
-        index = cuats.indexOf(1);
-    cuats.splice(index, 1);
-}
-function addCuat(cuat) {
-    if (cuat % 2 == 0) cuats.push(2);
-    else  cuats.push(1);
-}
 
-function clickCuat(button) {
-    if (! filter_button_clicked) {
-        filter_button_clicked = true;
-        years = [];
-        cuats = [];
-    }   
-    btn = '#btn_' + button.toString();
-    btn_complement = '#btn_' + getComplementButton(button).toString();
-    year = getYear(button);
-    if ($(btn).hasClass('active') && (!$(btn_complement).hasClass('active'))
-    ) {
-        anio = getYear(button);
-        if ($('#anio_' + anio.toString()).hasClass('active'))
-            removeYear(anio);
-    }
-    if (!$(btn).hasClass('active')) {
-        addCuat(button);
-        addYear(year);
-    }
-    if ($(btn).hasClass('active'))
-        removeCuat(button);
-    refreshData();
-}
 
 
 function refreshData() {

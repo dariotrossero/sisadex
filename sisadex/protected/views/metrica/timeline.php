@@ -54,7 +54,7 @@
         <div id="middle">
 
  <div id="filtro">
-<div class="anios">
+ <div class ="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -62,18 +62,8 @@
         array('label'=>'1er año','htmlOptions' => array('id' => 'anio_1','onclick'=>'clickYear(1)')),
     ),
 )); ?>
-<br>
-<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
-    
-    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-    'buttons' => array(
-        array('label'=>'1° Cuat.','htmlOptions' => array('id' => 'btn_1','onclick'=>'clickCuat(1)')),
-        array('label'=>'2° Cuat.','htmlOptions' => array('id' => 'btn_2','onclick'=>'clickCuat(2)')),
-    ),
-)); ?>
 
-</div>
-<div class="anios">
+
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -81,17 +71,7 @@
         array('label'=>'2do año','htmlOptions' => array('id' => 'anio_2','onclick'=>'clickYear(2)')),
     ),
 )); ?>
-<br>
-<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
-    
-    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-    'buttons' => array(
-        array('label'=>'1° Cuat.','htmlOptions' => array('id' => 'btn_3','onclick'=>'clickCuat(3)')),
-        array('label'=>'2° Cuat.','htmlOptions' => array('id' => 'btn_4','onclick'=>'clickCuat(4)')),
-    ),
-)); ?>
-</div>
-<div class="anios">
+
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -99,19 +79,9 @@
         array('label'=>'3er año','htmlOptions' => array('id' => 'anio_3','onclick'=>'clickYear(3)')),
     ),
 )); ?>
-<br>
-<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
-    
-    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-    'buttons' => array(
-        array('label'=>'1° Cuat.','htmlOptions' => array('id' => 'btn_5','onclick'=>'clickCuat(5)')),
-        array('label'=>'2° Cuat.','htmlOptions' => array('id' => 'btn_6','onclick'=>'clickCuat(6)')),
-    ),
-)); ?>
 
-</div>
 
-<div class="anios">
+
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -119,31 +89,12 @@
         array('label'=>'4to año','htmlOptions' => array('id' => 'anio_4','onclick'=>'clickYear(4)')),
     ),
 )); ?>
-<br>
-<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
-    
-    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-    'buttons' => array(
-        array('label'=>'1° Cuat.','htmlOptions' => array('id' => 'btn_7','onclick'=>'clickCuat(7)')),
-        array('label'=>'2° Cuat.','htmlOptions' => array('id' => 'btn_8','onclick'=>'clickCuat(8)')),
-    ),
-)); ?>
-</div>
-<div class="anios">
+
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
     'buttons' => array(
         array('label'=>'5to año','htmlOptions' => array('id' => 'anio_5','onclick'=>'clickYear(5)')),
-    ),
-)); ?>
-<br>
-<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
-    
-    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-    'buttons' => array(
-        array('label'=>'1° Cuat.','htmlOptions' => array('id' => 'btn_9','onclick'=>'clickCuat(9)')),
-        array('label'=>'2° Cuat.','htmlOptions' => array('id' => 'btn_10','onclick'=>'clickCuat(10)')),
     ),
 )); ?>
 </div>
