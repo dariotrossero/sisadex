@@ -54,6 +54,7 @@
         <div id="middle">
 
  <div id="filtro">
+ <div class ="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -96,7 +97,7 @@
         array('label'=>'5to año','htmlOptions' => array('id' => 'anio_5','onclick'=>'clickYear(5)')),
     ),
 )); ?>
-
+</div>
 
 </div>
          <div id="buttons">

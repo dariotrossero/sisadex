@@ -121,8 +121,8 @@ $arrYears = array_reverse($arrYears, true);?>
 
 <div id="legend">Seleccione los elementos que desea mostrar</div>
  <div id="filtro">
+ <div class="anios">
      <?php echo CHtml::dropDownList('yearList', $yearNow, $arrYears); ?>
-<div class="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -132,8 +132,6 @@ $arrYears = array_reverse($arrYears, true);?>
 )); ?>
 
 
-</div>
-<div class="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -142,8 +140,6 @@ $arrYears = array_reverse($arrYears, true);?>
     ),
 )); ?>
 
-</div>
-<div class="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -153,9 +149,7 @@ $arrYears = array_reverse($arrYears, true);?>
 )); ?>
 
 
-</div>
 
-<div class="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -164,8 +158,6 @@ $arrYears = array_reverse($arrYears, true);?>
     ),
 )); ?>
 
-</div>
-<div class="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -174,8 +166,8 @@ $arrYears = array_reverse($arrYears, true);?>
     ),
 )); ?>
 
-</div>
 
+</div>
 </div>
 
 <div id="chartdiv" style="width: 100%; height: 600px;"></div>
