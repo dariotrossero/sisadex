@@ -87,8 +87,6 @@ class PlanController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
         if (isset($_POST['Plan'])) {
-            $transaction = $model->dbConnection->beginTransaction();
-            try {
                 $id = $_POST['Plan']['anioPlan'] . $_POST['Plan']['Carrera_id'];
                 $model->attributes = $_POST['Plan'];
                 $model->id = $id;
@@ -101,10 +99,6 @@ class PlanController extends Controller
                         'id' => $model->id
                     ));
                 }
-            } catch (Exception $e) {
-                $transaction->rollBack();
-                throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
-            }
         }
         $this->render('create', array(
             'model' => $model
@@ -329,7 +323,7 @@ class PlanController extends Controller
         // $this->performAjaxValidation($model);
         if (isset($_POST['Plan'])) {
             $transaction = $model->dbConnection->beginTransaction();
-            try {
+                try {
                 MateriaPlan::model()->deleteAll('Plan_id =' . $id);
                 $id = $_POST['Plan']['anioPlan'] . $_POST['Plan']['Carrera_id'];
                 $model->attributes = $_POST['Plan'];
@@ -337,15 +331,15 @@ class PlanController extends Controller
                 $resultado = $_POST['result'];
                 $materias = $this->parseString($resultado);
                 $this->agregarMaterias($materias, $id);
+                 $transaction->commit();
+                             } catch (Exception $e) {
+                    $transaction->rollBack();
+                    throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
+                }
                 $this->redirect(array(
                     'view',
                     'id' => $model->id
                 ));
-            } catch (Exception $e) {
-                $transaction->rollBack();
-                throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
-            }
-
         }
         $this->render('update', array(
             'model' => $model
