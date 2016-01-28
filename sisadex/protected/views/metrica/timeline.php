@@ -18,7 +18,14 @@
   <div class="titulo">
     <h1>Linea de tiempo</h1>
   </div>
-
+ <?php 
+$yearNow = date("Y");
+$yearFrom = $yearNow - 5;
+$arrYears = array();
+foreach (range($yearFrom, $yearNow) as $number) {
+    $arrYears[$number] = $number;
+}
+$arrYears = array_reverse($arrYears, true);?>
 
   <?php $this->widget('bootstrap.widgets.TbMenu', array(
     'type'=>'tabs', // '', 'tabs', 'pills' (or 'list')
@@ -31,28 +38,8 @@
       ),
       )); ?>
 
-      <div id="data-container">
-        <div  id="planes-metricas" class="drop" ondrop="dropElement(this, event)" ondragenter="return false" ondragover="return false" > 
-          <?php
-          $criteria = new CDbCriteria();
-          $criteria->order = 'anioPlan';
-          $planes = Plan::model()->findAll($criteria); 
-          echo '<ul class="lista">';
-          foreach($planes as $item) {
-            $codigo=$item->id;
-            $anio=$item->anioPlan;
-            $nombre=$item->carrera->nombreCarrera;
-            if ($browser->getBrowser()=="Internet Explorer") 
-                echo '<a href="#" onclick="return false;" draggable="true" class="plan" id="'.$codigo.'" ondragstart="dragElement(this, event,0)">'.$anio.' - '.$nombre.'</a>';
-            else
-                echo '<span draggable="true" class="plan" id="'.$codigo.'" ondragstart="dragElement(this, event,0)">'.$anio.' - '.$nombre.'</span>';
-          }
-          echo '</ul>';
-          ?>
-        </div>
-        <div id="middle">
-
- <div id="filtro">
+        
+<div id="buttons">
  <div class ="anios">
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
@@ -96,10 +83,10 @@
         array('label'=>'5to año','htmlOptions' => array('id' => 'anio_5','onclick'=>'clickYear(5)')),
     ),
 )); ?>
-</div>
+
 
 </div>
-         <div id="buttons">
+        
           <?php $this->widget('bootstrap.widgets.TbButton', array(
            'buttonType'=>'button',
            'type'=>'action',
@@ -143,27 +130,36 @@
            'htmlOptions'=>array('onclick' => 'zoom()',
             'title' => 'Amplia la linea de tiempo'),
             )); ?>
-           </div>
-
-           <?php 
-$yearNow = date("Y");
-$yearFrom = $yearNow - 5;
-$arrYears = array();
-foreach (range($yearFrom, $yearNow) as $number) {
-    $arrYears[$number] = $number;
-}
-$arrYears = array_reverse($arrYears, true);?>
 
 <div>
 <?php echo CHtml::dropDownList('yearList', $yearNow, $arrYears); ?>
 </div>
+            <div id="wait_animation"><div class="circle"></div><div class="circle1"></div></div>
+            <span>Arrastra los elementos a la linea de tiempo</span>
+  </div>
 
-           <div id="wait_animation"><div class="circle"></div><div class="circle1"></div></div>
-           
-
-          Arrastra los elementos a la linea de tiempo
-            <br/>       
+                  
+      
+        <div  id="planes-metricas" class="drop" ondrop="dropElement(this, event)" ondragenter="return false" ondragover="return false" > 
+          <?php
+          $criteria = new CDbCriteria();
+          $criteria->order = 'anioPlan';
+          $planes = Plan::model()->findAll($criteria); 
+          echo '<ul class="lista">';
+          foreach($planes as $item) {
+            $codigo=$item->id;
+            $anio=$item->anioPlan;
+            $nombre=$item->carrera->nombreCarrera;
+            if ($browser->getBrowser()=="Internet Explorer") 
+                echo '<a href="#" onclick="return false;" draggable="true" class="plan" id="'.$codigo.'" ondragstart="dragElement(this, event,0)">'.$anio.' - '.$nombre.'</a>';
+            else
+                echo '<span draggable="true" class="plan" id="'.$codigo.'" ondragstart="dragElement(this, event,0)">'.$anio.' - '.$nombre.'</span>';
+          }
+          echo '</ul>';
+          ?>
+        </div>
             <div id="colorScale">
+
              <svg x="0" y="0" class="graph-legend" height="20" width="220">
             <g transform="">
               <rect width="20" height="20" x="0" class="r1" fill-opacity="1" fill="#81e62e">
@@ -201,14 +197,15 @@ $arrYears = array_reverse($arrYears, true);?>
           </svg>
 
         </div>
+
         <div id="target" class="drop " ondrop="dropElement(this, event)" ondragover="allowDrop(event)"> </div>
 
-        <div id="target-area"></div>
-      </div>
+     
+      
 
 
       <div  id="materias-metricas" class="drop" ondrop="dropElement(this, event)" ondragenter="return false" ondragover="return false" > 
-
+   
         <!-- Generacion de las materias dropeables -->
         <?php
 
@@ -228,6 +225,8 @@ $arrYears = array_reverse($arrYears, true);?>
         <!-- FIN Generacion de las materias dropeables -->
 
 
+      </div>
+      <div id="target-area"></div>
       </div>
     </div>
   </body>
