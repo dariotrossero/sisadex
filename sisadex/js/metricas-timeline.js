@@ -159,17 +159,6 @@ $(document).ready(function () {
         width: $("#target").width(),
         height: $("#target").height()
     };
-        $( ".anios" ).hide();
-});
-
-$( "#showFilters" ).click(function() {
-	$( ".anios" ).animate({
-    opacity: 1,
-    left: "+=50",
-    height: "toggle"
-  }, 300, function() {
-     $("#showFilters").text($("#showFilters").text() == 'Mostrar filtros' ? 'Ocultar filtros' : 'Mostrar filtros') ;
-  });
 });
 
 function restore() {

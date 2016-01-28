@@ -31,7 +31,6 @@
       ),
       )); ?>
 
-<a href="javascript:;" id='showFilters'>Mostrar filtros</a>
       <div id="data-container">
         <div  id="planes-metricas" class="drop" ondrop="dropElement(this, event)" ondragenter="return false" ondragover="return false" > 
           <?php

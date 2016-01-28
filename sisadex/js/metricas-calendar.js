@@ -211,19 +211,6 @@ function allowDrop(event) {
 $(document).ready(function () {
     $(".circle").hide();
     $(".circle1").hide();
-    $( ".anios-calendar" ).hide();
-
-});
-
-
-$( "#showFilters" ).click(function() {
-	$( ".anios-calendar" ).animate({
-    opacity:1,
-    left: "+=50",
-    height: "toggle"
-  }, 300, function() {
-     $("#showFilters").text($("#showFilters").text() == 'Mostrar filtros' ? 'Ocultar filtros' : 'Mostrar filtros') ;
-  });
 });
 
 function clickYear(year) {

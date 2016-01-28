@@ -33,7 +33,6 @@
     ),
 )); ?>
 
-<a href="javascript:;" id='showFilters'>Mostrar filtros</a>
 <div id="buttons">
 
 <div class="anios-calendar">
