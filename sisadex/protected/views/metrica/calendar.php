@@ -20,7 +20,14 @@
 <div class="titulo">
     <h1>Calendario</h1>
 </div>
-
+<?php 
+$yearNow = date("Y");
+$yearFrom = $yearNow - 5;
+$arrYears = array();
+foreach (range($yearFrom, $yearNow) as $number) {
+    $arrYears[$number] = $number;
+}
+$arrYears = array_reverse($arrYears, true);?>
 
 <?php $this->widget('bootstrap.widgets.TbMenu', array(
     'type' => 'tabs', // '', 'tabs', 'pills' (or 'list')
@@ -33,7 +40,6 @@
     ),
 )); ?>
 
-<a href="javascript:;" id='showFilters'>Mostrar filtros</a>
 <div id="buttons">
 
 <div class="anios-calendar">
@@ -116,14 +122,7 @@
         'htmlOptions' => array('onclick' => 'go2SecondCuat()'),
     )); ?>
 
-<?php 
-$yearNow = date("Y");
-$yearFrom = $yearNow - 5;
-$arrYears = array();
-foreach (range($yearFrom, $yearNow) as $number) {
-    $arrYears[$number] = $number;
-}
-$arrYears = array_reverse($arrYears, true);?>
+
 
 <div>
 <?php echo CHtml::dropDownList('yearList', $yearNow, $arrYears); ?>

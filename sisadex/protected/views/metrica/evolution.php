@@ -9,6 +9,13 @@ Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/me
 Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/metricas-evolution.js', CClientScript::POS_END);
 Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/underscore-min.js');
 $utils= new Utils;
+$yearNow = date("Y");
+$yearFrom = $yearNow - 5;
+$arrYears = array();
+foreach (range($yearFrom, $yearNow) as $number) {
+    $arrYears[$number] = $number;
+}
+$arrYears = array_reverse($arrYears, true);
 ?>
 
 
@@ -103,15 +110,6 @@ $utils= new Utils;
         
     ),
 )); ?>
-
-<?php 
-$yearNow = date("Y");
-$yearFrom = $yearNow - 5;
-$arrYears = array();
-foreach (range($yearFrom, $yearNow) as $number) {
-    $arrYears[$number] = $number;
-}
-$arrYears = array_reverse($arrYears, true);?>
 
 <div id="wait_animation">
   <div class="circle"></div>
