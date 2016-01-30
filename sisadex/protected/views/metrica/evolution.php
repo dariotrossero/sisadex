@@ -111,16 +111,9 @@ $arrYears = array_reverse($arrYears, true);
     ),
 )); ?>
 
-<div id="wait_animation">
-  <div class="circle"></div>
-  <div class="circle1"></div>
-</div>
-
-
-<div id="legend">Seleccione los elementos que desea mostrar</div>
  <div id="filtro">
  <div class="anios">
-     <?php echo CHtml::dropDownList('yearList', $yearNow, $arrYears); ?>
+    
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'type' => 'primary',
     'toggle' => 'checkbox', // 'checkbox' or 'radio'
@@ -163,11 +156,15 @@ $arrYears = array_reverse($arrYears, true);
         array('label'=>'5to año','htmlOptions' => array('id' => 'anio_5','onclick'=>'clickYear(5)')),
     ),
 )); ?>
+ <?php echo CHtml::dropDownList('yearList', $yearNow, $arrYears); ?>
 
-
+<div id="wait_animation">
+  <div class="circle"></div>
+  <div class="circle1"></div>
 </div>
 </div>
-
+</div>
+<div id="legend">Seleccione los elementos que desea mostrar</div>
 <div id="chartdiv" style="width: 100%; height: 600px;"></div>
   </div>
 
@@ -192,5 +189,7 @@ $arrYears = array_reverse($arrYears, true);
 
 
  </div>
+
+</body>>
 
 </body>
