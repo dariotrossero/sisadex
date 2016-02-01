@@ -691,14 +691,6 @@ display: block;
     font-style: italic;
 }
 
-#filtro {
-    width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 10px;
-    display: block;
-}
-
 #showFilters{
 	text-decoration: none;	
 }

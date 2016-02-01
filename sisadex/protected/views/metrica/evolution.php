@@ -111,7 +111,7 @@ $arrYears = array_reverse($arrYears, true);
     ),
 )); ?>
 
- <div id="filtro">
+ <div id="buttons">
  <div class="anios">
     
 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
@@ -190,6 +190,6 @@ $arrYears = array_reverse($arrYears, true);
 
  </div>
 
-</body>>
+</body>
 
 </body>
