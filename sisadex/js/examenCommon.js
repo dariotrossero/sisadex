@@ -16,7 +16,7 @@ function convertDate (input) {
     
     year = datePart[0],
     month = datePart[1], day = datePart[2];
+
      f=new Date(year+"-"+month+"-"+day);
-     console.log(f);
-    return diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
+    return diasSemana[f.getDay()+1] + ", " + (f.getDate()+1) + " de " + meses[f.getMonth()] + " de " + f.getFullYear();
 }
