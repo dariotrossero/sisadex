@@ -61,38 +61,37 @@ $this->widget('bootstrap.widgets.TbMenu', array(
         array(
             'type' => 'raw',
             'value' => 'Yii::app()->user->isAdmin() ?
-          "<a href=\'view/$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a>
-         <a href=\'update/$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-pencil\'></i></a>
-          <a href=\'javascript:void(0);\' onclick=\'delete_record(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-trash\'></i></a>
-         ": "<a href=\'view/$data->id\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a>"',
-            'htmlOptions' => array('style' => 'width:120px; text-align: center')
+          "<a href=\'view/$data->id\'   title=\'Visualizar plan\' class=\'btn btn-small view\'  ><i class=\'icon-eye-open\' ></i></a>
+         <a href=\'update/$data->id\'   title=\'Editar plan\' class=\'btn btn-small view\'  ><i class=\'icon-edit\' ></i></a>
+         <a href=\'javascript:void(0);\' title=\'Copiar plan\' onclick=\'renderCopyForm(".$data->id.")\'  class=\'btn btn-small view\'><i class=\'icon-file\'></i></a>
+          <a href=\'javascript:void(0);\' title=\'Eliminar plan\' onclick=\'delete_record(".$data->id.")\'  class=\'btn btn-small view\'><i class=\'icon-trash\'></i></a>
+         ": "<a href=\'view/$data->id\'  title=\'Visualizar plan\' class=\'btn btn-small view\'  ><i class=\'icon-eye-open\' ></i></a>"',
+            'htmlOptions' => array('style' => 'width:160px; text-align: center')
         ),
     ),
 ));
+$this->renderPartial("_ajax_copy_form", array("model" => $model));
 ?>
 <script type="text/javascript">
     function delete_record(id) {
         var id;
         this.id = id;
-        bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/>  ¿Está seguro de eliminar este plan de estudios?<br/><br/> ", function (result) {
-                if (!result) return;
-                var data = "id=" + id;
-                jQuery.ajax({
-                    type: 'POST',
-                    url: '<?php echo Yii::app()->createAbsoluteUrl("plan/delete"); ?>',
+        bootbox.confirm("<img src='" + baseUrl + "/images/warning.png'/>  ¿Está seguro de eliminar este plan de estudios?<br/><br/> ", function (result) {
+            if (!result) return;
+            var data = "id=" + id;
+            jQuery.ajax({
+                type: 'POST',
+                url: '<?php echo Yii::app()->createAbsoluteUrl("plan/delete"); ?>',
                 data: data,
                 success: function (data) {
                     if (data == "true") {
-                        $.fn.yiiGridView.update('plan-grid', {
-                        });
+                        $.fn.yiiGridView.update('plan-grid', {});
                     }
                     else
                         alert("deletion failed");
                 },
                 error: function (data) { // if error occured
-                   //alert(JSON.stringify(data));
-                                bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-                                //  alert(data);
+                    bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
                 },
                 dataType: 'html'
             });
@@ -100,7 +99,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     }
     function delete_all_records() {
         bootbox.dialog({
-            message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos los planes.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
+            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos los planes.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {
@@ -120,16 +119,13 @@ $this->widget('bootstrap.widgets.TbMenu', array(
                             success: function (data) {
                                 console.log(data);
                                 if (data == "true") {
-                                    $.fn.yiiGridView.update('plan-grid', {
-                                    });
+                                    $.fn.yiiGridView.update('plan-grid', {});
                                 }
                                 else
                                     bootbox.alert("Contraseña incorrecta.");
                             },
                             error: function (data) { // if error occured
-                                //alert(JSON.stringify(data));
                                 bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-                                //  alert(data);
                             },
                             dataType: 'html'
                         });
@@ -138,6 +134,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
             }
         });
     }
+
 </script>
 <style type="text/css" media="print">
     body {

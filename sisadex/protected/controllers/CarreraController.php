@@ -81,26 +81,19 @@ class CarreraController extends Controller
             // Uncomment the following line if AJAX validation is needed
             $this->performAjaxValidation($model, "carrera-update-form");
            if (isset($_POST['Carrera'])) {
-                $transaction = $model->dbConnection->beginTransaction();
-                try {
                     if (Carrera::model()->existsInDatabase($_POST['Carrera']['nombreCarrera'])){
                         echo "exists";
                         return;
                     }        
                 $model->attributes = $_POST['Carrera'];
                     if ($model->save()) {
-                        $transaction->commit();
                         echo "true";
                     } 
                     else {
                         echo "false";
                     }
                     return;
-                } catch (Exception $e) {
-                    $transaction->rollBack();
-                    throw new CHttpException('Se produjo un error al intentar almacenar los datos. Contacte al administrador.');
-                }
-            } 
+            }
             $this->renderPartial('_ajax_update_form', array(
                 'model' => $model
                 ));

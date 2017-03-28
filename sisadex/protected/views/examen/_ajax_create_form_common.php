@@ -1,3 +1,4 @@
+<?php $model = Tipoexamen::model() ?>
 <div id='tipoexamen-create-modal' class="modal hide fade" tabindex="-1"
      role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
@@ -84,41 +85,3 @@
     </div>
 </div>
 <!--end modal-->
-
-<script type="text/javascript">
-    function create() {
-        var data = $("#tipoexamen-create-form").serialize();
-        jQuery.ajax({
-            type: 'POST',
-            url: '<?php
-				echo Yii::app ()->createAbsoluteUrl ( "tipoexamen/create" );
-				?>',
-            data: data,
-            success: function (data) {
-                if (data != "false") {
-                    $('#tipoexamen-create-modal').modal('hide');
-                    $.fn.yiiGridView.update('tipoexamen-grid', {});
-                }
-                else {
-                    $('#tipoexamen-create-modal').modal('hide');
-                    bootbox.alert("Ya existe un registro en la base de datos.");
-                }
-            },
-            error: function (data) { // if error occured
-                $('#tipoexamen-create-modal').modal('hide');
-                bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-            },
-            dataType: 'html'
-        });
-    }
-
-    function renderCreateForm() {
-        $('#tipoexamen-create-form').each(function () {
-            this.reset();
-        });
-        $('#tipoexamen-view-modal').modal('hide');
-        $('#tipoexamen-create-modal').modal({
-            show: true,
-        });
-    }
-</script>

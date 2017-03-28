@@ -1,13 +1,13 @@
-<?php
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/formPlan.css');
-?>
 <div class="form">
-    <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
-    <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay un examen en esa fecha de otra materia
-        del plan.
+    <?php
+    $this->renderPartial("_ajax_create_form_update");
+    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
+    <div class="alert alert-warning" id="msjError" style="">Atención: Hay al menos un examen de otra materia del plan en esa misma fecha.
+       </br><a onclick="showModal()" id="showExams">Mostrar examenes</a>
     </div>
     <p class="note">
         Campos obligatorios <span class="required">*</span>
+        <a onclick="showAgenda()" id="showAgenda">Mostrar agenda</a>
     </p>
     <?php echo $form->errorSummary($model, '', null, array('class' => 'alert alert-error')); ?>
     <div class="control-group">
@@ -53,11 +53,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/formPlan.c
                     <?php echo CHtml::dropDownList('Examen[tipoexamen_id]', $model->tipoexamen_id, CHtml::listData(Tipoexamen::model()->getTiposExamenes($model->materia_id), 'id', 'nombreTipoExamen') + array(-1 => 'Otro...'), array('id' => 'Examen_tipoexamen_id')); ?>
                     <?php echo $form->error($model, 'tipoexamen_id'); ?>
                 </div>
-                <div id="tipoPersonalizado" class="row">
-                    <?php echo $form->labelEx($model, 'TipoExamenPersonalizado'); ?>
-                    <?php echo $form->textField($model, 'TipoExamenPersonalizado', array('size' => 45, 'maxlength' => 60)); ?>
-                    <?php echo $form->error($model, 'TipoExamenPersonalizado'); ?>
-                </div>
                 <div class="row">
                     <?php echo $form->labelEx($model, 'descripcionExamen'); ?>
                     <?php echo $form->textArea($model, 'descripcionExamen', array('class' => 'span3', 'rows' => 5)); ?>
@@ -85,17 +80,24 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/formPlan.c
 </div>
 <!-- Form -->
 <script type="text/javascript">
+    <?php if (Yii::app()->user->isAdmin())
+       echo "var materia_id = $('#Examen_materia_id').val()";
+       else
+       echo "var materia_id= ".Yii::app()->user->name.";";?>
+
     $('#Examen_tipoexamen_id').change(function () {
         $('div.alert').slideUp('fast');
         var opcionSeleccionada = $(this);
         var codigoExamen = opcionSeleccionada.val();        // el "value" de ese <option> seleccionado
         console.log(codigoExamen);
         if (codigoExamen == -1) {
-            $('#tipoPersonalizado').show('fast');
-            return;
-        } else {
-            $('#tipoPersonalizado').hide('fast');
-            return;
+            $('#tipoexamen-create-form').each(function () {
+                this.reset();
+            });
+            $('#tipoexamen-view-modal').modal('hide');
+            $('#tipoexamen-create-modal').modal({
+                show: true
+            });
         }
     });
     CheckExamenOnSameDay = function () {
@@ -106,21 +108,54 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/formPlan.c
         else  echo "var materia_id= ".Yii::app()->user->name.";";?>
         var action = 'CheckExamenOnSameDay/fechaExamen/' + fechaExamen + '/materia_id/' + materia_id;
         $('#reportarerror').html("");
-         
-          $.ajax({
-       type: "GET",      
-       data: "fechaExamen="+fechaExamen+"&materia_id="+materia_id,
-       url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
-       success: function (respuesta){
-        console.log(respuesta);
-       if (respuesta == "true") {
-                $('#msjError').slideDown('fast');
+        $.ajax({
+            type: "GET",
+            data: "fechaExamen=" + fechaExamen + "&materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
+            success: function (respuesta) {
+                exams = respuesta;
+                if (Object.keys(exams).length === 0) {
+                    $('#msjError').slideUp('fast');
+                }
+                else {
+                    $('#msjError').slideDown('fast');
+                }
             }
-            else {
-                $('#msjError').slideUp('fast');
-            }  }   
-    });  
-     
+        });
     };
     $('#Examen_materia_id').change(CheckExamenOnSameDay);
+
+    function showAgenda() {
+
+        $.ajax({
+            type: "GET",
+            data: "materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/GetAgenda');?>",
+            success: function (respuesta) {
+                if (materia_id === "")  {
+                    string = "<center><h3>Seleccione una materia primero.</h3></center>"
+                    $.modal(string);
+                }
+                agenda = respuesta;
+                if (Object.keys(agenda).length === 0) {
+                 string = "<center><h3>Aún no se han cargado examenes de otras materias del mismo plan.</h3></center>"
+                    $.modal(string);   
+                }
+                else {
+                    string = "<h4><ul>";
+                    for (var key in agenda) {
+                        var obj = agenda[key];
+                        string = string + "<li>" + obj.nombreMateria + "</br><h5>" + obj.nombreTipoExamen + "</br>" + convertDate(obj.fechaExamen) + "</h5></li></br>";
+                    }
+                    string = string + "</ul><h4>";
+                    $.modal(string);
+                }
+            }
+        });
+
+    };
+
+
+
 </script>
+

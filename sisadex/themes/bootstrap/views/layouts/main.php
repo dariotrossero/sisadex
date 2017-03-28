@@ -81,7 +81,7 @@ $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 										'visible' => ! Yii::app ()->user->isGuest 
 								),
 								array (
-										'label' => 'Tipos de exámenes',
+										'label' => 'Tipos de Examenes',
 										'icon' => 'icon-tags',
 										'url' => array (
 												'/tipoexamen/index' 
@@ -89,7 +89,7 @@ $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 										'visible' => ! Yii::app ()->user->isGuest 
 								),
 								array (
-										'label' => 'Exámenes',
+										'label' => 'Examenes',
 										'icon' => 'icon-pencil',
 										'url' => array (
 												'/examen/index' 
@@ -162,7 +162,7 @@ $this->widget ( 'bootstrap.widgets.TbNavbar', array (
 		</div>
 
 		<div id="logo">
-				<div id="systemName"><b>SIS</b>tema de <b>AD</b>ministración de <b>EX</b>ámenes | v1.1</div>
+				<div id="systemName"><b>SIS</b>tema de <b>AD</b>ministración de <b>EX</b>ámenes | v1.5</div>
 		</div>
 
 	</div>

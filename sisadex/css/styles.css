@@ -7,11 +7,11 @@
     padding-top: 60px;
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 10px;
     width: 1200px;
     margin-left: auto;
     margin-right: auto;
     background-color: #FFF;
-    padding-bottom: 10px;
 }
 
 #loginBox h1 {
@@ -34,11 +34,11 @@
 }
 
 #tabla {
-  width: 60%;
-  display: inline-block;
-  overflow-y: scroll;
-  height: 600px;
-  float: right;
+    width: 60%;
+    display: inline-block;
+    overflow-y: scroll;
+    height: 600px;
+    float: right;
 }
 
 .lista {
@@ -119,16 +119,12 @@ div .alert {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    border: 1px solid #3d94f6;
+    border: 1px solid #ccc;
     padding: 5px 9px;
     margin: 3px;
     text-decoration: none;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #3d94f6), color-stop(100%, #1e62d0));
-    background: -moz-linear-gradient(center top, #3d94f6 5%, #1e62d0 100%);
-    background: -ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0');
-    background-color: #3d94f6;
-    color: #ffffff;
+       background-color: #ededed;
+    color: #000;
     display: inline-block;
 }
 
@@ -140,16 +136,12 @@ div .alert {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    border: 1px solid #83c41a;
+    border: 1px solid #ccc;
     padding: 5px 9px;
     margin: 3px;
     text-decoration: none;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #9dce2c), color-stop(100%, #8cb82b));
-    background: -moz-linear-gradient(center top, #9dce2c 5%, #8cb82b 100%);
-    background: -ms-linear-gradient(top, #9dce2c 5%, #8cb82b 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9dce2c', endColorstr='#8cb82b');
-    background-color: #9dce2c;
-    color: #ffffff;
+    background-color: #ededed;
+    color: #000;
     display: inline-block;
 }
 
@@ -209,7 +201,7 @@ h1, h2, h3, h4 {
 
 #msjError {
     display: none;
-    width: 40%;
+
     float: none;
 }
 
@@ -279,16 +271,15 @@ a.boxclose {
 }
 
 #materias-metricas {
-    margin-top: 100px;
     overflow-y: scroll;
     float: right;
     width: 155px;
-    height: 600px;
+    height: 500px;
 }
 
 #planes-metricas {
     display: inline-block;
-    margin-top: 100px;
+    margin-top: 25px;
     width: 155px;
     height: 600px;
     float: left;
@@ -423,7 +414,6 @@ a.boxclose {
         opacity: 0;
     }
 
-;
 }
 
 @-moz-keyframes spinoffPulse {
@@ -435,7 +425,6 @@ a.boxclose {
         -moz-transform: rotate(360deg);
     }
 
-;
 }
 
 @-webkit-keyframes spinPulse {
@@ -455,7 +444,6 @@ a.boxclose {
         opacity: 0;
     }
 
-;
 }
 
 @-webkit-keyframes spinoffPulse {
@@ -467,11 +455,11 @@ a.boxclose {
         -webkit-transform: rotate(360deg);
     }
 
-;
 }
 
 #wait_animation {
-    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     height: 30px;
 }
 
@@ -548,14 +536,6 @@ div.color10 {
     box-shadow: 0 0 10px gray;
 }
 
-#middle {
-    float: left;
-    text-align: center;
-    width: 880px;
-    font-style: italic;
-    background-color: #fff !important;
-    color: #aaa !important;
-}
 
 .timeline-axis-text {
     background-color: #fff !important;
@@ -566,6 +546,7 @@ div.color10 {
 #buttons {
     max-width: 500px;
     margin-right: auto;
+    font-style: italic;
     margin-left: auto;
     margin-bottom: 10px;
     padding: 5px;
@@ -667,23 +648,28 @@ input[readonly] {
     color: #000000 !important;
     cursor: pointer !important;
 }
+
 .anios {
-float: left;
-text-align: center;
-margin-right: 10px;
+    text-align: center;
+}
+
+.anios-calendar {
+    float: none;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.anios-calendar a {
+    margin-bottom: 4px;
 }
 
 .anios a {
     margin-bottom: 4px;
 }
-#filtro {
- width: 900px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
+
+
 #legend {
- 
+display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
@@ -695,12 +681,44 @@ margin-right: 10px;
 }
 
 #systemName {
-     height: 25px;
-     padding-right: 10px;
+    height: 25px;
+    padding-right: 10px;
     font-style: italic;
     font-size: 12px;
     color: white;
     padding-left: 10px;
     text-align: right;
-    font-style: italic;   
+    font-style: italic;
+}
+
+#showFilters{
+	text-decoration: none;	
+}
+
+#showExams {
+text-decoration: none;
+cursor: pointer;
+}
+#simplemodal-container {
+max-height: 800px;
+margin-top: 140px;
+}
+
+#showAgenda {
+text-decoration: none;
+cursor: pointer;
+display: block;
+text-align: right;
+padding-right: 20px;
+}
+#yearList {
+  margin-top: 5px;
+  width: 100px;
+  margin-left:auto;
+  margin-right:auto;
+  display: block;
+     }
+
+div.timeline-frame {
+    border: 1px dashed #bebebe;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the model class for table "Tipo_Examen".
  *
@@ -16,6 +17,7 @@ class Tipoexamen extends CActiveRecord
     {
         return 'Tipo_Examen';
     }
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -28,18 +30,17 @@ class Tipoexamen extends CActiveRecord
                 'nombreTipoExamen',
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
-                ),
-            // array('Materia_id', 'numerical', 'integerOnly'=>true),
+            ),
             array(
                 'nombreTipoExamen',
                 'length',
                 'max' => 45
-                ),
+            ),
             array(
                 'complejidad',
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
-                ),
+            ),
             array(
                 'complejidad',
                 'numerical',
@@ -47,16 +48,17 @@ class Tipoexamen extends CActiveRecord
                 'min' => 1,
                 'max' => 10,
                 'message' => '{attribute} debe ser un numero entre 1 y 10.'
-                ),
+            ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
                 'nombreTipoExamen, Materia_id, id',
                 'safe',
                 'on' => 'search'
-                )
-            );
-}
+            )
+        );
+    }
+
     /**
      * @return array relational rules.
      */
@@ -66,6 +68,7 @@ class Tipoexamen extends CActiveRecord
         // class name for the relations automatically generated below.
         return array();
     }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -76,8 +79,9 @@ class Tipoexamen extends CActiveRecord
             'Materia_id' => 'Materia',
             'id' => 'ID',
             'complejidad' => 'Complejidad'
-            );
+        );
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -97,14 +101,15 @@ class Tipoexamen extends CActiveRecord
         $criteria->compare('nombreTipoExamen', $this->nombreTipoExamen, true);
         $criteria->compare('Materia_id', $this->Materia_id);
         $criteria->compare('id', $this->id);
-        
+
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'nombreTipoExamen ASC'
-                ),
-            ));
+            ),
+        ));
     }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -115,77 +120,62 @@ class Tipoexamen extends CActiveRecord
     {
         return parent::model($className);
     }
+
     public function searchDefault()
     {
-        $criteria            = new CDbCriteria;
+        $criteria = new CDbCriteria;
         $criteria->condition = 'Materia_id=:arg1';
-        
-        $criteria->params    = array(
+
+        $criteria->params = array(
             ':arg1' => -1
-            );
+        );
         $criteria->compare('nombreTipoExamen', $this->nombreTipoExamen, true);
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'nombreTipoExamen ASC'
-                ),
-            ));
-    }
-    public function searchPorMaterias($id)
-    {
-        $criteria            = new CDbCriteria;
-        $criteria->condition = 'Materia_id=:arg1';
-        $criteria->params    = array(
-            ':arg1' => $id
-            );
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria
-            ));
-    }
-    public function getTiposExamenes($id)
-    {
-        $criteria            = new CDbCriteria;
-        $criteria->condition = 'Materia_id=:arg1 OR Materia_id=:arg2';
-        $criteria->params    = array(
-            ':arg1' => -1,
-            ':arg2' => $id
-            );
-        $criteria->order     = 'nombreTipoExamen';
-        return $this->findAll($criteria);
-    }
-    public function insertWithoutFail($materia_id, $nombreTipoExamen)
-    {
-        $criteria            = new CDbCriteria();
-        $criteria->select    = 'id';
-        $criteria->condition = 'LOWER(nombreTipoExamen)=:nombreTipoExamen AND Materia_id=:Materia_id';
-        $criteria->params    = array(
-            ':nombreTipoExamen' => strtolower($nombreTipoExamen),
-            ':Materia_id' => $materia_id
-            );
-        $result              = $this->find($criteria);
-        if ($result != null)
-            return $result->id; //ya existe no lo agrego y devuelvo el id
-        else {
-            $tipo                   = new Tipoexamen;
-            $tipo->nombreTipoExamen = $nombreTipoExamen;
-            $tipo->Materia_id       = $materia_id;
-            $tipo->save();
-            return $tipo->id;
-        }
+            ),
+        ));
     }
 
-        public function existsInDatabase($nombreTipoExamen, $Materia_id, $id) {
-            
-            $criteria = new CDbCriteria();
-            $criteria->select = 'nombreTipoExamen, Materia_id';
-            $criteria->condition = 'LOWER(nombreTipoExamen)=:nombreTipoExamen AND Materia_id=:Materia_id AND id!=:id';
-            $criteria->params = array(
+    public function searchPorMaterias($id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'Materia_id=:arg1';
+        $criteria->params = array(
+            ':arg1' => $id
+        );
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria
+        ));
+    }
+
+    public function getTiposExamenes($id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'Materia_id=:arg1 OR Materia_id=:arg2';
+        $criteria->params = array(
+            ':arg1' => -1,
+            ':arg2' => $id
+        );
+        $criteria->order = 'nombreTipoExamen';
+        return $this->findAll($criteria);
+    }
+
+
+    public function existsInDatabase($nombreTipoExamen, $Materia_id, $id)
+    {
+
+        $criteria = new CDbCriteria();
+        $criteria->select = 'nombreTipoExamen, Materia_id';
+        $criteria->condition = 'LOWER(nombreTipoExamen)=:nombreTipoExamen AND Materia_id=:Materia_id AND id!=:id';
+        $criteria->params = array(
             ':nombreTipoExamen' => strtolower($nombreTipoExamen),
             ':Materia_id' => $Materia_id,
             ':id' => $id
-                );
-            $records = Tipoexamen::model()->find($criteria);
-            return (count($records) > 0);
-        }
+        );
+        $records = Tipoexamen::model()->find($criteria);
+        return (count($records) > 0);
+    }
 
 }

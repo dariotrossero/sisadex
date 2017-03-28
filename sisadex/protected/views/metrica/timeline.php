@@ -1,20 +1,16 @@
 
 
 <head>
-
-
   <?php 
   Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/timeline/timeline.js');
   Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/timeline/timeline-locales.js');
   Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/underscore-min.js');
+  Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/metricas-common.js');
   Yii::app() -> clientScript -> registerScriptFile(Yii::app() -> baseUrl . '/js/metricas-timeline.js', CClientScript::POS_END);
-
   Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/timeline/timeline.css'); 
   $browser = new EWebBrowser();
   ?>
-
-
-
+<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
 <body  onload="drawVisualization();">
@@ -22,7 +18,14 @@
   <div class="titulo">
     <h1>Linea de tiempo</h1>
   </div>
-
+ <?php 
+$yearNow = date("Y");
+$yearFrom = $yearNow - 5;
+$arrYears = array();
+foreach (range($yearFrom, $yearNow) as $number) {
+    $arrYears[$number] = $number;
+}
+$arrYears = array_reverse($arrYears, true);?>
 
   <?php $this->widget('bootstrap.widgets.TbMenu', array(
     'type'=>'tabs', // '', 'tabs', 'pills' (or 'list')
@@ -35,40 +38,55 @@
       ),
       )); ?>
 
-
-      <div id="data-container">
-
-        <div  id="planes-metricas" class="drop" ondrop="dropElement(this, event)" ondragenter="return false" ondragover="return false" > 
-
-
-          <?php
-
-          $criteria = new CDbCriteria();
-          $criteria->order = 'anioPlan';
-          $planes = Plan::model()->findAll($criteria); 
-
-
-          echo '<ul class="lista">';
-          foreach($planes as $item) {
-            $codigo=$item->id;
-            $anio=$item->anioPlan;
-            $nombre=$item->carrera->nombreCarrera;
-            if ($browser->getBrowser()=="Internet Explorer") 
-                echo '<a href="#" onclick="return false;" draggable="true" class="plan" id="'.$codigo.'" ondragstart="dragElement(this, event,0)">'.$anio.' - '.$nombre.'</a>';
-            else
-                echo '<span draggable="true" class="plan" id="'.$codigo.'" ondragstart="dragElement(this, event,0)">'.$anio.' - '.$nombre.'</span>';
-          }
-
-          echo '</ul>';
-          ?>
+        
+<div id="buttons">
+ <div class ="anios">
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'1er año','htmlOptions' => array('id' => 'anio_1','onclick'=>'clickYear(1)')),
+    ),
+)); ?>
 
 
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'2do año','htmlOptions' => array('id' => 'anio_2','onclick'=>'clickYear(2)')),
+    ),
+)); ?>
 
-        </div>
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'3er año','htmlOptions' => array('id' => 'anio_3','onclick'=>'clickYear(3)')),
+    ),
+)); ?>
 
-        <div id="middle">
 
-         <div id="buttons">
+
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'4to año','htmlOptions' => array('id' => 'anio_4','onclick'=>'clickYear(4)')),
+    ),
+)); ?>
+
+<?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'type' => 'primary',
+    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+    'buttons' => array(
+        array('label'=>'5to año','htmlOptions' => array('id' => 'anio_5','onclick'=>'clickYear(5)')),
+    ),
+)); ?>
+
+
+</div>
+        
           <?php $this->widget('bootstrap.widgets.TbButton', array(
            'buttonType'=>'button',
            'type'=>'action',
@@ -112,14 +130,36 @@
            'htmlOptions'=>array('onclick' => 'zoom()',
             'title' => 'Amplia la linea de tiempo'),
             )); ?>
-           </div>
 
-           <div id="wait_animation"><div class="circle"></div><div class="circle1"></div></div>
-           
+<div>
+<?php echo CHtml::dropDownList('yearList', $yearNow, $arrYears); ?>
+</div>
+            <div id="wait_animation"><div class="circle"></div><div class="circle1"></div></div>
+            <span>Arrastra los elementos a la linea de tiempo</span>
+  </div>
 
-          Arrastra los elementos a la linea de tiempo
-            <br/>       
+                  
+      
+        <div  id="planes-metricas" class="drop" ondrop="dropElement(this, event)" ondragenter="return false" ondragover="return false" > 
+          <?php
+          $criteria = new CDbCriteria();
+          $criteria->order = 'anioPlan';
+          $planes = Plan::model()->findAll($criteria); 
+          echo '<ul class="lista">';
+          foreach($planes as $item) {
+            $codigo=$item->id;
+            $anio=$item->anioPlan;
+            $nombre=$item->carrera->nombreCarrera;
+            if ($browser->getBrowser()=="Internet Explorer") 
+                echo '<a href="#" onclick="return false;" draggable="true" class="plan" id="'.$codigo.'" ondragstart="dragElement(this, event,0)">'.$anio.' - '.$nombre.'</a>';
+            else
+                echo '<span draggable="true" class="plan" id="'.$codigo.'" ondragstart="dragElement(this, event,0)">'.$anio.' - '.$nombre.'</span>';
+          }
+          echo '</ul>';
+          ?>
+        </div>
             <div id="colorScale">
+
              <svg x="0" y="0" class="graph-legend" height="20" width="220">
             <g transform="">
               <rect width="20" height="20" x="0" class="r1" fill-opacity="1" fill="#81e62e">
@@ -157,14 +197,15 @@
           </svg>
 
         </div>
+
         <div id="target" class="drop " ondrop="dropElement(this, event)" ondragover="allowDrop(event)"> </div>
 
-        <div id="target-area"></div>
-      </div>
+     
+      
 
 
       <div  id="materias-metricas" class="drop" ondrop="dropElement(this, event)" ondragenter="return false" ondragover="return false" > 
-
+   
         <!-- Generacion de las materias dropeables -->
         <?php
 
@@ -184,6 +225,8 @@
         <!-- FIN Generacion de las materias dropeables -->
 
 
+      </div>
+      <div id="target-area"></div>
       </div>
     </div>
   </body>

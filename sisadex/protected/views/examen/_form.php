@@ -2,30 +2,32 @@
 /* @var $model Examen */
 /* @var $form CActiveForm */
 if (Yii::app()->user->isAdmin())
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCreate.js', CClientScript::POS_END);
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCreate2.js', CClientScript::POS_END);
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCreateAdmin.js', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCreate.js', CClientScript::POS_END);
+$this->renderPartial("_ajax_create_form");
 ?>
 <div class="form">
     <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'examen-form', 'enableAjaxValidation' => false, 'method' => 'post', 'type' => 'horizontal', 'htmlOptions' => array('enctype' => 'multipart/form-data'))); ?>
     <?php echo CHtml::hiddenField('cantExamenes', $this->cantExamenes, array('id' => 'cantExamenes')); ?>
-    <div class="alert alert-warning span12" id="msjError" style="">Atención: Hay un examen en esa fecha de otra materia
-        del plan.
+    <div class="alert alert-warning" id="msjError" style="">Atención: Hay al menos un examen de otra materia del plan en
+        esa misma fecha.
+        </br><a onclick="showModal()" id="showExams">Mostrar examenes</a>
     </div>
     <p class="note">
         Campos obligatorios <span class="required">*</span>
+        <a onclick="showAgenda()" id="showAgenda">Mostrar agenda</a>
     </p>
+
     <div class="control-group">
         <div class="span10">
             <div class="row">
                 <div class="span4">
                     <?php if (Yii::app()->user->isAdmin()) {
-                        ?>
-                        <?php echo $form->labelEx($modelos[1], 'materia_id'); ?>
-                        <?php
+                        echo $form->labelEx($modelos[1], 'materia_id');
                         echo CHtml::activeDropDownList($modelos[1], '[1]materia_id',
                             CHtml::listData(Materia::model()->getTodasLasMaterias('nombreMateria'), 'id', 'concatened'),
-                            array('options' => array($modelos[1]->materia_id => array('selected' => true)), 'empty' => '-Por favor seleccione-')); ?>
-                        <?php echo $form->error($modelos[1], 'materia_id');
+                            array('options' => array($modelos[1]->materia_id => array('selected' => true)), 'empty' => '-Por favor seleccione-'));
+                        echo $form->error($modelos[1], 'materia_id');
                     }
                     ?>
                 </div>
@@ -66,18 +68,20 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
                         <div class="row">
                             <?php echo $form->error($modelos[$i], 'tipoexamen_id'); ?>
                             <?php echo $form->labelEx($modelos[$i], "[$i]tipoexamen_id"); ?>
-                            <?php echo CHtml::activeDropDownList($modelos[$i], "[$i]tipoexamen_id",
-                                CHtml::listData(Tipoexamen::model()->getTiposExamenes(Yii::app()->user->name),
-                                    'id', 'nombreTipoExamen') + array(-1 => 'otro'),
+                            <?php
+                            if (Yii::app()->user->isAdmin())
+                                $materia_id = $modelos[1]->materia_id;
+                            else
+                                $materia_id = Yii::app()->user->name;
+
+                            echo CHtml::activeDropDownList($modelos[$i], "[$i]tipoexamen_id",
+                                CHtml::listData(Tipoexamen::model()->getTiposExamenes($materia_id),
+                                    'id', 'nombreTipoExamen') + array(-1 => 'Otro...'),
                                 array('onChange' => 'javascript:fillTipoPersonalizado(this)'),
                                 array('options' => array(
                                     $modelos[$i]->tipoexamen_id => array('selected' => true)), 'empty' => '-Por favor seleccione-')); ?>
                         </div>
-                        <div <?php echo 'class="row tipoPersonalizado" id="tipoPersonalizado_' . $i . '"' ?> >
-                            <?php echo $form->labelEx($modelos[$i], 'TipoExamenPersonalizado'); ?>
-                            <?php echo $form->textField($modelos[$i], "[$i]TipoExamenPersonalizado", array('size' => 45, 'maxlength' => 60)); ?>
-                            <?php echo $form->error($modelos[$i], 'TipoExamenPersonalizado'); ?>
-                        </div>
+
                         <div id="row">
                             <?php echo $form->labelEx($modelos[$i], 'descripcionExamen'); ?>
                             <?php echo $form->textArea($modelos[$i], "[$i]descripcionExamen", array('class' => 'span3', 'rows' => 5)); ?>
@@ -98,7 +102,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
                         'type' => 'action',
                         'icon' => ' icon-plus-sign',
                         'size' => 'small',
-                        // 'label' =>  'Agregar examen',
                         'htmlOptions' => array('id' => 'newExam'),
                     )); ?>
                 <?php $this->widget('bootstrap.widgets.TbButton',
@@ -107,7 +110,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
                         'type' => 'action',
                         'icon' => ' icon-minus-sign',
                         'size' => 'small',
-                        //   'label' =>  'Eliminar examen',
                         'htmlOptions' => array('id' => 'removeExam'),
                     )); ?>
                 <br/>
@@ -128,29 +130,56 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
 </div>
 <!-- Form -->
 <script>
+    exams = {};
+
+
+    <?php echo "var materia_id;" ?>
+
+
+    $(document).ready(function () {
+        var examenes = parseInt($('#cantExamenes').val());
+        for (var i = 1; i <= examenes; i++) {
+            $('#entry' + i.toString()).show();
+            if (i > 1)  $('#removeExam').show();
+        };
+        <?php if (Yii::app()->user->isAdmin())
+            echo "materia_id= $('#Examen_1_materia_id').val();" ;
+            else  echo "materia_id= ".Yii::app()->user->name.";";?>
+    });
+
+    $("#examen-form").submit(function (event) {
+        //Se habilita nuevamente el id de materia para que sea tomado en el form. Sino falla.
+        $('#Examen_1_materia_id').removeAttr("disabled");
+    });
+
     CheckExamenOnSameDay = function () {
         $('div.alert').slideUp('fast');
         var fechaExamen = $(this).val();
         <?php if (Yii::app()->user->isAdmin())
-        echo "var materia_id= $('#Examen_1_materia_id').val();" ;
-        else  echo "var materia_id= ".Yii::app()->user->name.";";?>
+        echo "materia_id= $('#Examen_1_materia_id').val();" ;
+        else  echo "materia_id= ".Yii::app()->user->name.";";?>
         var action = 'CheckExamenOnSameDay/fechaExamen/' + fechaExamen + '/materia_id/' + materia_id;
         $('#reportarerror').html("");
+        console.log(materia_id + ":" + fechaExamen);
         $.ajax({
-       type: "GET",      
-       data: "fechaExamen="+fechaExamen+"&materia_id="+materia_id,
-       url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
-       success: function (respuesta){
-        console.log(respuesta);
-       if (respuesta == "true") {
-                $('#msjError').slideDown('fast');
+            type: "GET",
+            data: "fechaExamen=" + fechaExamen + "&materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/CheckExamenOnSameDay');?>",
+            success: function (respuesta) {
+                console.log(respuesta);
+                exams = respuesta;
+                if (Object.keys(exams).length === 0) {
+                    $('#msjError').slideUp('fast');
+                }
+                else {
+                    $('#msjError').slideDown('fast');
+                }
             }
-            else {
-                $('#msjError').slideUp('fast');
-            }  }   
-    });  
+        });
     };
-    $('#Examen_materia_id').change(CheckExamenOnSameDay);
+
+    $('#Examen_1_materia_id').change(CheckExamenOnSameDay);
+
     $('#newExam').click(function () {
         var examenes = parseInt($('#cantExamenes').val());
         if (examenes < 9) {
@@ -188,12 +217,38 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/examenCr
             $('#tipoPersonalizado_' + examenes.toString()).hide();
         }
     });
-    $(document).ready(function () {
-        var examenes = parseInt($('#cantExamenes').val());
-        for (var i = 1; i <= examenes; i++) {
-            $('#entry' + i.toString()).show();
-            if (i > 1)  $('#removeExam').show();
-        }
-        ;
-    });
+
+
+    function showAgenda() {
+        <?php if (Yii::app()->user->isAdmin())
+        echo "materia_id= $('#Examen_1_materia_id').val();" ;
+        else  echo "materia_id= ".Yii::app()->user->name.";";?>
+        $.ajax({
+            type: "GET",
+            data: "materia_id=" + materia_id,
+            url: "<?php echo CController::createUrl('examen/GetAgenda');?>",
+            success: function (respuesta) {
+                if (materia_id === "") {
+                    string = "<center><h3>Seleccione una materia primero.</h3></center>"
+                    $.modal(string);
+                }
+                agenda = respuesta;
+                if (Object.keys(agenda).length === 0) {
+                    string = "<center><h3>Aún no se han cargado examenes de otras materias del mismo plan.</h3></center>"
+                    $.modal(string);
+                }
+                else {
+                    string = "<h4><ul>";
+                    for (var key in agenda) {
+                        var obj = agenda[key];
+                        string = string + "<li>" + obj.nombreMateria + "</br><h5>" + obj.nombreTipoExamen + "</br>" + convertDate(obj.fechaExamen) + "</h5></li></br>";
+                    }
+                    string = string + "</ul><h4>";
+                    $.modal(string);
+                }
+            }
+        });
+
+    };
 </script>
+

@@ -141,7 +141,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 * image logo
 	 */
-	define ('PDF_HEADER_LOGO', 'demo.jpg');
+	define ('PDF_HEADER_LOGO', '');
 
 	/**
 	 * header logo image width [mm]

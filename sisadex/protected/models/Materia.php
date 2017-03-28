@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the model class for table "Materia".
  *
@@ -20,6 +21,7 @@ class Materia extends CActiveRecord
     {
         return 'Materia';
     }
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -32,37 +34,39 @@ class Materia extends CActiveRecord
                 'id',
                 'numerical',
                 'message' => '{attribute} debe ser un numero.',
-                'min' => 1,
+                'min' => 0,
+                'max' => 2147483647,
                 'integerOnly' => true
-                ),
+            ),
             array(
                 'id',
                 'unique'
-                ),
+            ),
             array(
                 'id',
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
-                ),
+            ),
             array(
                 'nombreMateria',
                 'required',
                 'message' => '{attribute} no puede ser vacío.'
-                ),
+            ),
             array(
                 'nombreMateria',
                 'length',
-                'max' => 70
-                ),
+                'max' => 60
+            ),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array(
                 'id, nombreMateria',
                 'safe',
                 'on' => 'search'
-                )
-            );
-}
+            )
+        );
+    }
+
     /**
      * @return array relational rules.
      */
@@ -75,19 +79,20 @@ class Materia extends CActiveRecord
                 self::MANY_MANY,
                 'Plan',
                 'Materia_has_Plan(Materia_codigoMateria, Plan_codigoPlan)'
-                ),
+            ),
             'tipoExamens' => array(
                 self::HAS_MANY,
                 'TipoExamen',
                 'Materia_codigoMateria'
-                ),
+            ),
             'examens' => array(
                 self::HAS_MANY,
                 'Examen',
                 'Materia_codigoMateria'
-                )
-            );
+            )
+        );
     }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -96,8 +101,9 @@ class Materia extends CActiveRecord
         return array(
             'id' => 'Código',
             'nombreMateria' => 'Materia'
-            );
+        );
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -118,27 +124,29 @@ class Materia extends CActiveRecord
         $criteria->compare('nombreMateria', $this->nombreMateria, true);
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria
-            ));
+        ));
     }
+
     public function searchSinDefault()
     {
-        $criteria            = new CDbCriteria;
+        $criteria = new CDbCriteria;
         $criteria->condition = 'id!=:arg1';
-        $criteria->params    = array(
+        $criteria->params = array(
             ':arg1' => -1
-            );
+        );
         $criteria->compare('id', $this->id, true);
         $criteria->compare('nombreMateria', $this->nombreMateria, true);
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
                 'defaultOrder' => 'nombreMateria ASC'
-                ),
+            ),
             'pagination' => array(
                 'pageSize' => 15
-                )
-            ));
+            )
+        ));
     }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -149,28 +157,31 @@ class Materia extends CActiveRecord
     {
         return parent::model($className);
     }
+
     public function getConcatened()
     {
         return $this->id . ' - ' . $this->nombreMateria;
     }
+
     public function getTodasLasMaterias($orderBy)
     {
         return $this->findAll(array(
             "condition" => "id !=-1",
             'order' => $orderBy
-            ));
+        ));
     }
 
 
-    public function existsInDatabase($nombreMateria) {
-            $criteria = new CDbCriteria();
-            $criteria->select = 'nombreMateria';
-            $criteria->condition = 'LOWER(nombreMateria)=:nombreMateria';
-            $criteria->params = array(
+    public function existsInDatabase($nombreMateria)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->select = 'nombreMateria';
+        $criteria->condition = 'LOWER(nombreMateria)=:nombreMateria';
+        $criteria->params = array(
             ':nombreMateria' => strtolower($nombreMateria),
-             );
-            $records = Materia::model()->find($criteria);
-            return (count($records) > 0);
+        );
+        $records = Materia::model()->find($criteria);
+        return (count($records) > 0);
     }
 }
 

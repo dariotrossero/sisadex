@@ -57,8 +57,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
         array(
             'type' => 'raw',
             'value' => '"
-		    <!--  <a href=\'javascript:void(0);\' onclick=\'renderView(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-eye-open\'></i></a> --!>
-		      <a href=\'javascript:void(0);\' onclick=\'renderUpdateForm(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-pencil\'></i></a>
+		      <a href=\'javascript:void(0);\' onclick=\'renderUpdateForm(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-edit\'></i></a>
 		      <a href=\'javascript:void(0);\' onclick=\'delete_record(".$data->id.")\'   class=\'btn btn-small view\'  ><i class=\'icon-trash\'></i></a>
 		     "',
             'htmlOptions' => array('style' => 'width:80px; text-align: center')
@@ -72,9 +71,8 @@ $this->renderPartial("_ajax_create_form", array("model" => $model));
     function delete_record(id) {
         var id;
         this.id = id;
-        bootbox.confirm("<img src='"+baseUrl+"/images/warning.png'/> ¿Está seguro de eliminar esta materia?<br/><br/><p class='text-warning'> Se eliminará el usuario asociado y todos los exámenes de la misma.</p>", function (result) {
+        bootbox.confirm("<img src='" + baseUrl + "/images/warning.png'/> ¿Está seguro de eliminar esta materia?<br/><br/><p class='text-warning'> Se eliminará el usuario asociado y todos los examenes de la misma.</p>", function (result) {
             if (!result) return;
-            //  $('#ajaxtest-view-modal').modal('hide');
             var data = "id=" + id;
             jQuery.ajax({
                 type: 'POST',
@@ -82,16 +80,13 @@ $this->renderPartial("_ajax_create_form", array("model" => $model));
                 data: data,
                 success: function (data) {
                     if (data == "true") {
-                        $.fn.yiiGridView.update('materia-grid', {
-                        });
+                        $.fn.yiiGridView.update('materia-grid', {});
                     }
                     else
                         alert("deletion failed");
                 },
                 error: function (data) { // if error occured
-                    //alert(JSON.stringify(data));
                     bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-                    //  alert(data);
                 },
                 dataType: 'html'
             });
@@ -99,7 +94,7 @@ $this->renderPartial("_ajax_create_form", array("model" => $model));
     }
     function delete_all_records() {
         bootbox.dialog({
-            message: "<img src='"+baseUrl+"/images/warning.png'/>  Se eliminarán todos las materias y los exámenes asociados a ellas.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
+            message: "<img src='" + baseUrl + "/images/warning.png'/>  Se eliminarán todos las materias y los examenes asociados a ellas.<br/> <br/>Por seguridad debe ingresar la contraseña de adminsitrador<br/><br/><input type='password' id ='pass' class='span3' ></input>",
             title: "Confirmar eliminación",
             buttons: {
                 cancelar: {
@@ -119,16 +114,13 @@ $this->renderPartial("_ajax_create_form", array("model" => $model));
                             success: function (data) {
                                 console.log(data);
                                 if (data == "true") {
-                                    $.fn.yiiGridView.update('materia-grid', {
-                                    });
+                                    $.fn.yiiGridView.update('materia-grid', {});
                                 }
                                 else
                                     bootbox.alert("Contraseña incorrecta.");
                             },
                             error: function (data) { // if error occured
-                                //alert(JSON.stringify(data));
                                 bootbox.alert("Se ha producido un error interno. Contacte al administrador.");
-                                //  alert(data);
                             },
                             dataType: 'html'
                         });
@@ -142,6 +134,7 @@ $this->renderPartial("_ajax_create_form", array("model" => $model));
     body {
         visibility: hidden;
     }
+
     .printableArea {
         visibility: visible;
     }
