@@ -86,7 +86,7 @@ class MetricaController extends Controller
         header("Content-type: application/json");
         //Envio la informacion en formato jSON
         //2 arreglos, result1 con los complejidades en cada dia y result2 con info de cada examen (fecha, materia y tipo de examen)
-        $details = $this->actionGetExamsDetails($materias, $planes);
+        $details = $this->actionGetExamsDetails($materias, $planes, $anios);
         echo CJSON::encode(array(
             'result1' => $datos,
             'result2' => $details,
@@ -97,12 +97,13 @@ class MetricaController extends Controller
     /**
      * Obtiene fecha, materia y tipo de examen para mostrar cuando se clickea en un dia
      */
-    public function actionGetExamsDetails($materias, $planes)
+    public function actionGetExamsDetails($materias, $planes, $anios)
     {
         $criteriaPlanes = new CDbCriteria;
         $criteriaPlanes->select = 't.materia_id';
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
+        $criteriaPlanes->addInCondition('t.anio', $anios);
         $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
         $matPlan = array();
         foreach ($materiasPlan as $value) {
@@ -117,6 +118,7 @@ class MetricaController extends Controller
         $criteriaExamenes->join = "INNER JOIN materia  ON(t.materia_id=materia.id)";
         $criteriaExamenes->join = "INNER JOIN Tipo_Examen ON(t.tipoexamen_id=Tipo_Examen.id)";
         $criteriaExamenes->addInCondition('t.materia_id', $materias);
+        
         $infoExamenes = Examen::model()->findAll($criteriaExamenes);
         $details = array();
         foreach ($infoExamenes as $row) {
