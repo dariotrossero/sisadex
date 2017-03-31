@@ -118,6 +118,7 @@ function getInfoFromServer() {
             materias: jsonStringsubjects,
             planes: jsonStringPlans,
             anios: jsonStringYears,
+            cuat: cuat,
             currentYear:currentYear
         },
         cache: false,
@@ -194,10 +195,14 @@ function zoom() {
 }
 
 function go2FirstCuat() {
+    cuat = 1;
+    getInfoFromServer();
     timeline.setVisibleChartRange(new Date(currentYear, 2, 1), new Date(currentYear, 7, 1));
 }
 
 function go2SecondCuat() {
+    cuat = 2;
+    getInfoFromServer();
     timeline.setVisibleChartRange(new Date(currentYear, 7, 1), new Date(currentYear + 1, 1, 1));
 }
 

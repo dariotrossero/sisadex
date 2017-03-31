@@ -4,6 +4,7 @@ class MetricaController extends Controller
 {
     var $fechas = array();
 
+
     public function actionCalendar()
     {
         $this->pageTitle = Yii::app()->name ." | Métricas - Calendario.";
@@ -45,6 +46,7 @@ class MetricaController extends Controller
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
         $utils = new Utils();
         $currentYear = $_POST['currentYear'];
+        $cuat = $_POST['cuat'];
         $this->createDaysArray($currentYear);
         $materias = json_decode(stripslashes($_POST['materias']));
         $planes = json_decode(stripslashes($_POST['planes']));
@@ -54,10 +56,18 @@ class MetricaController extends Controller
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
         $criteriaPlanes->addInCondition('t.anio', $anios);
-        $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+       // $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+
+
+        $sql = 'select t.Materia_id from Materia_has_Plan t JOIN Materia m WHERE t.Materia_id = m.id AND t.Plan_id  IN ('.implode(",", $planes).') AND t.anio IN ('.implode(",", $anios).') and t.cuatrimestre = '.$cuat;
+
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $materiasPlan = $command->queryAll(); 
+
         $matPlan = array();
         foreach ($materiasPlan as $value) {
-            array_push($matPlan, $value->Materia_id);
+            array_push($matPlan, $value["Materia_id"]);
         }
         foreach ($matPlan as $value) {
             if (!in_array($value, $materias, true)) {
@@ -65,13 +75,17 @@ class MetricaController extends Controller
             }
         }
         //Obtengo los examenes de las materias dadas
-        $criteriaMaterias = new CDbCriteria;
-        $criteriaMaterias->select = 't.*';
-        $criteriaMaterias->join = "INNER JOIN Tipo_Examen as tipoexamen ON(tipoexamen.id=t.tipoexamen_id)";
-        $criteriaMaterias->addInCondition('t.materia_id', $materias);
-        $criteriaMaterias->order = 't.fechaExamen ASC';
-        $criteriaMaterias->addBetweenCondition('t.fechaExamen', $currentYear . '-03-01', $currentYear . '-12-31');
-        $examenes = Examen::model()->findAll($criteriaMaterias);
+        $criteriaExamenes = new CDbCriteria;
+        $criteriaExamenes->select = 't.*';
+        $criteriaExamenes->join = "INNER JOIN Tipo_Examen as tipoexamen ON(tipoexamen.id=t.tipoexamen_id)";
+        $criteriaExamenes->addInCondition('t.materia_id', $materias);
+        $criteriaExamenes->order = 't.fechaExamen ASC';
+        if ($cuat==1):
+            $criteriaExamenes->addBetweenCondition('t.fechaExamen', $currentYear . '-03-01', $currentYear . '-07-31'); 
+        else: 
+            $criteriaExamenes->addBetweenCondition('t.fechaExamen', $currentYear . '-08-01', $currentYear . '-12-31'); 
+        endif;
+        $examenes = Examen::model()->findAll($criteriaExamenes);
         //Arreglo donde se guardaran los datos
         $datos = array();
         $datosNormalDate = $this->fechas;
@@ -86,7 +100,7 @@ class MetricaController extends Controller
         header("Content-type: application/json");
         //Envio la informacion en formato jSON
         //2 arreglos, result1 con los complejidades en cada dia y result2 con info de cada examen (fecha, materia y tipo de examen)
-        $details = $this->actionGetExamsDetails($materias, $planes);
+        $details = $this->actionGetExamsDetails($materias, $planes, $anios, $cuat);
         echo CJSON::encode(array(
             'result1' => $datos,
             'result2' => $details,
@@ -97,16 +111,25 @@ class MetricaController extends Controller
     /**
      * Obtiene fecha, materia y tipo de examen para mostrar cuando se clickea en un dia
      */
-    public function actionGetExamsDetails($materias, $planes)
+    public function actionGetExamsDetails($materias, $planes, $anios, $cuat)
     {
+        $currentYear = $_POST['currentYear'];
         $criteriaPlanes = new CDbCriteria;
         $criteriaPlanes->select = 't.materia_id';
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
-        $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+        $criteriaPlanes->addInCondition('t.anio', $anios);
+        //$materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+
+        $sql = 'select t.Materia_id from Materia_has_Plan t JOIN Materia m WHERE t.Materia_id = m.id AND t.Plan_id  IN ('.implode(",", $planes).') AND t.anio IN ('.implode(",", $anios).') and t.cuatrimestre = '.$cuat;
+
+        $connection = Yii::app()->db;
+        $command = $connection->createCommand($sql);
+        $materiasPlan = $command->queryAll(); 
+
         $matPlan = array();
         foreach ($materiasPlan as $value) {
-            array_push($matPlan, $value->Materia_id);
+            array_push($matPlan, $value["Materia_id"]);
         }
         foreach ($matPlan as $value) {
             if (!in_array($value, $materias, true)) {
@@ -117,6 +140,11 @@ class MetricaController extends Controller
         $criteriaExamenes->join = "INNER JOIN materia  ON(t.materia_id=materia.id)";
         $criteriaExamenes->join = "INNER JOIN Tipo_Examen ON(t.tipoexamen_id=Tipo_Examen.id)";
         $criteriaExamenes->addInCondition('t.materia_id', $materias);
+         if ($cuat==1):
+            $criteriaExamenes->addBetweenCondition('t.fechaExamen', $currentYear . '-03-01', $currentYear . '-07-31'); 
+        else: 
+            $criteriaExamenes->addBetweenCondition('t.fechaExamen', $currentYear . '-08-01', $currentYear . '-12-31'); 
+        endif;
         $infoExamenes = Examen::model()->findAll($criteriaExamenes);
         $details = array();
         foreach ($infoExamenes as $row) {
@@ -143,16 +171,17 @@ class MetricaController extends Controller
         $materias = json_decode(stripslashes($_POST['materias']));
         $planes = json_decode(stripslashes($_POST['planes']));
         $currentYear = $_POST['currentYear'];
+        $cuat = $_POST['cuat'];
         header("Content-type: application/json");
         //Envio la informacion en formato jSON
         //2 arreglos, result1 con los complejidades en cada dia y result2 con info de cada examen (fecha, materia y tipo de examen)
-        $details = $this->actionGetExamsDetailsTimeline($materias, $planes, $currentYear);
+        $details = $this->actionGetExamsDetailsTimeline($materias, $planes, $currentYear, $cuat);
         echo CJSON::encode(array(
             'result' => $details
             ));
     }
 
-    public function actionGetExamsDetailsTimeline($materias, $planes,$currentYear)
+    public function actionGetExamsDetailsTimeline($materias, $planes,$currentYear, $cuat)
     {
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
         
@@ -162,10 +191,18 @@ class MetricaController extends Controller
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
         $criteriaPlanes->addInCondition('t.anio', $anios);
         
-        $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+        //$materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+
+
+         $sql = 'select t.Materia_id from Materia_has_Plan t JOIN Materia m WHERE t.Materia_id = m.id AND t.Plan_id  IN ('.implode(",", $planes).') AND t.anio IN ('.implode(",", $anios).') and t.cuatrimestre = '.$cuat;
+
+            $connection = Yii::app()->db;
+            $command = $connection->createCommand($sql);
+            $materiasPlan = $command->queryAll(); 
+
         $matPlan = array();
         foreach ($materiasPlan as $value) {
-            array_push($matPlan, $value->Materia_id);
+            array_push($matPlan, $value["Materia_id"]);
         }
         foreach ($matPlan as $value) {
             if (!in_array($value, $materias, true)) {
@@ -177,6 +214,11 @@ class MetricaController extends Controller
         $criteriaExamenes->join = "INNER JOIN Tipo_Examen ON(t.tipoexamen_id=Tipo_Examen.id)";
         $criteriaExamenes->addBetweenCondition('fechaExamen', $currentYear . '-03-01', $currentYear . '-12-31');
         $criteriaExamenes->addInCondition('t.materia_id', $materias);
+        if ($cuat==1):
+            $criteriaExamenes->addBetweenCondition('t.fechaExamen', $currentYear . '-03-01', $currentYear . '-07-31'); 
+        else: 
+            $criteriaExamenes->addBetweenCondition('t.fechaExamen', $currentYear . '-08-01', $currentYear . '-12-31'); 
+        endif;
         $infoExamenes = Examen::model()->findAll($criteriaExamenes);
         $details = array();
         foreach ($infoExamenes as $row) {
@@ -200,10 +242,11 @@ class MetricaController extends Controller
     }
 
     public function actionGetExamsEvolution()
-    {
+    {   $anios = array(1);
         $currentYear = $_POST['currentYear'];
         $this->createDaysArray($currentYear);
         $utils = new Utils();
+        $cuat = 1;
         $planes = Plan::model()->findAll(array(
             'order' => 'anioPlan'
             ));
@@ -213,11 +256,21 @@ class MetricaController extends Controller
             $criteriaPlanes = new CDbCriteria;
             $criteriaPlanes->select = 't.materia_id';
             $criteriaPlanes->condition = "plan_id == " . $key->id;
-            $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+            //$materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+            
+
+            $sql = 'select t.Materia_id from Materia_has_Plan t JOIN Materia m WHERE t.Materia_id = m.id AND t.Plan_id = '.$key->id.' AND t.anio IN ('.implode(",", $anios).') and t.cuatrimestre = '.$cuat;
+
+            $connection = Yii::app()->db;
+            $command = $connection->createCommand($sql);
+            $materiasPlan = $command->queryAll(); 
+
+
+
             $materias = array();
             $matPlan = array();
             foreach ($materiasPlan as $value) {
-                array_push($matPlan, $value->Materia_id);
+                array_push($matPlan, $value["Materia_id"]);
             }
             foreach ($matPlan as $value) {
                 if (!in_array($value, $materias, true)) {
@@ -225,7 +278,7 @@ class MetricaController extends Controller
                 }
             }
             //Obtengo los examenes de las materias dadas
-            $examenes = $this->getExams($materias);
+            $examenes = $this->getExams($materias, $cuat, $currentYear);
             //Arreglo donde se guardaran los datos
             $datos = array();
             $datosNormalDate = $this->fechas;
@@ -247,20 +300,12 @@ class MetricaController extends Controller
     }
 
 
-    private function getExams($materias) {
-    		$criteriaMaterias = new CDbCriteria;
-            $criteriaMaterias->select = 't.*';
-            $criteriaMaterias->join = "INNER JOIN Tipo_Examen as tipoexamen ON(tipoexamen.id=t.tipoexamen_id)";
-            $criteriaMaterias->addInCondition('t.materia_id', $materias);
-            $criteriaMaterias->order = 't.fechaExamen ASC';
-            return Examen::model()->findAll($criteriaMaterias);
-    }
-
-     public function actionRefreshExamsEvolution()
+ public function actionRefreshExamsEvolution()
     {
         $anios = array_values(json_decode(stripslashes($_POST['anios'])));
         $currentYear = $_POST['currentYear'];
         $this->createDaysArray($currentYear);
+        $cuat = $_POST['cuat'];
         $utils = new Utils();
         $planes = Plan::model()->findAll(array(
             'order' => 'anioPlan'
@@ -272,11 +317,19 @@ class MetricaController extends Controller
             $criteriaPlanes->select = 't.materia_id';
             $criteriaPlanes->condition = "plan_id == " . $key->id;
             $criteriaPlanes->addInCondition('t.anio', $anios);
-            $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+            //$materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
+
+
+            $sql = 'select t.Materia_id from Materia_has_Plan t JOIN Materia m WHERE t.Materia_id = m.id AND t.Plan_id = '.$key->id.' AND t.anio IN ('.implode(",", $anios).') and t.cuatrimestre = '.$cuat;
+
+            $connection = Yii::app()->db;
+            $command = $connection->createCommand($sql);
+            $materiasPlan = $command->queryAll(); 
+
             $materias = array();
             $matPlan = array();
             foreach ($materiasPlan as $value) {
-                array_push($matPlan, $value->Materia_id);
+                array_push($matPlan, $value["Materia_id"]);
             }
             foreach ($matPlan as $value) {
                 if (!in_array($value, $materias, true)) {
@@ -284,7 +337,7 @@ class MetricaController extends Controller
                 }
             }
             //Obtengo los examenes de las materias dadas
-            $examenes = $this->getExams($materias);
+            $examenes = $this->getExams($materias, $cuat, $currentYear);
             //Arreglo donde se guardaran los datos
             $datos = array();
             $datosNormalDate = $this->fechas;
@@ -304,4 +357,21 @@ class MetricaController extends Controller
             'result' => $resultados
             ));
     }
+
+
+    private function getExams($materias, $cuat, $currentYear) {
+    		$criteriaExamenes = new CDbCriteria;
+            $criteriaExamenes->select = 't.*';
+            $criteriaExamenes->join = "INNER JOIN Tipo_Examen as tipoexamen ON(tipoexamen.id=t.tipoexamen_id)";
+            $criteriaExamenes->addInCondition('t.materia_id', $materias);
+             if ($cuat==1):
+                $criteriaExamenes->addBetweenCondition('t.fechaExamen', $currentYear . '-03-01', $currentYear . '-07-31'); 
+            else: 
+                $criteriaExamenes->addBetweenCondition('t.fechaExamen', $currentYear . '-08-01', $currentYear . '-12-31'); 
+            endif;
+            $criteriaExamenes->order = 't.fechaExamen ASC';
+            return Examen::model()->findAll($criteriaExamenes);
+    }
+
+    
 }
