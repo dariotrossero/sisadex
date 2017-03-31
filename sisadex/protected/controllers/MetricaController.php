@@ -56,6 +56,8 @@ class MetricaController extends Controller
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
         $criteriaPlanes->addInCondition('t.anio', $anios);
+       // Con este criterio se traen examenes de todo el año y no del cuatrimestre que deberia traer.
+       // Por ej. Analisis Matematico 1 esta en 2 planes en distinto cuatrimestre.
        // $materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
 
 
@@ -119,6 +121,8 @@ class MetricaController extends Controller
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
         $criteriaPlanes->addInCondition('t.anio', $anios);
+        // Con este criterio se traen examenes de todo el año y no del cuatrimestre que deberia traer.
+       // Por ej. Analisis Matematico 1 esta en 2 planes en distinto cuatrimestre.
         //$materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
 
         $sql = 'select t.Materia_id from Materia_has_Plan t JOIN Materia m WHERE t.Materia_id = m.id AND t.Plan_id  IN ('.implode(",", $planes).') AND t.anio IN ('.implode(",", $anios).') and t.cuatrimestre = '.$cuat;
@@ -190,7 +194,8 @@ class MetricaController extends Controller
         $criteriaPlanes->join = "INNER JOIN plan ON(t.Plan_id=plan.id)";
         $criteriaPlanes->addInCondition('t.plan_id', $planes);
         $criteriaPlanes->addInCondition('t.anio', $anios);
-        
+        // Con este criterio se traen examenes de todo el año y no del cuatrimestre que deberia traer.
+       // Por ej. Analisis Matematico 1 esta en 2 planes en distinto cuatrimestre.
         //$materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
 
 
@@ -256,6 +261,8 @@ class MetricaController extends Controller
             $criteriaPlanes = new CDbCriteria;
             $criteriaPlanes->select = 't.materia_id';
             $criteriaPlanes->condition = "plan_id == " . $key->id;
+            // Con este criterio se traen examenes de todo el año y no del cuatrimestre que deberia traer.
+            // Por ej. Analisis Matematico 1 esta en 2 planes en distinto cuatrimestre.
             //$materiasPlan = MateriaPlan::model()->findAll($criteriaPlanes);
             
 
