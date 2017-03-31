@@ -30,7 +30,6 @@ var infoExams = {};
 
 var subjects = new Array();
 var plans = new Array();
-
 var cal = new CalHeatMap();
 var subDomain = "x_day";
 cal.init({
@@ -83,12 +82,17 @@ cal.init({
 });
 
 function go2FirstCuat() {
+    cuat = 1;
+    getInfoFromServer();
     cal.update(data2display);
     cal.options.data = data2display;
     cal.jumpTo(new Date(currentYear, 2), true);
+
 };
 
 function go2SecondCuat() {
+    cuat = 2;
+    getInfoFromServer();
     cal.update(data2display);
     cal.options.data = data2display;
     cal.jumpTo(new Date(currentYear, 7), true);
@@ -187,6 +191,7 @@ function getInfoFromServer() {
             materias: jsonStringsubjects,
             planes: jsonStringPlans,
             anios: jsonStringYears,
+            cuat: cuat,
             currentYear:currentYear
          },
         cache: false,
@@ -258,6 +263,7 @@ function hideSpinner() {
 
 $( "#yearList" ).change(function() {
     currentYear = $('#yearList').find(":selected").text();
+    cuat = 1;
     refreshData();
     go2Year(currentYear);
   });

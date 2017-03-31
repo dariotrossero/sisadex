@@ -156,6 +156,27 @@ $arrYears = array_reverse($arrYears, true);
         array('label'=>'5to año','htmlOptions' => array('id' => 'anio_5','onclick'=>'clickYear(5)')),
     ),
 )); ?>
+<div id="buttons">
+
+
+ <?php $this->widget('bootstrap.widgets.TbButton', array(
+   'buttonType'=>'button',
+   'type'=>'action',
+   
+   'label'=>'1° Cuat.',
+   'htmlOptions'=>array('onclick' => 'go2FirstCuat()'),
+   )); ?>
+ <?php $this->widget('bootstrap.widgets.TbButton', array(
+   'buttonType'=>'button',
+   'type'=>'action',
+   
+   'label'=>'2° Cuat.',
+   'htmlOptions'=>array('onclick' => 'go2SecondCuat()'),
+   )); ?>
+
+
+
+ </div>
  <?php echo CHtml::dropDownList('yearList', $yearNow, $arrYears); ?>
 
 <div id="wait_animation">
@@ -168,27 +189,7 @@ $arrYears = array_reverse($arrYears, true);
 <div id="chartdiv" style="width: 100%; height: 600px;"></div>
   </div>
 
-<div id="buttons">
 
-
- <?php $this->widget('bootstrap.widgets.TbButton', array(
-   'buttonType'=>'button',
-   'type'=>'action',
-   
-   'label'=>'Zoom 1° Cuat.',
-   'htmlOptions'=>array('onclick' => 'go2FirstCuat()'),
-   )); ?>
- <?php $this->widget('bootstrap.widgets.TbButton', array(
-   'buttonType'=>'button',
-   'type'=>'action',
-   
-   'label'=>'Zoom 2° Cuat.',
-   'htmlOptions'=>array('onclick' => 'go2SecondCuat()'),
-   )); ?>
-
-
-
- </div>
 
 </body>
 

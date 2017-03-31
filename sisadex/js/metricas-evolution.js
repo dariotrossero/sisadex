@@ -86,7 +86,8 @@ function refreshInfoFromServer() {
             materias: jsonStringSubjects,
             planes: jsonStringPlans,
             anios: jsonStringYears,
-            currentYear:currentYear
+            currentYear:currentYear,
+            cuat:cuat
         },
         cache: false,
         success: function (respuesta) {
@@ -105,11 +106,15 @@ $(document).ready(function () {
 
 
 function go2FirstCuat() {
-    chart.zoom(0, 140);
+    cuat = 1;
+    refreshInfoFromServer();
+    //chart.zoom(0, 140);
 }
 
 function go2SecondCuat() {
-    chart.zoom(150, 304);
+    cuat = 2;
+    refreshInfoFromServer();
+    //chart.zoom(150, 304);
 }
 
 function clickYear(year) {
